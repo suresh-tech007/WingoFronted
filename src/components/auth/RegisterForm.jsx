@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+import { MdSendToMobile } from "react-icons/md";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const RegisterForm = () => {
     agreed: false
   });
 
+   
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -23,7 +25,11 @@ const RegisterForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add form submission logic here
+    if(formData.phone == "" || formData.password == "" || formData.confirmPassword == ""  ){
+      console.log("Please Enter valid Phone Number and Password")
+      
+    }
+   
     console.log(formData);
   };
 
@@ -56,9 +62,6 @@ const RegisterForm = () => {
           <div className="mb-4">
             <label className="block text-gray-300 text-sm font-bold mb-2">Phone number</label>
             <div className="flex">
-              {/* <select className="bg-[#313672] text-white p-2 rounded-l-md focus:outline-none">
-                <option className=' ' value="+91">+91</option>
-              </select> */}
               <select className="bg-[#313672] text-white p-2 rounded-l-md focus:outline-none">
         <option className="bg-[#313672] text-black">+91</option>
         <option className="bg-[#313672] text-white">+1</option>
@@ -67,11 +70,29 @@ const RegisterForm = () => {
               <input
                 type="text"
                 name="phone"
-                placeholder="Please enter the phone number"
+                placeholder="Enter phone number"
                 value={formData.phone}
                 onChange={handleChange}
-                className="bg-[#313672] text-white p-2 rounded-r-md focus:outline-none focus:bg-[#313672] focus:text-white w-full"
+                className="bg-[#313672] text-white p-2   focus:outline-none focus:bg-[#313672] focus:text-white w-full"
               />
+              <button className=' text-[15px] bg-[#313672]  border border-gray-600   text-white px-3 p-1  rounded-r-md hover:bg-blue-300 transition duration-30'>OTP</button>
+            </div>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-300 text-sm font-bold mb-2">Verify Otp</label>
+            <div className="flex">
+              <span className="bg-[#313672] text-white p-2 rounded-l-md">
+                <MdSendToMobile className='text-blue-600' icon={faLock} />
+              </span>
+              <input
+                type="otp"
+                name="otp"
+                placeholder="Verify Otp"
+                value={""}
+                onChange={handleChange}
+                className="bg-[#313672] text-white p-2  focus:outline-none w-full"
+              />
+              <button className=' text-[15px] bg-[#313672]  border border-gray-600   text-white px-3 p-1  rounded-r-md hover:bg-blue-300 transition duration-30'>Verify</button>
             </div>
           </div>
           <div className="mb-4">
@@ -128,13 +149,14 @@ const RegisterForm = () => {
               />
               <span className="ml-2">
                 I have read and agree
-                <a href="#" className="text-red-500"> {`{Privacy Agreement}`}</a>
+                <Link to={"/privacyAgr"} className="text-red-500"> {`{Privacy Agreement}`}</Link>
               </span>
             </label>
           </div>
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700 transition duration-300"
+            disabled={!formData.agreed}
           >
             Register
           </button>

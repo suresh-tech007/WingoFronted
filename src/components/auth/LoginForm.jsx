@@ -117,8 +117,8 @@ const LoginForm = () => {
                     checked={checked}
                     onChange={changecheckde}
                   />
-                  <FaCheck className={`${checked ? 'opacity-100' : 'opacity-0'} text-white block absolute size-3 top-1 left-1.5 transition-all duration-300`} />
-                  <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600 cursor-pointer">
+                  <FaCheck    className={`${checked ? 'opacity-100' : 'opacity-0'} text-white block absolute size-3 top-1 left-1.5 transition-all duration-300`} />
+                  <label htmlFor="remember-me"     className="ml-2 text-sm text-gray-600 cursor-pointer">
                     Remember Password
                   </label>
                 </div>
@@ -136,6 +136,7 @@ const LoginForm = () => {
                 >
                   I have no  account <Link className='text-blue-700 font-semibold' to={"/register"}>Register</Link>
                 </button>
+                <Link to={"/forgotpassword"} className='text-blue-700 font-semibold hover:text-white transition-all duration-300  pt-9 px-4  text-[12px] h-[10vh]  ' >forgot Password ?</Link>
               </form>
             </div>
             <div className={`${!usemobile ? "block" : "hidden"}  w-[400px] px-4`}>
@@ -199,8 +200,9 @@ const LoginForm = () => {
                   className="w-full mt-4   bg-transparent border-white border-2   text-white py-2 rounded-full hover:bg-blue-300 transition duration-300"
                   onClick={handleLogin}
                 >
-                  I have no  account <Link className='text-blue-700 font-semibold' to={"/register"}>Register</Link>
+                  I have no  account ? <Link className='text-blue-700 font-semibold' to={"/register"}>Register</Link>
                 </button>
+                <Link to={"/forgotpassword"} className='text-blue-700 font-semibold hover:text-white transition-all duration-300  pt-9 px-4  text-[12px] h-[10vh]  ' >forgot Password ?</Link>
               </form>
             </div>
           </div>
