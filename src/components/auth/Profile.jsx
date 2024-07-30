@@ -79,7 +79,7 @@ const Profile = () => {
 
                             </div>
                         </Link>
-                        <Link  to={"/depositehistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
+                        <Link  to={"/deposithistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
                             <div>
                                 <img src={depositeimg} alt="" className="w-[40px]" />
                             </div>
@@ -89,7 +89,7 @@ const Profile = () => {
 
                             </div>
                         </Link>
-                        <Link to={"/withdrawhistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
+                        <Link to={"/withdrawalhistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
                             <div>
                                 <img src={withdraw} alt="" className="w-[40px]" />
                             </div>
@@ -103,11 +103,11 @@ const Profile = () => {
                     </div>
                     <div className=" bg-[#2b3270] h-[30vh] text-white  font-sans   flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
                         <div className="flex items-center flex-row justify-between">
-                            <Link to={"/notification"} className="flex  items-center gap-2">
+                            <Link to={"/notifications"} className="flex  items-center gap-2">
                                  <img className="w-[2.5rem]" src="https://img.icons8.com/?size=100&id=z8yqcMdq4T2h&format=png&color=000000" alt="" /> 
                                 <span>Notification</span>
                             </Link>
-                            <Link to={"/notification"} className="flex items-center " >
+                            <Link to={"/notifications"} className="flex items-center " >
                                 <span className=" rounded-full bg-red-500 text-white text-[10px] w-4 h-4 text-center ">5</span>
                                 <img className="w-[2rem] text-gray-500" src="https://img.icons8.com/?size=80&id=61&format=png&color=00000080" alt="" />
                             </Link>

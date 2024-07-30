@@ -8,33 +8,33 @@ const Recharge = () => {
     const [rupees, setRupees] = useState(null);
     const [way, setWay] = useState(null);
     const [disabled, setDisabled] = useState(null);
-    const [pamentstatus, setPamentstatus] = useState("Success");
+    const [paymentstatus, setPaymentstatus] = useState("Success");
     const [ordernum, setOrdernum] = useState("Pt2024072807531989624491");
-     const navigate = useNavigate();
-        const copyToClipboard = (ordernum) => {
-          navigator.clipboard.writeText(ordernum).then(() => {
+    const navigate = useNavigate();
+    const copyToClipboard = (ordernum) => {
+        navigator.clipboard.writeText(ordernum).then(() => {
             alert('Text copied to clipboard');
-          }).catch(err => {
+        }).catch(err => {
             console.error('Failed to copy: ', err);
-          });
-        };
-        const Deposithandleclick=()=>{
-          console.log(way,rupees)
-            console.log("all ok " )
-        }
-        const reloadhanlde =()=>{
-            navigate("/recharge")
-            console.log("reaload")
-        }
+        });
+    };
+    const Deposithandleclick = () => {
+        console.log(way, rupees)
+        console.log("all ok ")
+    }
+    const reloadhanlde = () => {
+        navigate("/deposit")
+        console.log("reaload")
+    }
 
-       useEffect(()=>{
-        if(way==null || rupees==null){
+    useEffect(() => {
+        if (way == null || rupees == null) {
             setDisabled(true)
-        }else{
+        } else {
             setDisabled(false)
         }
-       },[way,rupees])
-    
+    }, [way, rupees])
+
     return (
 
         <div className="flex relative   items-center justify-center   h-full   max-h-full    bg-gray-400">
@@ -66,21 +66,21 @@ const Recharge = () => {
                 </div>
 
                 <div className='     grid grid-cols-3 gap-3 p-4'>
-                    <div className={` ${way=="paytmQR" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white ":"bg-[#2b3270] text-gray-400" } active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={()=>setWay("paytmQR")} >
+                    <div className={` ${way == "paytmQR" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white " : "bg-[#2b3270] text-gray-400"} active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={() => setWay("paytmQR")} >
                         <img src={paytm} className='w-[3rem]' alt=" paytm" />
                         <span className='text-[12px] font-light'>Paytm x QR</span>
                     </div>
-                    <div className={` ${way=="EWallet" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white ":"bg-[#2b3270] text-gray-400" } active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={()=>setWay("EWallet")}>
+                    <div className={` ${way == "EWallet" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white " : "bg-[#2b3270] text-gray-400"} active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={() => setWay("EWallet")}>
                         <img src={all} className='w-[3rem]' alt="" />
                         <span className='text-[12px] font-light'>E-wallet</span>
                     </div>
-                    <div className={` ${way=="upiqr" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white ":"bg-[#2b3270] text-gray-400" } active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={()=>setWay("upiqr")}>
+                    <div className={` ${way == "upiqr" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white " : "bg-[#2b3270] text-gray-400"} active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={() => setWay("upiqr")}>
                         <img src={upi} className='w-[3rem]' alt="" />
                         <span className='text-[12px] font-light'>UPI x QR</span></div>
-                    <div className={` ${way=="another" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white ":"bg-[#2b3270] text-gray-400" } active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={()=>setWay("another")}>
+                    <div className={` ${way == "another" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white " : "bg-[#2b3270] text-gray-400"} active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={() => setWay("another")}>
                         <img src="https://img.icons8.com/?size=100&id=68067&format=png&color=000000" className='w-[3rem]' alt=" paytm" />
                         <span className='text-[12px] font-light'>Paytm x QR</span></div>
-                    <div className={` ${way=="another2" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white ":"bg-[#2b3270] text-gray-400" } active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={()=>setWay("another2")}>
+                    <div className={` ${way == "another2" ? "bg-gradient-to-r from-teal-400  to-blue-500  text-white " : "bg-[#2b3270] text-gray-400"} active:bg-blue-500     rounded-xl    flex flex-col  py-4 items-center `} onClick={() => setWay("another2")}>
                         <img src="https://img.icons8.com/?size=100&id=68067&format=png&color=000000" className='w-[3rem]' alt=" paytm" />
                         <span className='text-[12px] font-light'>Paytm x QR</span>
                     </div>
@@ -94,23 +94,23 @@ const Recharge = () => {
                         </h1>
                     </div>
                     <div className='grid grid-cols-3 gap-4 '>
-                        <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly  cursor-pointer' onClick={()=>setRupees(200)} >
+                        <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly  cursor-pointer' onClick={() => setRupees(200)} >
                             <span className='text-[gray] font-semibold text-[1.2rem] '>₹</span>
                             <span className='text-[#367ff6] font-semibold text-[1.3rem]'>200</span>
                         </div>
-                        <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={()=>setRupees(500)}>
+                        <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={() => setRupees(500)}>
                             <span className='text-[gray] font-semibold text-[1.2rem] '>₹</span>
                             <span className='text-[#367ff6] font-semibold text-[1.3rem]'>500</span>
-                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={()=>setRupees(1000)}>
+                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={() => setRupees(1000)}>
                             <span className='text-[gray] font-semibold text-[1.2rem] '>₹</span>
                             <span className='text-[#367ff6] font-semibold text-[1.3rem]'>1K</span>
-                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={()=>setRupees(10000)}>
+                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={() => setRupees(10000)}>
                             <span className='text-[gray] font-semibold text-[1.2rem] '>₹</span>
                             <span className='text-[#367ff6] font-semibold text-[1.3rem]'>10K</span>
-                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={()=>setRupees(50000)}>
+                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={() => setRupees(50000)}>
                             <span className='text-[gray] font-semibold text-[1.2rem] '>₹</span>
                             <span className='text-[#367ff6] font-semibold text-[1.3rem]'>50K</span>
-                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={()=>setRupees(100000)}>
+                        </div> <div className='border border-[#374992] rounded-lg items-center flex gap-5 mx-2  justify-evenly cursor-pointer' onClick={() => setRupees(100000)}>
                             <span className='text-[gray] font-semibold text-[1.2rem] '>₹</span>
                             <span className='text-[#367ff6] font-semibold text-[1.3rem]'>100K</span>
                         </div>
@@ -120,11 +120,11 @@ const Recharge = () => {
                     <div className=' w-[350px] h-[2.5rem] border rounded-3xl flex items-center justify-evenly px-2 '>
                         <img className='w-[2rem]     ' src="https://img.icons8.com/?size=100&id=87785&format=png&color=056FEBBF" alt="" />
                         <input type="text" value={rupees} className=' border-l  bg-transparent focus:outline-none outline-none ml-3 pl-3 w-full  border-gray-500 text-white text-[1.1rem]  ' placeholder='Please enter the amount' />
-                        <img onClick={()=>setRupees("")} className='w-[2rem]  cursor-pointer ' src="https://img.icons8.com/?size=100&id=3062&format=png&color=8C919699" alt="" />
+                        <img onClick={() => setRupees("")} className='w-[2rem]  cursor-pointer ' src="https://img.icons8.com/?size=100&id=3062&format=png&color=8C919699" alt="" />
                     </div>
-                    
-                        <button onClick={Deposithandleclick} disabled={disabled}  className=' bg-blue-600 hover:bg-transparent  font-semibold  w-[350px] h-[2.5rem]   rounded-3xl border border-transparent  px-2 hover:border hover:border-[#8080809e] transition-all duration-300 '> Deposit</button>
-                     
+
+                    <button onClick={Deposithandleclick} disabled={disabled} className=' bg-blue-600 hover:bg-transparent  font-semibold  w-[350px] h-[2.5rem]   rounded-3xl border border-transparent  px-2 hover:border hover:border-[#8080809e] transition-all duration-300 '> Deposit</button>
+
                 </div>
                 <div className='flex bg-[#2b3270] flex-col font-sans  text-white rounded-[20px]  p-5 gap-3 m-3  '>
                     <div className='flex  gap-3 items-center'>
@@ -148,40 +148,47 @@ const Recharge = () => {
                         <img className='w-[2rem]' src="https://img.icons8.com/?size=100&id=AbrQV4ddrXNz&format=png&color=000000" alt="" />
                         <h1>Deposit history</h1>
                     </div>
-                    <div className=" m-3 p-4  bg-[#2b3270]     rounded-xl shadow-md space-y-4 ">
+                    <div className=" m-3 p-4  bg-[#2b3270]      rounded-xl shadow-md space-y-4 ">
                         <div className='flex items-center border-b pb-4 border-[#6d6dc58a] justify-between'>
                             <span className=' font-sans  font-medium text-white bg-green-500 px-3 py-1 rounded-lg'>Deposit</span>
-                            <span className={`text-red-600 font-serif   font-normal  ${pamentstatus=="Faild"?"text-red-600 ":"text-green-500"}`}   >{pamentstatus}</span>
+                            <span className={`text-red-600 font-serif   font-normal  ${paymentstatus == "Faild" ? "text-red-600 " : "text-green-500"}`}   >{paymentstatus}</span>
                         </div>
                         <div className='flex text-gray-400 items-center justify-between text-[0.8rem] gap-2 flex-col'>
-                        <div className='flex justify-between items-center w-full'>
-                            <p>Balance</p>
-                            <span className='text-yellow-600'>₹200.00</span>
+                            <div className='flex justify-between items-center w-full'>
+                                <p>Balance</p>
+                                <span className='text-yellow-600'>₹200.00</span>
 
-                         </div>
-                          <div className='flex justify-between items-center w-full'>
-                            <p>Type</p>
-                            <span>7Days-Paytm x QR</span>
+                            </div>
+                            <div className='flex justify-between items-center w-full'>
+                                <p>Type</p>
+                                <span>7Days-Paytm x QR</span>
 
-                         </div>
-                          <div className='flex justify-between items-center w-full'>
-                            <p>Time</p>
-                            <span>July 30, 2024, 11:52:34</span>
+                            </div>
+                            <div className='flex justify-between items-center w-full'>
+                                <p>Time</p>
+                                <span>July 30, 2024, 11:52:34</span>
 
-                         </div>
-                          <div className='flex justify-between items-center w-full text-nowrap  '>
-                            <p>Order Number</p>
-                           <div>
-                           <span value={ordernum}   >Pt2024072807531989624491 </span>
-                           <button onClick={()=>copyToClipboard(ordernum)} ><img  className='w-[0.9rem] ml-1 mt-1 ' src="https://img.icons8.com/?size=100&id=86206&format=png&color=525C6A99" alt="" /></button>
+                            </div>
+                            <div className='flex justify-between items-center w-full text-nowrap  '>
+                                <p>Order Number</p>
+                                <div>
+                                    <span value={ordernum}   >Pt2024072807531989624491 </span>
+                                    <button onClick={() => copyToClipboard(ordernum)} ><img className='w-[0.9rem] ml-1 mt-1 ' src="https://img.icons8.com/?size=100&id=86206&format=png&color=525C6A99" alt="" /></button>
 
-                           </div>
-                         </div>
+                                </div>
+                            </div>
+                            
                         </div>
+                     
 
 
+                    </div>
+                    <div className="h-[10rem] ">
+ 
+                      </div>
 
-                        </div>
+
+                  
 
                 </div>
 
