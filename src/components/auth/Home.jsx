@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-blue-900 text-white">
+    <div className="flex items-center absolute  z-50 w-full justify-center min-h-screen bg-blue-900 text-white">
       <div className="text-center">
         <h1 className="text-4xl mb-4">Welcome to Tiranga Games</h1>
         <div className="space-x-4">

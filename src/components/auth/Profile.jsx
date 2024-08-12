@@ -1,31 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import image from "../../iamges/photo.jpg";
 import depositeimg from "../../iamges/deposit.png"
 import cardpay from "../../iamges/cardpayment.png"
 import trahistory from "../../iamges/trahistory.png"
 import withdraw from "../../iamges/withdraw.png"
 import { IoMdWallet } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GiWallet } from "react-icons/gi";
 import { IoIosWallet } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/actions/userAction";
+import { toast } from "react-toastify";
 
 const Profile = () => {
+    const { isAuthenticated, user,message } = useSelector((state) => state.user);
+    const [timeout,setTimeout] = useState(null)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+     
+    const hanldelogout = ()=>{
+
+        dispatch(logout())
+        toast("Logout successfully")
+
+    }
+    useEffect(()=>{
+        console.log(user)
+        if(user==null  ){
+            console.log(user)
+            navigate("/login")
+        }
+        if(user.createdAt){
+            const timestamp = user.createdAt
+            const date = new Date(timestamp).toISOString().split('T')[0];
+            setTimeout(date)
+        }
+        
+    },[user,isAuthenticated])
     return (
         <div className="flex relative   items-center justify-center     max-h-full   bg-gray-400">
 
-            <div className=" py-8  pt-0  bg-[#22275b]   h-full   md:w-[400px] w-screen  max-h-full    ">
+            <div className=" py-8  pt-0  bg-[#22275b]   h-full   w-[400px]    max-h-full    ">
                 <div className=" flex items-center    justify-center flex-col ">
 
                     <div className="flex  items-center justify-start   w-full pl-5  pt-9 pb-0 z-10  ">
 
                         <div className="rounded-full  h-[9vh] mr-5 flex z-10  items-center justify-center w-[9vh] overflow-hidden ">
-                            <img src={image} alt="profile_pic" />
+                            <img src={user.avatar ? user.avatar.url : image} alt="profile_pic" />
                         </div>
                         <div className="    text-white  text-[12px] z-10 ">
-                            <div>Sureshkumar</div>
-                            <div>UID | 456747</div>
+                            <div>{user.Username}</div>
+                            <div>UID | {user.UID ? user.UID : "2345542"}</div>
                             <div>
-                                <span>Last Login :</span> data{" "}
+                                <span>createdAt :</span> {user.createdAt ? timeout : "2024-08-03"}
                             </div>
                         </div>
 
@@ -37,7 +64,7 @@ const Profile = () => {
                     <div className="  bg-[#374992] h-[20vh] text-white font-serif  flex  rounded-3xl p-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly ">
                         <div>
                             <span className="text-gray-400 ">Total Amount</span>
-                            <div>₹ 0.00</div>
+                            <div>₹ {user?user.balance: "0.00"}</div>
                         </div>
 
                         <div className="flex flex-row w-full gap-7 items-center  ">
@@ -101,7 +128,7 @@ const Profile = () => {
                         </Link>
 
                     </div>
-                    <div className=" bg-[#2b3270] h-[30vh] text-white  font-sans   flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
+                    {/* <div className=" bg-[#2b3270] h-[30vh] text-white  font-sans   flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
                         <div className="flex items-center flex-row justify-between">
                             <Link to={"/notifications"} className="flex  items-center gap-2">
                                  <img className="w-[2.5rem]" src="https://img.icons8.com/?size=100&id=z8yqcMdq4T2h&format=png&color=000000" alt="" /> 
@@ -151,7 +178,7 @@ const Profile = () => {
 
                             </Link>
                         </div>
-                    </div>
+                    </div> */}
                     <div className=" bg-[#2b3270] h-[25vh] text-white  font-sans    flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
                         <h1 className=" font-poppins">Service center</h1>
                         <div className="grid   grid-cols-3  gap-5     ">
@@ -167,7 +194,7 @@ const Profile = () => {
                             </Link>
 
 
-                            <Link to={"/notificaiton"} className="flex items-center flex-col  text-[0.9rem] text-gray-500 text-center">
+                            <Link to={"/notifications"} className="flex items-center flex-col  text-[0.9rem] text-gray-500 text-center">
                                 <img src="https://img.icons8.com/?size=100&id=3tujsbSLnYkN&format=png&color=000000" className="w-[2rem]" alt="" />
                                 <span>Notification</span>
                             </Link>
@@ -190,7 +217,7 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <Link to={"/logout"} className="w-[95%] mb-[100px]   border flex items-center justify-center gap-5 rounded-full  border-[#4a79c1]  text-[#4a79c1] h-[40px]"> <img className="w-[1.5rem]" src="https://img.icons8.com/?size=100&id=GtRfui8FwOx4&format=png&color=4a79c1" alt="" /> log out</Link>
+                    <button onClick={hanldelogout} className="w-[95%] mb-[100px]   border flex items-center justify-center gap-5 rounded-full  border-[#4a79c1]  text-[#4a79c1] h-[40px]"> <img className="w-[1.5rem]" src="https://img.icons8.com/?size=100&id=GtRfui8FwOx4&format=png&color=4a79c1" alt="" /> log out</button>
                 </div>
 
 

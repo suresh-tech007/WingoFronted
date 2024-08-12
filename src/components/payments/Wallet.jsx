@@ -26,7 +26,7 @@ const Wallet = () => {
         }
         const reloadhanlde =()=>{
             navigate("/wallet")
-            console.log("reaload")
+             
         }
         const withdrawhis = [
             {
@@ -42,7 +42,7 @@ const Wallet = () => {
                 balance: "300",
                 Type: "7Days-Paytm x QR",
                 Time: "July 30, 2024, 11:52:34",
-                orderNumber: "Pt2024072807531989624492",
+                orderNumber: "Pt2024ertyetyr072807531989624492",
                 status:"Failed"
             },
             {
@@ -50,7 +50,7 @@ const Wallet = () => {
                 balance: "400",
                 Type: "7Days-Paytm x QR",
                 Time: "July 30, 2024, 11:52:34",
-                orderNumber: "Pt2024072807531989624493",
+                orderNumber: "Pt202407280753uyteu1989624493",
                 status:"Success"
             },
             {
@@ -58,7 +58,7 @@ const Wallet = () => {
                 balance: "500",
                 Type: "7Days-Paytm x QR",
                 Time: "July 30, 2034, 11:52:34",
-                orderNumber: "Pt2024072807531989624494",
+                orderNumber: "Pt20tyery24072807531989624494",
                 status:"Success"
             },
             {
@@ -66,12 +66,11 @@ const Wallet = () => {
                 balance: "500",
                 Type: "7Days-Paytm x QR",
                 Time: "July 30, 2034, 11:52:34",
-                orderNumber: "Pt2024072807531989624494",
+                orderNumber: "Pt202407280753198fgd9624494",
                 status:"Success"
             },
         ];
-        // const withdrawhis = []
-
+        
        useEffect(()=>{
         if(way==null || rupees==null){
             setDisabled(true)
@@ -84,7 +83,7 @@ const Wallet = () => {
 
         <div className={`flex relative   items-center justify-center      max-h-full    bg-gray-400`}>
 
-            <div className={`  bg-[#22275b]   pt-[3rem]   ${withdrawhis.length==0?"h-screen":"h-full"}     md:w-[400px] w-screen    `}>
+            <div className={`  bg-[#22275b]   pt-[3rem]   ${withdrawhis.length==0?"h-screen":"h-full"}     w-[400px]     `}>
                 <div className='text-white  flex items-center fixed top-0   w-[400px] justify-between px-3 h-[3rem] bg-[#2b3270]'>
                     <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
                      
@@ -130,11 +129,11 @@ const Wallet = () => {
                          
                     </div>
                     <div className='grid grid-cols-4  gap-6    p-5  text-nowrap   text-[0.8rem] font-medium  text-[#cbc4c4] items-center justify-around'>
-                        <Link to={"/deposit"} className='   cursor-pointer flex items-center flex-col   h-[5rem]'>
+                        <Link to={"deposit"} className='   cursor-pointer flex items-center flex-col   h-[5rem]'>
                             <img className='w-[3rem]'  src={diposit} alt="deposit" />
                             <p>Deposit   </p>
                         </Link>
-                        <Link to={"/withdraw"} className='   cursor-pointer flex items-center flex-col   h-[5rem]'>
+                        <Link to={"withdraw"} className='   cursor-pointer flex items-center flex-col   h-[5rem]'>
                         <img className='w-[3rem]'  src={withdrawicon} alt="withdraw" />
                             <p>Withdraw   </p>
                         </Link>
@@ -168,7 +167,7 @@ const Wallet = () => {
                  ) : (
                      withdrawhis.map((data, index) => (
                         
-                        <Depocart index={index} data={data} />
+                        <Depocart key={data.orderNumber}  data={data} />
                      ))
                  )}
                 </div>

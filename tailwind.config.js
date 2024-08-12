@@ -8,6 +8,10 @@ module.exports = {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
+      backgroundImage: {
+        'custom-image': "url('/src/iamges/wingoimg/bgWalletdepo.png')",
+        'custom-back': "url('/src/iamges/wingoimg/wingoissue-50228a79.png')",
+      },
     },
   },
   plugins: [],

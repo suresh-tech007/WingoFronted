@@ -1,0 +1,105 @@
+import React, { useState } from 'react';
+
+const AddBankAccount = () => {
+    const [bank, setBank] = useState('');
+    const [recipientName, setRecipientName] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [ifscCode, setIfscCode] = useState('');
+
+    const handleSave = () => {
+        // Handle save logic
+        console.log('Saving bank account details:', { bank, recipientName, accountNumber, phoneNumber, ifscCode });
+    };
+
+    return (
+        <div className="flex relative h-screen   items-center justify-center      max-h-full    bg-gray-400">
+
+            <div className="      bg-[#22275b]   pt-[3rem]     w-[400px]   h-screen    ">
+                <div className="flex flex-col items-center     rounded-lg   mx-4 mt-4 text-white">
+                    <div className='text-white    items-center justify-center  flex  fixed top-0   w-[400px]   h-[3rem] bg-[#2b3270]'>
+
+
+                        <h2 className="text-lg font-sarif font-medium  ">Add a bank account number</h2>
+                    </div>
+
+                    <p className="text-red-500 text-[0.7rem] font-semibold bg-[#2b3270] border rounded-3xl p-2  mb-6">To ensure the safety of your funds, please bind your bank account</p>
+                    <div className="w-full mb-4">
+                        <label className="block mb-2  font-bold text-[0.9rem]">Choose a bank</label>
+                        <select
+                            className="w-full p-2 rounded bg-[#2b3270] text-white"
+                            value={bank}
+                            onChange={(e) => setBank(e.target.value)}>
+                            <option value="" disabled>Please select a bank</option>
+                            {/* Add more bank options as needed */}
+                            <option value="Bank of Baroda">Bank of Baroda</option>
+                            <option value="Union Bank of India">Union Bank of India</option>
+                            <option value="Central Bank of India">Central Bank of India</option>
+                            <option value="Yes Bank">Yes Bank</option>
+                            <option value="HDFC Bank">HDFC Bank</option>
+                            <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                            <option value="IDBI Bank">IDBI Bank</option>
+                            <option value="Bank of India">Bank of India</option>
+                            <option value="Punjab National Bank">Punjab National Bank</option>
+                            <option value="ICICI Bank">ICICI Bank</option>
+                            <option value="Canara Bank">Canara Bank</option>
+                            <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                            <option value="State Bank of India">State Bank of India</option>
+                            <option value="Indian Bank">Indian Bank</option>
+                            <option value="Axis Bank">Axis Bank</option>
+                            <option value="Rajasthan Marudhara Gramin Bank">Rajasthan Marudhara Gramin Bank</option>
+                        </select>
+                    </div>
+                    <div className="w-full mb-4">
+                        <label className="block mb-2  font-bold text-[0.9rem]">Full recipient's name</label>
+                        <input
+                            type="text"
+                            className="w-full p-2 rounded  bg-[#2b3270] focus:outline-none focus:bg-[#2b3270] text-white"
+                            placeholder="Please enter the recipient's name"
+                            value={recipientName}
+                            onChange={(e) => setRecipientName(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-full mb-4">
+                        <label className="block mb-2  font-bold text-[0.9rem]">Bank account number</label>
+                        <input
+                            type="text"
+                           className="w-full p-2 rounded  bg-[#2b3270] focus:outline-none focus:bg-[#2b3270] text-white"
+                            placeholder="Please enter your bank account number"
+                            value={accountNumber}
+                            onChange={(e) => setAccountNumber(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-full mb-4">
+                        <label className="block mb-2  font-bold text-[0.9rem]">Phone number</label>
+                        <input
+                            type="text"
+                           className="w-full p-2 rounded  bg-[#2b3270] focus:outline-none focus:bg-[#2b3270] text-white"
+                            placeholder="Please enter your phone number"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-full mb-6">
+                        <label className="block mb-2  font-bold text-[0.9rem]">IFSC code</label>
+                        <input
+                            type="text"
+                           className="w-full p-2 rounded  bg-[#2b3270] focus:outline-none focus:bg-[#2b3270] text-white"
+                            placeholder="Please enter IFSC code"
+                            value={ifscCode}
+                            onChange={(e) => setIfscCode(e.target.value)}
+                        />
+                    </div>
+                    <button
+                        className="bg-[gray] transition-all duration-300 hover:bg-[#6d6df5]   py-2 px-4 rounded-3xl w-full text-white font-bold"
+                        onClick={handleSave}
+                    >
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default AddBankAccount;

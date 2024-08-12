@@ -35,11 +35,12 @@ const GameHistory = () => {
             balance: "400",
             Type: "7Days-Paytm x QR",
             Time: "July 30, 2024, 11:52:34",
-            orderNumber: "Pt2024072807531989624493",
+            orderNumber: "Pt20240728075319896244978787",
             status:"Success"
         },
          
     ];
+    
 
 
     const backhandle = ()=>{
@@ -67,8 +68,8 @@ const GameHistory = () => {
 
                          </div>
                     ) : (
-                        depodata.map((data, index) => (
-                           <Depocart index={index} data={data} />
+                        depodata.map((data) => (
+                           <Depocart  data={data} />
                         ))
                     )}
                    </div>

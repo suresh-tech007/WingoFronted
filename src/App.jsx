@@ -1,9 +1,9 @@
-import React from 'react';
- 
+import React, { useEffect, useState } from 'react';
+
 import Home from './components/auth/Home';
 import RegisterForm from './components/auth/RegisterForm';
 import LoginForm from './components/auth/LoginForm';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Profile from './components/auth/Profile';
 import Recharge from './components/payments/Recharge';
 import Deposithistory from './components/payments/Deposithistory';
@@ -14,28 +14,83 @@ import Header from './components/Home/Header.jsx';
 import Notifications from './components/component/Notifications.jsx';
 import TransitionHistory from './components/payments/TransitionHistory.jsx';
 import GameHistory from './components/component/GameHistory.jsx';
+import Settings from './components/auth/Settings.jsx';
+import BeginnerGuide from './components/Service center/BeginnerGuide.jsx';
+import AboutUs from './components/Service center/AboutUs.jsx';
+import CustomerService from './components/Service center/CustomerService.jsx';
+import Homepage from './components/Home/Homepage.jsx';
+import WinGo from './components/Games/WinGo.jsx';
+import Scannerpage from './components/payments/Scannerpayment.jsx';
+import UsdtPayment from './components/payments/UsdtPayment.jsx';
+import AddBankAccount from './components/payments/AddBankAccount.jsx';
+import Loader from './components/component/Loader.jsx';
+import SelectTopUp from './components/Games/Wingocomponents/SelectTopUp.jsx';
+import { Flip, ToastContainer } from 'react-toastify';
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { loaduser } from './redux/actions/userAction.js';
+
+
 function App() {
+  const {  user } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(loaduser())
+  },)
+   
+   
+
+
   return (
     <Router>
       <Routes>
         <Route path="/" exact element={<Home />} />
+        <Route path="/Home" element={<ProtectedRoute component={Homepage} />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/deposit" element={<Recharge />} />
-        <Route path="/deposithistory" element={<Deposithistory />} />
-        <Route path="/wallet" element={<Wallet />} />
-        <Route path="/withdraw" element={<Withdraw />} />
-        <Route path="/withdrawalhistory" element={<Withdrawhistory />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/transactionhistory" element={<TransitionHistory />} />
-        <Route path="/gamehistory" element={<GameHistory />} />
+        <Route path="/profile" element={<ProtectedRoute component={Profile} />} />
+        <Route path="/deposit" element={<ProtectedRoute component={Recharge} />} />
+        <Route path="/deposithistory"  element={<ProtectedRoute component={Deposithistory} />} />
+        <Route path="/wallet" element={<ProtectedRoute component={Wallet} />} />
+        <Route path="/wallet/withdraw" element={<ProtectedRoute component={Withdraw} />} />
+        <Route path="/withdrawalhistory" element={<ProtectedRoute component={Withdrawhistory} />} />
+        <Route path="/notifications" element={<ProtectedRoute component={Notifications} />} />
+        <Route path="/transactionhistory" element={<ProtectedRoute component={TransitionHistory} />} />
+        <Route path="/gamehistory" element={<ProtectedRoute component={GameHistory} />} />
+        <Route path="/settings" element={<ProtectedRoute component={Settings} />}/>
+        <Route path="/guides" element={<ProtectedRoute component={BeginnerGuide} />} />
+        <Route path="/services" element={<ProtectedRoute component={CustomerService} />} />
+        <Route path="/aboutus" element={<ProtectedRoute component={AboutUs} />}  />   
+         <Route path="/WinGo" element={<ProtectedRoute component={WinGo} />}  /> 
+        <Route path="/QRpayment" element={<ProtectedRoute component={Scannerpage} />} />
+        <Route path="/Payment" element={<ProtectedRoute component={UsdtPayment} />} />
+        <Route path="/wallet/Withdraw/AddBankCard" element={<ProtectedRoute component={AddBankAccount} />} />
+        <Route path='/loader' element={< Loader />} />
+        <Route path='/select' element={<ProtectedRoute component={SelectTopUp} />}/>
 
-       
+
+
       </Routes>
-      <Header/>
+      {user && <Header />}
+      <ToastContainer
+     
+      position="bottom-center"
+        autoClose={1000}
+        limit={2}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Flip} />
     </Router>
-    
+
   );
 }
 

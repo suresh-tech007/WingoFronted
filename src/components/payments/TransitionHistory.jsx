@@ -11,7 +11,7 @@ const TransitionHistory = () => {
             balance: "200",
             Type: "7Days-Paytm x QR",
             Time: "July 05, 2024, 11:52:34",
-            orderNumber: "Pt2024072807531989624491",
+            orderNumber: "Pt202407280753198dfgd9624491",
             status:"Failed"
         },
         {
@@ -19,7 +19,7 @@ const TransitionHistory = () => {
             balance: "300",
             Type: "7Days-Paytm x QR",
             Time: "July 30, 2024, 11:52:34",
-            orderNumber: "Pt2024072807531989624492",
+            orderNumber: "Pt202407280753198962gfh4492",
             status:"Failed"
         },
         {
@@ -27,7 +27,7 @@ const TransitionHistory = () => {
             balance: "400",
             Type: "7Days-Paytm x QR",
             Time: "July 30, 2024, 11:52:34",
-            orderNumber: "Pt2024072807531989624493",
+            orderNumber: "Pt20240728075319ssgdf89624493",
             status:"Success"
         },
         {
@@ -35,7 +35,7 @@ const TransitionHistory = () => {
             balance: "400",
             Type: "7Days-Paytm x QR",
             Time: "July 30, 2024, 11:52:34",
-            orderNumber: "Pt2024072807531989624493",
+            orderNumber: "Pt20240728075319896244dsfa93",
             status:"Success"
         },
          
@@ -67,8 +67,8 @@ const TransitionHistory = () => {
 
                          </div>
                     ) : (
-                        depodata.map((data, index) => (
-                           <Depocart index={index} data={data} />
+                        depodata.map((data) => (
+                           <Depocart key={data.orderNumber}   data={data} />
                         ))
                     )}
                    </div>

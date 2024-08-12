@@ -1,8 +1,15 @@
 import React from 'react'
 
-const Depocart = ({index,data}) => {
+const Depocart = ({data}) => {
+    const copyToClipboard = (ordernum) => {
+        navigator.clipboard.writeText(ordernum).then(() => {
+            alert('Text copied to clipboard');
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    };
   return (
-    <div key={index} className="m-3 p-4 bg-[#2b3270] rounded-xl shadow-md space-y-4">
+    <div   className="m-3 p-4 bg-[#2b3270] rounded-xl shadow-md space-y-4">
     <div className='flex items-center border-b pb-4 border-[#6d6dc58a] justify-between'>
         <span className='font-sans font-medium text-white bg-green-500 px-3 py-1 rounded-lg'>{data.task}</span>
         <span className={`font-serif font-normal ${data.status === "Failed" ? "text-red-600" : "text-green-500"}`}>
