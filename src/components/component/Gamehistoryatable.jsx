@@ -22,13 +22,13 @@ const Gamehistoryatable = ({row=null,index=null}) => {
   }
    
   return (
-    <tr key={index} className="bg-[#2b3270]">
+    <tr   className="bg-[#2b3270]">
     <td className="py-2 px-4   border-gray-300">{row.Game_id}</td>
     <td className="py-2 px-4   border-gray-300">{row.selectedNumber}</td>
     <td className="py-2 px-4   border-gray-300">{row.selectedNumber > 4 ? "Big" : "Small"}</td>
     <td className="py-2 px-4   border-gray-300">
       <div className="flex space-x-1 justify-center">
-        {/* {row.selectedNumber==0 && () } */}
+       
         {color.map((color, i) => (
         
           <span

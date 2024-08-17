@@ -45,9 +45,9 @@ const Profile = () => {
         
     },[user,isAuthenticated,wallet])
     return (
-        <div className="flex relative   items-center justify-center      max-h-full   bg-gray-400">
+        <div className="flex relative   items-center justify-center          bg-gray-400">
 
-            <div className=" py-8  pt-0  bg-[#22275b]   h-full   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    max-h-full    ">
+            <div className=" py-8  pt-0  bg-[#22275b]      w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]        ">
                 <div className=" flex items-center    justify-center flex-col ">
 
                     <div className="flex  items-center justify-start   w-full pl-[2rem]  pt-9 pb-0 z-10  ">
@@ -231,7 +231,7 @@ const Profile = () => {
             </div>
 
 
-            <div className=" absolute top-0  z-[5]  bg-[#2b3270] h-[25vh] w-[400px] rounded-br-[100px] rounded-bl-[100px] "></div>
+            <div className=" absolute top-0  z-[5]  bg-[#2b3270] h-[25vh]   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  rounded-br-[100px] rounded-bl-[100px] "></div>
         </div>
         
 

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Header = () => {
     const [selected , setSelected] = useState(false)
     return (
-        <div className={`flex relative z-20    items-center justify-center      max-h-full    bg-gray-400`}>
+        <div className={`flex   z-20    items-center justify-center      max-h-full    bg-gray-400`}>
 
             <div
                 className='fixed bottom-0      flex items-center   transition-all duration-300  h-[4rem]   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] justify-between px-5   bg-[#0a1846] text-[0.9rem]  '>
