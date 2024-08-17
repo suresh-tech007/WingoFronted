@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import image from "../../iamges/photo.jpg";
+ 
 import depositeimg from "../../iamges/deposit.png"
 import cardpay from "../../iamges/cardpayment.png"
 import trahistory from "../../iamges/trahistory.png"
@@ -14,9 +14,12 @@ import { toast } from "react-toastify";
 
 const Profile = () => {
     const { isAuthenticated, user,message } = useSelector((state) => state.user);
+    const { wallet } = useSelector((state) => state.payment);
     const [timeout,setTimeout] = useState(null)
+    const [walletbalance , setWalletbalance ]= useState(null)
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const image = "https://res.cloudinary.com/dhvvefbcj/image/upload/v1722595281/gametirngaclone/Profile_oqiu39.png"
      
     const hanldelogout = ()=>{
 
@@ -24,10 +27,11 @@ const Profile = () => {
         toast("Logout successfully")
 
     }
+    
     useEffect(()=>{
-        console.log(user)
+         
         if(user==null  ){
-            console.log(user)
+            
             navigate("/login")
         }
         if(user.createdAt){
@@ -35,18 +39,21 @@ const Profile = () => {
             const date = new Date(timestamp).toISOString().split('T')[0];
             setTimeout(date)
         }
+        if(wallet){
+            setWalletbalance(wallet.withdrawableBalance + wallet.depositBalance )
+        }
         
-    },[user,isAuthenticated])
+    },[user,isAuthenticated,wallet])
     return (
-        <div className="flex relative   items-center justify-center     max-h-full   bg-gray-400">
+        <div className="flex relative   items-center justify-center      max-h-full   bg-gray-400">
 
-            <div className=" py-8  pt-0  bg-[#22275b]   h-full   w-[400px]    max-h-full    ">
+            <div className=" py-8  pt-0  bg-[#22275b]   h-full   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    max-h-full    ">
                 <div className=" flex items-center    justify-center flex-col ">
 
-                    <div className="flex  items-center justify-start   w-full pl-5  pt-9 pb-0 z-10  ">
+                    <div className="flex  items-center justify-start   w-full pl-[2rem]  pt-9 pb-0 z-10  ">
 
-                        <div className="rounded-full  h-[9vh] mr-5 flex z-10  items-center justify-center w-[9vh] overflow-hidden ">
-                            <img src={user.avatar ? user.avatar.url : image} alt="profile_pic" />
+                        <div className="rounded-full  h-[6rem] mr-5 flex z-10  items-center justify-center  w-[6rem]  overflow-hidden ">
+                            <img src={user.avatar ? user.avatar  : image} alt="profile_pic" />
                         </div>
                         <div className="    text-white  text-[12px] z-10 ">
                             <div>{user.Username}</div>
@@ -61,10 +68,10 @@ const Profile = () => {
 
 
                     </div>
-                    <div className="  bg-[#374992] h-[20vh] text-white font-serif  flex  rounded-3xl p-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly ">
-                        <div>
+                    <div className="  bg-[#374992]   text-white font-serif  flex  rounded-3xl p-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly ">
+                        <div className="">
                             <span className="text-gray-400 ">Total Amount</span>
-                            <div>₹ {user?user.balance: "0.00"}</div>
+                            <div className="mb-5">₹ {wallet &&walletbalance >0 ?walletbalance : "0.00"}</div>
                         </div>
 
                         <div className="flex flex-row w-full gap-7 items-center  ">
@@ -72,11 +79,11 @@ const Profile = () => {
                                 <IoMdWallet className="text-[#db5b4d]  text-[35px]   " />
                                 <span>Wallet</span>
                             </Link>
-                            <Link to="/deposit" className="flex cursor-pointer items-center justify-center flex-col">
+                            <Link to="/wallet/deposit" className="flex cursor-pointer items-center justify-center flex-col">
                                 <GiWallet className="text-[#afcd4e]  text-[35px] " />
                                 <span>Deposit</span>
                             </Link>
-                            <Link to="/withdraw" className="flex cursor-pointer  items-center justify-center flex-col">
+                            <Link to="/wallet/withdraw" className="flex cursor-pointer  items-center justify-center flex-col">
                                 <IoIosWallet className="text-[#3ec4cb]  text-[35px] " />
 
                                 <span>Withdraw</span>
@@ -85,7 +92,7 @@ const Profile = () => {
 
 
                     </div>
-                    <div className="flex flex-wrap gap-5 p-5 text-white ">
+                    <div className="grid grid-cols-2 gap-5 m-5 text-white ">
                         <Link  to={"/gamehistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
                             <div>
                                 <img src={trahistory} alt="" className="w-[40px]" />
@@ -179,7 +186,7 @@ const Profile = () => {
                             </Link>
                         </div>
                     </div> */}
-                    <div className=" bg-[#2b3270] h-[25vh] text-white  font-sans    flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
+                    <div className=" bg-[#2b3270]   text-white  font-sans    flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
                         <h1 className=" font-poppins">Service center</h1>
                         <div className="grid   grid-cols-3  gap-5     ">
 

@@ -15,7 +15,7 @@ const RegisterForm = () => {
 
 
   const navigater = useNavigate();
-  const { error, loading, isAuthenticated ,user } = useSelector(
+  const { error ,user } = useSelector(
     (state) => state.user
   );
 

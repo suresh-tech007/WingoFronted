@@ -20,6 +20,9 @@ import Xbuttons from './Wingocomponents/Xbuttons';
 import GameHistorytable from './Wingocomponents/GameHistorytable';
 import SelectTopUp from './Wingocomponents/SelectTopUp';
 import socket from '../component/socket/socket';
+import { useDispatch, useSelector } from 'react-redux';
+import { walletbalance } from '../../redux/actions/PaymentAciton';
+import { resultHistory } from '../../redux/actions/Gameaction';
 
 
 const ENDPOINT = "http://localhost:4000";
@@ -39,20 +42,27 @@ const WinGo = () => {
     "5Min": '',
     "10Min": '',
   });
-  const [gameData, setGameData] = useState({ numbers: [0, 0], colors: ["green", "violet"] });
-  const [currentPage, setCurrentPage] = useState(1);
+  const { wallet } = useSelector((state) => state.payment);
+  const { gameresulthistory,totalPages,currentPage,resultsPerPage,totalResults, error } = useSelector((state) => state.batle);
+  const dispatch = useDispatch()
+ 
+  const pageSize = 10
   const [selected, setSelected] = useState("1Min");
   const [countdownDigits, setCountdownDigits] = useState([]);
   const [digits, setDigits] = useState([]);
-  const [sumbited, setSumbited] = useState(false);
   const [bigsmall, setBigsmall] = useState("");
   const [selcetX, setSelecteX] = useState(null);
   const [selectnum, setSelectnum] = useState(null);
   const [selectColor, setSelectColor] = useState(null);
-  const [totalPages,setTotalpages] = useState(10)
   
+  const [page, setPage] = useState(currentPage)
+  const [walletBalance, setWalletBalance] = useState(null)
+
+
+ 
 
   const navigate = useNavigate();
+
 
   function generateGameId() {
     return Math.floor(Math.random() * 10 ** 14).toString().padStart(14, '0');
@@ -83,9 +93,40 @@ const WinGo = () => {
 
   useEffect(() => {
     socket.emit('sendMessage', selected);
-    if (countdown[selected] === 0) {
-      socket.emit('timerEnded', selected);
+
+    if (countdown["1Min"] === 0) {
+      socket.emit('timerEnded', "1Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+        dispatch(resultHistory(currentPage,pageSize))
+      }, 200)
+
     }
+    else if (countdown["3Min"] === 0) {
+      socket.emit('timerEnded', "3Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+        dispatch(resultHistory(currentPage,pageSize))
+      }, 200)
+    }
+    else if (countdown["5Min"] === 0) {
+      socket.emit('timerEnded', "5Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+        dispatch(resultHistory(currentPage,pageSize))
+      }, 200)
+
+    }
+    else if (countdown["10Min"] === 0) {
+      socket.emit('timerEnded', "10Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+            dispatch(resultHistory(currentPage,pageSize))
+      }, 200)
+
+    }
+
+
 
     const coundownmange = (select) => {
       setCountdownDigits(countdown[select].toString().padStart(2, '0').split(''));
@@ -94,7 +135,7 @@ const WinGo = () => {
     };
     coundownmange(selected);
 
-    if (countdown[selected] <= 6) {
+    if (countdown[selected] <= 5) {
       setSelecteX(null);
       setSelectColor(null);
       setBigsmall(null);
@@ -104,14 +145,14 @@ const WinGo = () => {
       socket.emit('finalizeBets', countdown);
     }
 
-    if (countdown[selected] === 0) {
 
-      socket.on('result', ({ timerType, selectedNumber }) => {
-        console.log(timerType, selectedNumber);
-      });
+
+    if (wallet) {
+      setWalletBalance(wallet.withdrawableBalance + wallet.depositBalance)
     }
     
-  }, [selected, countdown]);
+
+  }, [selected,page, countdown,dispatch, wallet]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -125,13 +166,20 @@ const WinGo = () => {
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setPage((prev)=> --prev );
+      let page = currentPage-1
+      
+      dispatch(resultHistory(page,pageSize))
     }
   };
 
   const handleNextPage = () => {
+    
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      
+      let page = currentPage+1
+       
+      dispatch(resultHistory(page,pageSize))
     }
   };
 
@@ -153,7 +201,7 @@ const WinGo = () => {
 
         <div className={` bg-custom-image bg-center bg-cover bg-no-repeat  mt-5  flex flex-col  items-center gap-2 bg-[#374992]    rounded-2xl m-4 p-4 `} >
           <div className='flex  items-center gap-4'>
-            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹200.00</p>
+            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {wallet && walletBalance > 0 ? walletBalance : "0.00"}</p>
             <button onClick={reloadhanlde}  ><img className='w-[1.1rem]  p1-0.5' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
           </div>
           <div className='flex  items-center gap-4 mb-4'>
@@ -161,8 +209,8 @@ const WinGo = () => {
             <span>Wallet balance</span>
           </div>
           <div className='flex gap-8'>
-            <button className='    font-semibold bg-red-700 rounded-3xl px-5 py-1 '>withdraw</button>
-            <button className='    font-semibold bg-green-600 rounded-3xl px-6 py-1.5 '>Deposit</button>
+            <Link to="/wallet/withdraw" className='    font-semibold bg-red-700 rounded-3xl px-5 py-1 '>withdraw</Link>
+            <Link to="/wallet/deposit" className='    font-semibold bg-green-600 rounded-3xl px-6 py-1.5 '>Deposit</Link>
 
           </div>
         </div>
@@ -254,10 +302,10 @@ const WinGo = () => {
         </div>
         <div className='flex gap-2 font-mono items-center justify-between m-6'>
           <button className=' px-4 py-1.5 rounded-lg bg-[#2995f2]  text-nowrap'>Game history</button>
-           
+
         </div>
         <div className="flex justify-center">
-          <GameHistorytable />
+          <GameHistorytable   />
         </div>
         <div className="flex justify-center items-center mx-3 space-x-6 bg-[#2b3270] p-4  ">
           <button
@@ -281,10 +329,10 @@ const WinGo = () => {
 
         </div>
 
-         
+
         <div className={`${countdown[selected] > 6 && (bigsmall === "Big" || bigsmall === "Small" || selectnum !== null || selectColor !== null) ? "flex" : "hidden"} absolute top-0 h-full bg-[#00000079]   w-full items-center justify-center`}>
 
-          <SelectTopUp gameIDs={gameIDs} selectedTimer={selected} selectColor={selectColor} setSelectednum={setSelectnum} selectednum={selectnum} setBigsmall={setBigsmall} setSelectColor={setSelectColor}  selectQuanitity={selcetX || 1} selected={bigsmall} />
+          <SelectTopUp setWalletBalance={setWalletBalance} walletBalance={walletBalance} gameIDs={gameIDs} selectedTimer={selected} selectColor={selectColor} setSelectednum={setSelectnum} selectednum={selectnum} setBigsmall={setBigsmall} setSelectColor={setSelectColor} selectQuanitity={selcetX || 1} selected={bigsmall} />
 
         </div>
 

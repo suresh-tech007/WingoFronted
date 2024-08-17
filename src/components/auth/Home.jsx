@@ -1,7 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Home = () => {
+  const navigate = useNavigate();
+ 
+  
+  const { error, loading, user } = useSelector(
+    (state) => state.user
+  );
+
+  useEffect(()=>{
+    if(user){
+      navigate("/home")
+    }
+    if(error){
+      toast.error(error)
+    }
+  },[user,error])
+
   return (
     <div className="flex items-center absolute  z-50 w-full justify-center min-h-screen bg-blue-900 text-white">
       <div className="text-center">

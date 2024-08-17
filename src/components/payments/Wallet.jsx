@@ -5,71 +5,25 @@ import diposit from "../../iamges/depositicon.png";
 import withdrawicon from "../../iamges/widthdrawBlue.png";
 import withdrawhistory from "../../iamges/withdrawHistory.png"
 import Depocart from '../cart/Depocart';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
  
 const Wallet = () => {
+    const { wallet } = useSelector((state) => state.payment);
+    const { transactions } = useSelector((state) => state.payment);
     const [rupees, setRupees] = useState(null);
     const [way, setWay] = useState(null);
     const [disabled, setDisabled] = useState(null);
-    const [pamentstatus, setPamentstatus] = useState("Success");
-    const [ordernum, setOrdernum] = useState("Pt2024072807531989624491");
+    const [walletbalance,setWalletbalance] = useState(null)
      const navigate = useNavigate();
-        const copyToClipboard = (ordernum) => {
-          navigator.clipboard.writeText(ordernum).then(() => {
-            alert('Text copied to clipboard');
-          }).catch(err => {
-            console.error('Failed to copy: ', err);
-          });
-        };
-        const Deposithandleclick=()=>{
-          console.log(way,rupees)
-            
-        }
+        
+     
+        
         const reloadhanlde =()=>{
             navigate("/wallet")
              
         }
-        const withdrawhis = [
-            {
-                task:"withdraw",
-                balance: "200",
-                Type: "7Days-Paytm x QR",
-                Time: "July 05, 2024, 11:52:34",
-                orderNumber: "Pt2024072807531989624491",
-                status:"Failed"
-            },
-            {
-                 task:"deposit",
-                balance: "300",
-                Type: "7Days-Paytm x QR",
-                Time: "July 30, 2024, 11:52:34",
-                orderNumber: "Pt2024ertyetyr072807531989624492",
-                status:"Failed"
-            },
-            {
-                task:"withdraw",
-                balance: "400",
-                Type: "7Days-Paytm x QR",
-                Time: "July 30, 2024, 11:52:34",
-                orderNumber: "Pt202407280753uyteu1989624493",
-                status:"Success"
-            },
-            {
-                task:"withdraw",
-                balance: "500",
-                Type: "7Days-Paytm x QR",
-                Time: "July 30, 2034, 11:52:34",
-                orderNumber: "Pt20tyery24072807531989624494",
-                status:"Success"
-            },
-            {
-                task:"deposit",
-                balance: "500",
-                Type: "7Days-Paytm x QR",
-                Time: "July 30, 2034, 11:52:34",
-                orderNumber: "Pt202407280753198fgd9624494",
-                status:"Success"
-            },
-        ];
+         
         
        useEffect(()=>{
         if(way==null || rupees==null){
@@ -77,14 +31,17 @@ const Wallet = () => {
         }else{
             setDisabled(false)
         }
-       },[way,rupees])
+        if(wallet){
+            setWalletbalance(wallet.withdrawableBalance + wallet.depositBalance )
+        }
+       },[way,rupees,wallet])
     
     return (
 
         <div className={`flex relative   items-center justify-center      max-h-full    bg-gray-400`}>
 
-            <div className={`  bg-[#22275b]   pt-[3rem]   ${withdrawhis.length==0?"h-screen":"h-full"}     w-[400px]     `}>
-                <div className='text-white  flex items-center fixed top-0   w-[400px] justify-between px-3 h-[3rem] bg-[#2b3270]'>
+            <div className={`  bg-[#22275b]   pt-[3rem]   ${transactions && transactions.length==0?"h-screen":"h-full"}     w-[full] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
+                <div className='text-white  flex items-center fixed top-0    w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  justify-between px-3 h-[3rem] bg-[#2b3270]'>
                     <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
                      
                         <h1 className=' pr-[10rem] font-semibold text-[1.1rem]'>Wallet</h1>
@@ -99,7 +56,7 @@ const Wallet = () => {
                             <p> Balance </p>
                         </div>
                         <div className='flex  gap-2 items-center'>
-                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹200.00</h2>
+                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ {wallet &&walletbalance >0 ?walletbalance : "0.00"}</h2>
                             <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
                         </div>
                         <div className='flex  items-center justify-between'>
@@ -113,7 +70,7 @@ const Wallet = () => {
 
                 <div className='flex bg-[#2b3270] flex-col font-sans  text-white rounded-[20px]  p-5 gap-3 m-3  '>
                     
-                    <div className='flex  text-nowrap gap-2 text-[0.8rem] font-medium  text-[#979595] items-center justify-around'>
+                    {/* <div className='flex  text-nowrap gap-2 text-[0.8rem] font-medium  text-[#979595] items-center justify-around'>
                         <div className='   flex items-center flex-col'>
                              <span className='text-white font-medium text-[1rem]'>₹200.00</span>
                             <p>Deposit amount </p>
@@ -127,7 +84,7 @@ const Wallet = () => {
                             <p>benefit amount</p>
                         </div>
                          
-                    </div>
+                    </div> */}
                     <div className='grid grid-cols-4  gap-6    p-5  text-nowrap   text-[0.8rem] font-medium  text-[#cbc4c4] items-center justify-around'>
                         <Link to={"deposit"} className='   cursor-pointer flex items-center flex-col   h-[5rem]'>
                             <img className='w-[3rem]'  src={diposit} alt="deposit" />
@@ -158,16 +115,16 @@ const Wallet = () => {
                         <img className='w-[2rem]' src="https://img.icons8.com/?size=100&id=AbrQV4ddrXNz&format=png&color=000000" alt="" />
                         <h1>transaction  history</h1>
                     </div>
-                    {withdrawhis.length === 0 ? (
+                    {transactions && transactions.length === 0 ? (
                     
                     <div className='  h-full flex items-center justify-center  '>
                       <h1 className="text-white font-bold text-center mt-10">No transactions</h1>
 
                       </div>
-                 ) : (
-                     withdrawhis.map((data, index) => (
+                 ) : (transactions && 
+                    transactions.map((data, index) => (
                         
-                        <Depocart key={data.orderNumber}  data={data} />
+                        <Depocart key={data._id} data={data} />
                      ))
                  )}
                 </div>

@@ -4,7 +4,7 @@ import { FaCheck } from 'react-icons/fa';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { faLock, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
@@ -18,6 +18,7 @@ const LoginForm = () => {
   const [checked, setChecked] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const { error, loading, user } = useSelector(
     (state) => state.user
   );
@@ -30,7 +31,7 @@ const LoginForm = () => {
   });
 
   const handleChange = (e) => {
-    console.log(e.target.name)
+    
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => {
       if (name === 'phoneNum' && value) {
@@ -65,7 +66,7 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData)
+ 
 
     if (!formData.password || (formData.phoneNum.length < 10 && !formData.email)) {
       toast("Please enter valid values");
@@ -85,6 +86,14 @@ const LoginForm = () => {
   const changecheckde = () => {
     setChecked((pre) => !pre);
   };
+  const redirect=sessionStorage.getItem('lastVisitedPage') || '/home'
+   
+  useEffect(()=>{
+    if (user!==null) { 
+      navigate(redirect)
+
+    }
+  },[user,navigate,redirect])
    
   useEffect(() => {
     setFormData((prevData) => ({
@@ -93,16 +102,14 @@ const LoginForm = () => {
     }));
     if (error) {
 
-      toast(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
      
      
-    if (user!==null) { 
-      navigate("/profile")
-    }
+    
 
-  }, [user,checked, error,navigate,toast,dispatch]);
+  }, [ checked, error,toast,dispatch]);
 
   return (
     <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">

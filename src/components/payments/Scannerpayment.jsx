@@ -2,18 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { depositrequest } from '../../redux/actions/PaymentAciton';
+import { toast } from 'react-toastify';
 
 const Scannerpayment = () => {
     const location = useLocation();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { user } = useSelector((state) => state.user);
     const { amount, way, orderNumber,
         network,
         upi,
         countdownTime } = location.state || {};
-    console.log(amount, way, orderNumber,
-        network,
-        upi,
-        countdownTime)
+     
     const getCurrentFormattedDateTime = () => {
         const currentTime = new Date();
 
@@ -37,8 +40,14 @@ const Scannerpayment = () => {
     };
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(countdownTime));
-    const [utr, setUtr] = useState("");
+     
     const [disble, setDisble] = useState(false);
+    const [transationId, setTransationId] = useState(null);
+    const [requestdata,setRequestdata] = useState(  {
+        utr
+        ,amount,way,upi,user:user._id,
+        transationId
+    })
     useEffect(() => {
         const timer = setInterval(() => {
             const newTimeLeft = calculateTimeLeft(countdownTime);
@@ -48,21 +57,42 @@ const Scannerpayment = () => {
             setTimeLeft(newTimeLeft);
         }, 1000);
 
-        if (utr.length > 12) {
+        if (requestdata.utr.length < 12) {
             setDisble(false)
         }
         else {
             setDisble(true)
         }
+        if(orderNumber){
+            setTransationId(orderNumber)
+        }
 
         return () => clearInterval(timer);
-    }, [countdownTime, utr]);
+
+        
+    }, [countdownTime, requestdata]);
 
     const sumbithandler = () => {
-        console.log(utr)
-        alert("payment successfully send")
+        if(timeLeft>0){
+        dispatch(depositrequest(requestdata))  
+        toast.success("payment successfully send")
+        navigate("/deposit")
+        }else{
+            toast.error("time is up!")
+            navigate("/deposit")
+
+        }
     }
 
+    const utrhandler = (e)=>{
+      const  {value} = e.target ;
+        setRequestdata((prev)=>(
+            {
+                ...prev,
+                utr: value
+            }
+        ))
+    }
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -75,19 +105,20 @@ const Scannerpayment = () => {
             <div className="w-[400px] mx-auto bg-[#ffffff73]  shadow-lg rounded-lg overflow-hidden p-6">
                 <h1 className="text-center text-lg font-bold text-green-600 mb-4">{way}</h1>
 
-                <div className='flex  items-center justify-between text-nowrap text-[0.9rem] text-start'>
+                <div className='flex w-full    items-start flex-col  gap-3  text-nowrap text-[0.9rem] text-start'>
 
-                    <div>
+                    <div className='flex items-center justify-between w-full '>
                         <p className=" ">Date: {formattedDateTime}</p>
-                        <p className=" ">Transaction ID: {orderNumber}</p>
-
-                    </div>
-                    <div className=" pb-6 ">
                         {timeLeft > 0 ? (
                             <span className="text-gray-600">{formatTime(timeLeft)}</span>
                         ) : (
-                            <span className="text-red-600  font-semibold">Time is up!</span>
+                            <span className="text-red-600     font-semibold">Time is up!</span>
                         )}
+
+                    </div>
+                    <div className=" pb-6   ">
+                       
+                        <p className=" ">Transaction ID: {orderNumber}</p>
                     </div>
 
                 </div>
@@ -105,8 +136,8 @@ const Scannerpayment = () => {
                 </div>
                 <div className="text-center flex  items-center gap-2">
                     <input
-                        value={utr}
-                        onChange={(e) => setUtr(e.target.value)}
+                        value={requestdata.utr}
+                        onChange={(e) => utrhandler(e)}
                         type="text"
 
                         placeholder="Input 12-digit UTR"

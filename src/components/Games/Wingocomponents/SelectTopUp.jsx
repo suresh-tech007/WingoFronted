@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import socket from '../../component/socket/socket.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { adduserbatle, clearErrors } from '../../../redux/actions/Gameaction.js';
+import { toast } from 'react-toastify';
+import { walletbalance } from '../../../redux/actions/PaymentAciton.js';
 
-const SelectTopUp = ({ gameIDs=null,selected=null, selectedTimer=null, selectColor=null, selectQuanitity = 1, setSelectColor=null, setSelectednum=null, selectednum=null, setBigsmall=null }) => {
+function generateBatleId() {
+  const randomPart = Math.floor(Math.random() * 10000000); // Generate a 6-digit random number
+  const timestampPart = Date.now().toString().slice(-7); // Get last 7 digits of current timestamp
+  const batleId = randomPart.toString() + timestampPart; // Combine the two parts
+  return batleId;
+}
+
+const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, selected = null, selectedTimer = null, selectColor = null, selectQuanitity = 1, setSelectColor = null, setSelectednum = null, selectednum = null, setBigsmall = null }) => {
+  const dispatch = useDispatch()
+  const { error, UserBetle } = useSelector((state) => state.batle);
+  const { wallet } = useSelector((state) => state.payment);
   const [selectedbuttons, setSelectedbuttons] = useState(null);
   const [quantity, setQuantity] = useState(null);
   const [selectcolors, setSelectcolors] = useState(null);
   const [selectednumbers, setSelectednumbers] = useState([]);
   const [balance, setBalance] = useState(5);
   const [agree, setAgree] = useState(false);
-  const [userid,setUserid] = useState(432545625)
-   
+  // const [walletbalances, setWalletbalances] = useState(null)
 
-  const walletbance = 200;
+  const { user } = useSelector(
+    (state) => state.user
+  );
+
+
 
   const increasequinity = () => {
     if (quantity < 100) {
@@ -33,9 +50,10 @@ const SelectTopUp = ({ gameIDs=null,selected=null, selectedTimer=null, selectCol
     setAgree(false);
   };
 
- 
+
 
   const handleSumbitButton = () => {
+
     if ((selectednumbers == null) && (selectcolors == null) && (selectedbuttons !== null)) {
       if (selectedbuttons === 'Small') {
         setSelectednumbers([0, 1, 2, 3, 4]);
@@ -74,30 +92,61 @@ const SelectTopUp = ({ gameIDs=null,selected=null, selectedTimer=null, selectCol
 
   useEffect(() => {
     if ((selectednumbers || selectednumbers == 0) && (selectcolors || selectedbuttons)) {
+      const uniqueBatleId = generateBatleId();
       const betData = {
         GameId: gameIDs[selectedTimer],
-        userid,
-        selectedTimer, // Ensure selectedTimer is included in the bet data
+        userid: user._id,
+        selectedTimer,
         balance,
+        GameName:"WinGo" ,
         quantity,
         selectColor: selectcolors,
         selectednum: selectednumbers,
-        selected: selectedbuttons
+        selected: selectedbuttons,
+        uniqueBatleId
       };
 
-      console.log('Sending bet data:', betData);
-      socket.emit('placeBet', betData); // Emit the bet data to the server
+      const batleamount = balance * quantity
+
+      if (walletBalance > batleamount) {
+        console.log('Sending bet data:', betData);
+        dispatch(adduserbatle(betData))
+        socket.emit('placeBet', betData);  
+        setTimeout(() => {
+        dispatch(walletbalance())
+        },500)
+      } else {
+        cancelhandle();
+        return toast.error("Insufficient funds")
+      }
+
+
+
       cancelhandle();
     }
-  }, [selectednumbers, selectcolors, selectedbuttons]); // The effect runs whenever `selectednumbers`, `selectcolors`, or `selectedbuttons` changes
+    if (wallet) {
+      
+      const balance = wallet.withdrawableBalance + wallet.depositBalance;
+      setWalletBalance(balance);
+    }
+    return ;
+  }, [selectednumbers, selectcolors, selectedbuttons, wallet]);
 
   useEffect(() => {
- 
+
     setQuantity(selectQuanitity);
     setSelectedbuttons(selected);
     setSelectcolors(selectColor);
     setSelectednumbers(selectednum);
-  }, [selectQuanitity, selectColor, selected, selectednum]);
+
+    if (error) {
+      toast.error(error)
+      dispatch(clearErrors())
+    }
+
+
+
+  }, [selectQuanitity, selectColor, selected, selectednum, error]);
 
   return (
     <div className='w-full fixed bottom-[4rem]'>
@@ -142,24 +191,24 @@ const SelectTopUp = ({ gameIDs=null,selected=null, selectedTimer=null, selectCol
           </div>
 
           <div className="mt-4 flex items-center">
-  <input 
-    checked={agree} 
-    onChange={() => setAgree((prev) => !prev)} 
-    className="rounded-full mr-2" 
-    type="checkbox" 
-  />
-  <span className="text-blue-500 font-semibold">I agree</span>
-  <Link to="salerules" className="text-red-500 font-semibold text-xs ml-2">
-    (Pre-sale rules)
-  </Link>
-</div>
+            <input
+              checked={agree}
+              onChange={() => setAgree((prev) => !prev)}
+              className="rounded-full mr-2"
+              type="checkbox"
+            />
+            <span className="text-blue-500 font-semibold">I agree</span>
+            <Link to="salerules" className="text-red-500 font-semibold text-xs ml-2">
+              (Pre-sale rules)
+            </Link>
+          </div>
 
         </div>
 
         <div className="flex items-center h-[3rem]">
           <button onClick={cancelhandle} className="bg-orange-400 text-black w-[40%] py-3">Cancel</button>
           <button
-            disabled={!(walletbance >= 10) || agree === false}
+            disabled={agree === false}
             onClick={handleSumbitButton}
             className="text-center w-[60%] text-black font-bold">
             Total amount ₹{balance * quantity}

@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Loader from "../components/component/Loader";
 
 const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
-  
+ 
+  const location = useLocation();
+
+  useEffect(() => {
+    
+    sessionStorage.setItem('lastVisitedPage', location.pathname);
+     
+  }, [location]);
 
   if (loading) {
     return (

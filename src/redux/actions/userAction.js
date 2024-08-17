@@ -35,27 +35,34 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAIL,
   ALL_USERS_SUCCESS,
+  SEND_OTP_REQUEST,
+  SEND_OTP_SUCCESS,
+  SEND_OTP_FAIL,
+  VERIFY_OTP_REQUEST,
+  VERIFY_OTP_SUCCESS,
+  VERIFY_OTP_FAIL,
 } from "../constants/userContant.js";
 
 import axios from "axios";
- 
-const backedurl = "http://localhost:4000"
+
+const backedurl = "http://localhost:4000";
 
 // LOGIN ACTION ==>
 export const login = (formdata) => async (dispatch) => {
- 
-    console.log(formdata)
+  
   try {
     dispatch({ type: LOGIN_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" }, withCredentials: true  };
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
 
     const { data } = await axios.post(
       `${backedurl}/api/v1/login`,
-       formdata ,
+      formdata,
       config
     );
-    
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
@@ -79,14 +86,22 @@ export const login = (formdata) => async (dispatch) => {
 
 // REGISTER ACTION==>
 export const regsiter = (userData) => async (dispatch) => {
-  console.log(userData)
+  
   try {
     dispatch({ type: REGISTER_REQUEST });
 
-    const config = { header: { "Content-Type": "multipart/form-data" }, withCredentials: true,credentials:"include" };
+    const config = {
+      header: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+      credentials: "include",
+    };
 
-    const { data } = await axios.post(`${backedurl}/api/v1/register` , userData, config);
-console.log(data)
+    const { data } = await axios.post(
+      `${backedurl}/api/v1/register`,
+      userData,
+      config
+    );
+    
     dispatch({ type: REGISTER_SUCCESS, payload: data.user });
   } catch (error) {
     dispatch({
@@ -103,12 +118,13 @@ export const loaduser = () => async (dispatch) => {
     dispatch({ type: LOAD_REGISTER_REQUEST });
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
     };
 
-    const { data } = await axios.get(`${backedurl}/api/v1/me`,config);
+    const { data } = await axios.get(`${backedurl}/api/v1/me`, config);
+   
 
     dispatch({ type: LOAD_REGISTER_SUCCESS, payload: data.user });
   } catch (error) {
@@ -134,12 +150,11 @@ export const loaduser = () => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    const { data } = await axios.get(`${backedurl}/api/v1/logout`, { 
-      withCredentials: true 
+    await axios.get(`${backedurl}/api/v1/logout`, {
+      withCredentials: true,
     });
-    
 
-    dispatch({ type: LOGOUT_SUCCESS  });
+    dispatch({ type: LOGOUT_SUCCESS });
   } catch (error) {
     if (error.response && error.response.status === 401) {
       dispatch({
@@ -163,8 +178,8 @@ export const logout = () => async (dispatch) => {
 export const getAllUsers = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_USERS_REQUEST });
-    const config = {   withCredentials: true, };
-    const { data } = await axios.get(`${backedurl}/api/v1/admin/users`,config);
+    const config = { withCredentials: true };
+    const { data } = await axios.get(`${backedurl}/api/v1/admin/users`, config);
 
     dispatch({ type: ALL_USERS_SUCCESS, payload: data.users });
   } catch (error) {
@@ -183,8 +198,11 @@ export const getAllUsers = () => async (dispatch) => {
 export const getUserDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
-    const config = {   withCredentials: true, };
-    const { data } = await axios.get(`${backedurl}/api/v1/admin/user/${id}`,config);
+    const config = { withCredentials: true };
+    const { data } = await axios.get(
+      `${backedurl}/api/v1/admin/user/${id}`,
+      config
+    );
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
   } catch (error) {
@@ -198,18 +216,75 @@ export const getUserDetails = (id) => async (dispatch) => {
     }
   }
 };
+// SEND EMAIL OTP ==>
+export const sendEmailOtp = (sendotpdata) => async (dispatch) => {
+  try {
+    dispatch({ type: SEND_OTP_REQUEST });
+    const config = { withCredentials: true };
+    
+    
+
+    const { data } = await axios.post(
+      `${backedurl}/api/v1/send-otp`,sendotpdata,
+      config
+    );
+     
+    dispatch({ type: SEND_OTP_SUCCESS, payload: data.message });
+  } catch (error) {   
+      dispatch({
+        type: SEND_OTP_FAIL,
+        payload: error.response
+          ? error.response.data.error
+          : "please try some time after",
+      });
+    
+  }
+};
+// verifyotp
+export const verifyEmailOtp = (sendotpdata) => async (dispatch) => {
+  try {
+    dispatch({ type: VERIFY_OTP_REQUEST });
+    const config = { withCredentials: true };
+    
+    
+
+    const { data } = await axios.post(
+      `${backedurl}/api/v1/verify-otp`,sendotpdata,
+      config
+    );
+
+    dispatch({ type: VERIFY_OTP_SUCCESS, payload: data.message });
+  } catch (error) {
+     
+      dispatch({
+        type: VERIFY_OTP_FAIL,
+        payload: error.response
+          ? error.response.data.error
+          : "Please try after some time ",
+      });
+    
+  }
+};
 
 // UPADATE  USER (Admin)  ==>
 
 export const updateuser = (id, userdata) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_USER_REQUEST });
-    const config = { headers: { "Content-Type": "application/json" }, withCredentials: true, };
-    const { data } = await axios.put(`${backedurl}/api/v1/admin/user/${id}`,userdata,config);
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+    const { data } = await axios.put(
+      `${backedurl}/api/v1/admin/user/${id}`,
+      userdata,
+      config
+    );
 
-    dispatch({ type: UPDATE_USER_SUCCESS, payload: data.success });
+    dispatch({ type: UPDATE_USER_SUCCESS, payload: data.message });
   } catch (error) {
-    if (error.response && error.response.status === 401) {
+   
+    
       dispatch({
         type: UPDATE_USER_FAIL,
         payload: error.response
@@ -217,7 +292,7 @@ export const updateuser = (id, userdata) => async (dispatch) => {
           : "Unauthorized: Invalid email or password",
       });
     }
-  }
+  
 };
 // delete  USER (Admin)  ==>
 
@@ -241,12 +316,21 @@ export const deleteUser = (id) => async (dispatch) => {
 
 // updateProfile ACTION==>
 export const updateProfile = (userData) => async (dispatch) => {
+  
   try {
     dispatch({ type: UPDATE_PROFILE_REQUEST });
 
-    const config = { header: {"Content-Type": "multipart/form-data" } , withCredentials: true,credentials:"include"};
+    const config = {
+      header: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+      credentials: "include",
+    };
 
-    const { data } = await axios.put(`${backedurl}/api/v1/me/update`, userData, config);
+    const { data } = await axios.put(
+      `${backedurl}/api/v1/me/update`,
+      userData,
+      config
+    );
 
     dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
   } catch (error) {
@@ -259,12 +343,14 @@ export const updateProfile = (userData) => async (dispatch) => {
 // updatepassword ACTION==>
 
 export const updatePassword = (password) => async (dispatch) => {
+  
   try {
     dispatch({ type: UPDATE_PASSWORD_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" }, withCredentials: true, };
-
-     
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
 
     const { data } = await axios.put(
       `${backedurl}/api/v1/password/update`,
@@ -276,22 +362,29 @@ export const updatePassword = (password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PASSWORD_FAIL,
+      
       payload: error.response.data.error,
     });
+    
   }
 };
 
 // Forgot Password ==>
 
 export const forgotPassword = (email) => async (dispatch) => {
- 
-
   try {
     dispatch({ type: FORGOT_PASSWORD_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" }, withCredentials: true, };
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
 
-    const { data } = await axios.post(`${backedurl}/api/v1/password/forgot`, email, config);
+    const { data } = await axios.post(
+      `${backedurl}/api/v1/password/forgot`,
+      email,
+      config
+    );
 
     dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: data.message });
   } catch (error) {
@@ -318,7 +411,10 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
   try {
     dispatch({ type: RESET_PASSWORD_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" }, withCredentials: true, };
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
 
     const { data } = await axios.put(
       `${backedurl}/api/v1/password/reset/${token}`,

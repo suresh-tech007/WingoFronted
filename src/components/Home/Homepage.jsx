@@ -14,11 +14,11 @@ import mines from "../../iamges/Homepageimg/mines.png";
 
 const Homepage = () => {
     return (
-        <div className="flex relative   items-center justify-center     max-h-full   bg-gray-400">
+        <div className="flex relative   items-center justify-center        bg-gray-400">
 
-            <div className=" py-8  pt-0  bg-[#22275b]      w-[400px]   max-h-full    ">
+            <div className=" py-8  pt-0  bg-[#22275b]      w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  max-h-full    ">
 
-                <div className='text-white  flex items-center fixed top-0   z-50  w-[400px] justify-between px-3 h-[3rem] bg-[#2b3270]'>
+                <div className='text-white  flex items-center fixed top-0    z-50   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]   justify-between px-3 h-[3rem] bg-[#2b3270]'>
 
                     <h1 className=" font-medium  text-[1.5rem]">Tirange</h1>
                     <Link to={"/notifications"}>

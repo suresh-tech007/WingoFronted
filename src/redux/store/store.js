@@ -8,6 +8,8 @@ import {
   userReducer,
   userdetailsReducer,
 } from "../reducers/userReducer.js";
+import { paymentReducer } from "../reducers/PaymentReducer.js";
+import { GameReducer } from "../reducers/GameReducer.js";
 
  
 
@@ -17,6 +19,8 @@ const reducer = combineReducers({
   forgotPassword: forgotPasswordreducer,
   allUsers: allUsersReducer,
   userDetails: userdetailsReducer,
+  payment:paymentReducer,
+  batle:GameReducer
 });
 
 let initailState = {

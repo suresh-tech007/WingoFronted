@@ -1,3 +1,4 @@
+
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -39,9 +40,17 @@ import {
   UPDATE_USER_RESET,
   DELETE_USER_SUCCESS,
   DELETE_USER_RESET,
+  SEND_OTP_REQUEST,
+  SEND_OTP_SUCCESS,
+  SEND_OTP_FAIL,
+  VERIFY_OTP_REQUEST,
+  VERIFY_OTP_SUCCESS,
+  VERIFY_OTP_FAIL,
+  VERIFY_OTP_RESET,
+  SEND_OTP_RESET,
+  
 } from "../constants/userContant.js";
 
-// userReducer
 
 // profileReducer
 export const profileReducer = (state = {}, action) => {
@@ -50,6 +59,8 @@ export const profileReducer = (state = {}, action) => {
     case UPDATE_PASSWORD_REQUEST:
     case UPDATE_USER_REQUEST:
     case DELETE_USER_REQUEST:
+    case SEND_OTP_REQUEST:
+    case VERIFY_OTP_REQUEST:
       return {
         ...state,
         loading: true,
@@ -62,17 +73,31 @@ export const profileReducer = (state = {}, action) => {
         loading: false,
         isUpdated: action.payload,
       };
+    case VERIFY_OTP_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isVerify: action.payload,
+      };
+    case SEND_OTP_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
     case DELETE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         isDeleted: action.payload.success,
-        message:action.payload.message
+        message: action.payload.message,
       };
     case UPDATE_PROFILE_FAIL:
     case UPDATE_PASSWORD_FAIL:
     case UPDATE_USER_FAIL:
     case DELETE_USER_FAIL:
+    case SEND_OTP_FAIL:
+    case VERIFY_OTP_FAIL:
       return {
         ...state,
         loading: false,
@@ -81,9 +106,13 @@ export const profileReducer = (state = {}, action) => {
     case UPDATE_PROFILE_RESET:
     case UPDATE_PASSWORD_RESET:
     case UPDATE_USER_RESET:
+    case VERIFY_OTP_RESET:
+    case SEND_OTP_RESET:
       return {
         ...state,
         isUpdated: false,
+        message: null,
+        isVerify: null,
       };
     case DELETE_USER_RESET:
       return {
@@ -176,7 +205,7 @@ export const userReducer = (state = { user: null }, action) => {
       return {
         loading: false,
         user: null,
-       
+
         isAuthenticated: false,
       };
     case LOGOUT_FAIL:
@@ -253,3 +282,5 @@ export const userdetailsReducer = (state = { user: {} }, action) => {
       return state;
   }
 };
+
+

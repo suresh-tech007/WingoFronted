@@ -53,7 +53,7 @@ const Notifications = () => {
                          </div>
                     ) : (
                         depodata.map((data, index) => (
-                           <Notification index={index} data={data} />
+                           <Notification index={index} key={index} data={data} />
                         ))
                     )}
                    </div>
