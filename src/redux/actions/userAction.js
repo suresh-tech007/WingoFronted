@@ -45,7 +45,8 @@ import {
 
 import axios from "axios";
 
-const backedurl = "http://localhost:4000";
+// const backedurl = "http://localhost:4000";
+const backedurl = "https://reddot-1geh.onrender.com";
 
 // LOGIN ACTION ==>
 export const login = (formdata) => async (dispatch) => {

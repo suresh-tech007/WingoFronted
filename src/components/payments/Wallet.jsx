@@ -116,11 +116,12 @@ const Wallet = () => {
                         <h1>transaction  history</h1>
                     </div>
                     {transactions && transactions.length === 0 ? (
-                    
-                    <div className='  h-full flex items-center justify-center  '>
-                      <h1 className="text-white font-bold text-center mt-10">No transactions</h1>
+                   
+                   <div className='    flex items-center  flex-col justify-center  '>
+                   <img src="https://img.icons8.com/?size=100&id=rW2jdHbrzMDM&format=png&color=000000" alt="" />
+                    <h1 className="text-[#80808093] font-poppins text-center mt-10">No transactions</h1>
 
-                      </div>
+                    </div>
                  ) : (transactions && 
                     transactions.map((data, index) => (
                         

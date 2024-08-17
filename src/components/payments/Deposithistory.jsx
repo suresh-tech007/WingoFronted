@@ -16,7 +16,7 @@ const Deposithistory = () => {
      
 
     return (
-        <div className={`flex relative w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  ${deposithistory && deposithistory.length<=3 ?"h-screen " : "h-full"}  items-center justify-center bg-gray-400`}>
+        <div className={`flex relative   ${deposithistory && deposithistory.length<=3 ?"h-screen " : "h-full"}  items-center justify-center bg-gray-400`}>
             
                    
             <div className={`bg-[#22275b] pt-[3rem] ${ deposithistory && deposithistory.length<=3 ?"h-screen " : "h-full"} w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
