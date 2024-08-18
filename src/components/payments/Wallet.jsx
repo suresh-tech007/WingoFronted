@@ -13,7 +13,6 @@ const Wallet = () => {
     const { transactions } = useSelector((state) => state.payment);
     const [rupees, setRupees] = useState(null);
     const [way, setWay] = useState(null);
-    const [disabled, setDisabled] = useState(null);
     const [walletbalance,setWalletbalance] = useState(null)
      const navigate = useNavigate();
         

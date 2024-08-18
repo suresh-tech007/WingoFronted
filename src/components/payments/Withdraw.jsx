@@ -131,7 +131,7 @@ const Withdraw = () => {
       toast.success(message)
       dispatch(clearErrors())
     }
-    if (bankdetails && withdrawdata.way === "bankCard") {
+    if (bankdetails !== null && withdrawdata.way === "bankCard") {
 
       setWithdrawdata((prev) => ({
         ...prev,
@@ -192,7 +192,7 @@ const Withdraw = () => {
             <span className='text-[12px]  font-semibold'>USDT</span>
           </div>
         </div>
-        {(withdrawdata.way !== "Ewallet") && (withdrawdata.way !== "USDT") && bankdetails ? (<div className={` mx-3 mb-3  bg-[#2b3270] text-[#89878786]     rounded-xl    flex flex-col  py-4 items-center `}>
+        {(withdrawdata.way !== "Ewallet") && (withdrawdata.way !== "USDT") && bankdetails !== null ? (<div className={` mx-3 mb-3  bg-[#2b3270] text-[#89878786]     rounded-xl    flex flex-col  py-4 items-center `}>
           <div className='flex flex-col'>
             <span className='text-[#ffffffd2]'>{bankdetails.bankName}</span>
             <span>Holder Name :<span className='text-[#ffffffd2]'> {bankdetails.Holder}</span> </span>

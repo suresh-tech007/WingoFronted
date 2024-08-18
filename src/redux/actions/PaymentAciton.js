@@ -1,9 +1,9 @@
 
 import axios from "axios";
-import { ADD_BANKDETAILS_REQUEST, ADD_BANKDETAILS_SUCCESS, ADD_BANKDETAILST_FAIL, ADD_MONEYWALLET_FAIL, ADD_MONEYWALLET_REQUEST, ADD_MONEYWALLET_SUCCESS, ADD_WITHDRAW_REQ_FAIL, ADD_WITHDRAW_REQ_REQUEST, ADD_WITHDRAW_REQ_SUCCESS, CLEAR_ERRORS, DEPOSIT_ADD_REQ_FAIL, DEPOSIT_ADD_REQ_REQUEST, DEPOSIT_ADD_REQ_SUCCESS, DEPOSIT_HISTORY_FAIL, DEPOSIT_HISTORY_REQUEST, DEPOSIT_HISTORY_SUCCESS, GET_BANKDETAILS_REQUEST, GET_BANKDETAILS_SUCCESS, GET_BANKDETAILST_FAIL, TRANSACTION_HISTORY_FAIL, TRANSACTION_HISTORY_REQUEST, TRANSACTION_HISTORY_SUCCESS, WALLET_BALANCE_FAIL, WALLET_BALANCE_REQUEST, WALLET_BALANCE_SUCCESS, WITHDRAW_HISTORY_FAIL, WITHDRAW_HISTORY_REQUEST, WITHDRAW_HISTORY_SUCCESS } from "../constants/paymentcontant.js";
+import { ADD_BANKDETAILS_REQUEST, ADD_BANKDETAILS_SUCCESS, ADD_BANKDETAILST_FAIL, ADD_MONEYWALLET_FAIL, ADD_MONEYWALLET_REQUEST, ADD_MONEYWALLET_SUCCESS, ADD_WITHDRAW_REQ_FAIL, ADD_WITHDRAW_REQ_REQUEST, ADD_WITHDRAW_REQ_SUCCESS, CLEAR_ERRORS, DEPOSIT_ADD_REQ_FAIL, DEPOSIT_ADD_REQ_REQUEST, DEPOSIT_ADD_REQ_SUCCESS, DEPOSIT_HISTORY_FAIL, DEPOSIT_HISTORY_REQUEST, DEPOSIT_HISTORY_SUCCESS, GET_BANKDETAILS_REQUEST, GET_BANKDETAILS_SUCCESS, GET_BANKDETAILST_FAIL, GET_UPIDETAILS_FAIL, GET_UPIDETAILS_REQUEST, GET_UPIDETAILS_SUCCESS, TRANSACTION_HISTORY_FAIL, TRANSACTION_HISTORY_REQUEST, TRANSACTION_HISTORY_SUCCESS, WALLET_BALANCE_FAIL, WALLET_BALANCE_REQUEST, WALLET_BALANCE_SUCCESS, WITHDRAW_HISTORY_FAIL, WITHDRAW_HISTORY_REQUEST, WITHDRAW_HISTORY_SUCCESS } from "../constants/paymentcontant.js";
+import { backedurl } from "../backedUrl.js";
 
-// const backedurl = "http://localhost:4000";
-const backedurl = "https://reddot-1geh.onrender.com";
+ 
 
 
 export const walletbalance = () => async (dispatch) => {
@@ -29,6 +29,37 @@ export const walletbalance = () => async (dispatch) => {
      
       dispatch({
         type: WALLET_BALANCE_FAIL,
+        payload: error.response
+          ? error.response.data.error
+          : "Unauthorized: please try again after some time",
+      });
+    
+  }
+};
+
+export const getUpiDetails = () => async (dispatch) => {
+  
+ 
+  try {
+    dispatch({ type:GET_UPIDETAILS_REQUEST });
+
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    const { data } = await axios.get(
+      `${backedurl}/api/v1/getUpiDetails`,
+      config
+    );
+    
+     
+
+    dispatch({ type: GET_UPIDETAILS_SUCCESS, payload: data });
+  } catch (error) {
+     
+      dispatch({
+        type: GET_UPIDETAILS_FAIL,
         payload: error.response
           ? error.response.data.error
           : "Unauthorized: please try again after some time",

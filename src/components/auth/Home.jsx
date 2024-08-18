@@ -18,9 +18,11 @@ const Home = () => {
     if(error){
       toast.error(error)
     }
+    
   },[user,error])
 
   return (
+    <>
     <div className="flex items-center absolute  z-50 w-full justify-center min-h-screen bg-blue-900 text-white">
       <div className="text-center">
         <h1 className="text-4xl mb-4">Welcome to Tiranga Games</h1>
@@ -30,6 +32,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

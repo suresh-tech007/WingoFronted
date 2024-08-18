@@ -1,6 +1,8 @@
 import { io } from "socket.io-client";
+import { backedurl } from "../../../redux/backedUrl.js";
 
+ 
 // Replace with your backend URL
-const socket = io("http://localhost:4000");
+const socket = io(backedurl);
 
 export default socket;

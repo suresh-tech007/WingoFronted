@@ -35,6 +35,8 @@ import BindMailbox from './components/auth/BlindMailbox.jsx';
 import { deposithistory, getbankdetails, UserTransactionHistory, walletbalance, withdrawhistory } from './redux/actions/PaymentAciton.js';
 import { gameHistory, resultHistory } from './redux/actions/Gameaction.js';
 import Commingsoon from './components/Home/Commingsoon.jsx';
+import Sidebar from './components/Admin/Sidebar.jsx';
+import DashBoard from './components/Admin/DashBoard.jsx';
 
 
 function App() {
@@ -88,13 +90,19 @@ function App() {
         <Route path="/wallet/Withdraw/AddBankCard" element={<ProtectedRoute component={AddBankAccount} />} />
         <Route path='/loader' element={< Loader />} />
         <Route path='/select' element={<ProtectedRoute component={SelectTopUp} />}/>
+        {/* <Route    exact path="/admin/reviews" element={<ProtectedRoute isAdmin={true}  component={ProductReviews} />} />
+<Route    path="*"  element={ <NotFound/>}  /> */}
 
+<Route    exact path="/admin/sidear" element={<ProtectedRoute   component={Sidebar} />} />
+<Route    exact path="/admin/dashboard" element={<ProtectedRoute   component={DashBoard} />} />
+         
 
 
       </Routes>
+      {user  && <Header />}
       
 
-      {user && <Header />}
+      
      
       <ToastContainer
      

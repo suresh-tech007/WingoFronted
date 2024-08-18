@@ -1,9 +1,9 @@
 import axios from "axios";
 import { ADD_WINGO_BATLE_REQUEST, ADD_WINGO_BATLE_SUCCESS, ADD_WINGO_BATLET_FAIL, CLEAR_ERRORS, GAME_HISTORY_FAIL, GAME_HISTORY_REQUEST, GAME_HISTORY_SUCCESS, GAME_RESULT_HISTORY_FAIL, GAME_RESULT_HISTORY_REQUEST, GAME_RESULT_HISTORY_SUCCESS } from "../constants/GameConstant";
+import { backedurl } from "../backedUrl";
  
 
-// const backedurl = "http://localhost:4000";
-const backedurl = "https://reddot-1geh.onrender.com";
+
 
 
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import bg1 from "../../iamges/wingoimg/bgWalletdepo.png"
 import { Link, useNavigate } from 'react-router-dom';
 import clockbig from "../../iamges/wingoimg/time_a-d4670671.png"
 import clocksmall from "../../iamges/wingoimg/time-d2b95809.png"
@@ -13,19 +12,18 @@ import coin6 from "../../iamges/wingoimg/n6-a56e0b9a.png"
 import coin7 from "../../iamges/wingoimg/n7-5961a17f.png"
 import coin8 from "../../iamges/wingoimg/n8-d4d951a4.png"
 import coin9 from "../../iamges/wingoimg/n9-a20f6f42.png"
-import { io } from 'socket.io-client';
 import Digit from './Digit';
 import Imagges from './Imagges';
 import Xbuttons from './Wingocomponents/Xbuttons';
 import GameHistorytable from './Wingocomponents/GameHistorytable';
 import SelectTopUp from './Wingocomponents/SelectTopUp';
-import socket from '../component/socket/socket';
+import socket from '../component/socket/socket.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { walletbalance } from '../../redux/actions/PaymentAciton';
 import { resultHistory } from '../../redux/actions/Gameaction';
 
 
-const ENDPOINT = "http://localhost:4000";
+ 
 const imges = [coin0, coin1, coin2, coin3, coin4, coin5, coin6, coin7, coin8, coin9];
 const xbutton = [1, 5, 10, 20, 50, 100]
 
@@ -69,7 +67,7 @@ const WinGo = () => {
   }
 
   useEffect(() => {
-    const socket = io(ENDPOINT);
+    
 
     socket.on("countdown", (data) => {
       setCountdown(prevCountdowns => ({
@@ -77,6 +75,10 @@ const WinGo = () => {
         [data.type]: data.value,
       }));
     });
+  
+    socket.emit("requestGameIDs");
+  
+    // Listen karte hain gameID updates ke liye
     socket.on("gameID", (newGameIDs) => {
       setGameIDs(newGameIDs);
     });

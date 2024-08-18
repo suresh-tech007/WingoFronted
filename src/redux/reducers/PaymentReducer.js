@@ -27,6 +27,9 @@ import {
   TRANSACTION_HISTORY_REQUEST,
   TRANSACTION_HISTORY_SUCCESS,
   TRANSACTION_HISTORY_FAIL,
+  GET_UPIDETAILS_REQUEST,
+  GET_UPIDETAILS_SUCCESS,
+  GET_UPIDETAILS_FAIL,
 } from "../constants/paymentcontant.js";
 
 export const paymentReducer = (state = {}, action) => {
@@ -40,6 +43,7 @@ export const paymentReducer = (state = {}, action) => {
     case WALLET_BALANCE_REQUEST:
       case ADD_WITHDRAW_REQ_REQUEST:
       case TRANSACTION_HISTORY_REQUEST:
+      case GET_UPIDETAILS_REQUEST:
       return {
         loading: true,
         ...state,
@@ -55,6 +59,12 @@ export const paymentReducer = (state = {}, action) => {
         ...state,
         loading: false,
         withdrawhistory: action.payload.withdrawhistory,
+      };
+    case GET_UPIDETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        UpiDetails: action.payload.UpiDetails,
       };
     case TRANSACTION_HISTORY_SUCCESS:
       return {
@@ -92,6 +102,7 @@ export const paymentReducer = (state = {}, action) => {
       case ADD_WITHDRAW_REQ_FAIL:
         case WITHDRAW_HISTORY_FAIL:
         case TRANSACTION_HISTORY_FAIL:
+        case GET_UPIDETAILS_FAIL:
       return {
         ...state,
         loading: false,
