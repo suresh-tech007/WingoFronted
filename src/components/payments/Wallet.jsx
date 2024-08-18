@@ -98,7 +98,7 @@ const Wallet = () => {
                     </div>
                     {!transactions || transactions.length === 0 ? (
                    
-                   <div className='    flex items-center  flex-col justify-center  '>
+                   <div className='    flex items-center  h-[30rem] flex-col justify-center  '>
                    <img src="https://img.icons8.com/?size=100&id=rW2jdHbrzMDM&format=png&color=000000" alt="" />
                     <h1 className="text-[#80808093] font-poppins text-center mt-10">No transactions</h1>
 
@@ -110,7 +110,7 @@ const Wallet = () => {
                      ))
                  )}
                 </div>
-                <div className='h-[13rem] lg:h-[19rem] sm:h-[12rem]    md:h-[13.5rem] '></div>
+                
 
 
             </div>

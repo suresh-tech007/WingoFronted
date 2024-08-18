@@ -19,10 +19,10 @@ const Withdrawhistory = () => {
     return (
         <div className={`flex relative   w-full h-full   items-center justify-center bg-gray-400`}>
         
-        <div className={`bg-[#22275b] pt-[3rem] ${ !WithdrawHistory || WithdrawHistory.length < 3 ? "h-screen" : "h-full"}     max-w-full   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
+        <div className={`bg-[#22275b] pt-[3rem] ${ !WithdrawHistory || WithdrawHistory.length < 3 ? "h-screen" : "h-full"}         w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
             
                    
-            <div className={`bg-[#22275b] pt-[3rem]     w-[400px]  `}>
+            <div className={`bg-[#22275b] pt-[3rem]       w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]     `}>
                 {loading && <Loading />}
             <div className=' fixed top-0 bg-[#22275b] w-[400px]  p-4 flex text-white items-center font-semibold text-[1.1rem] gap-1'>
                         <img className='w-[2rem]' src="https://img.icons8.com/?size=100&id=AbrQV4ddrXNz&format=png&color=000000" alt="" />
