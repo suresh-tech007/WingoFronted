@@ -12,7 +12,7 @@ const GameHistory = () => {
     const dispatch = useDispatch();
 
     const { error, gamehistory } = useSelector((state) => state.batle);
-console.log(gamehistory)
+ 
 
     const backhandle = () => {
         navigate("/profile")
@@ -32,10 +32,10 @@ console.log(gamehistory)
 
 
     return (
-        <div className={`flex relative h-full items-center ${gamehistory && gamehistory.length <= 12 ? "h-screen " : ""} justify-center bg-gray-400`}>
+        <div className={`flex relative h-full items-center $  justify-center bg-gray-400`}>
 
 
-            <div className={`bg-[#22275b] pt-[3rem]   ${gamehistory && gamehistory.length <= 12 ? "h-screen " : ""}    w-[400px]  `}>
+            <div className={`bg-[#22275b] pt-[3rem]   ${!gamehistory || gamehistory.length <= 12 ? "h-screen " : "h-full"}    w-[400px]  `}>
                 <div className=' fixed top-0 bg-[#22275b] w-[400px]  p-4 flex text-white items-center  font-semibold text-[1.1rem] gap-1'>
                     <img onClick={backhandle} className='w-[2rem] cursor-pointer' src="https://img.icons8.com/?size=100&id=85099&format=png&color=D9E2F299" alt="back" />
                     <h1 className='ml-6'> Transaction history</h1>
@@ -55,8 +55,8 @@ console.log(gamehistory)
                         </thead>
                         <tbody>
 
-                            {gamehistory && gamehistory.map((game) => (
-                                <tr key={game._id} className="border-t border-b border-[#8080809a] text-white text-[0.7rem] ">
+                            {gamehistory && gamehistory.map((game,index) => (
+                                <tr key={game._id || index} className="border-t border-b border-[#8080809a] text-white text-[0.7rem] ">
                                     <td className="py-2 px-4">{game.GameId}</td>
                                     <td className={`py-2 px-4 font-semibold ${game.betstatus === 'Win' ? 'text-green-500' : 'text-red-500'}`}>
                                         {game.betstatus}

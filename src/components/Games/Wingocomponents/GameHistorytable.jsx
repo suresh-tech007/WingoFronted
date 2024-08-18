@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
  
 const GameHistorytable = ({}) => {
   const { gameresulthistory, error } = useSelector((state) => state.batle);
+ 
 
   
 
@@ -26,7 +27,7 @@ const GameHistorytable = ({}) => {
     </thead>
     <tbody>
       {gameresulthistory && gameresulthistory.map((row, index) => (
-        <Gamehistoryatable row={row} key={gameresulthistory._id} />
+        <Gamehistoryatable row={row} key={row.Game_id} />
       ))}
     </tbody>
   </table>

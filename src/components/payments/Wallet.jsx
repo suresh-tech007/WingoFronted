@@ -9,10 +9,10 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
  
 const Wallet = () => {
-    const { wallet } = useSelector((state) => state.payment);
+    const { depositBalance, withdrawableBalance} = useSelector((state) => state.payment);
     const { transactions } = useSelector((state) => state.payment);
     const [rupees, setRupees] = useState(null);
-    const [way, setWay] = useState(null);
+    
     const [walletbalance,setWalletbalance] = useState(null)
      const navigate = useNavigate();
         
@@ -25,21 +25,17 @@ const Wallet = () => {
          
         
        useEffect(()=>{
-        if(way==null || rupees==null){
-            setDisabled(true)
-        }else{
-            setDisabled(false)
+       
+        if(depositBalance && withdrawableBalance){
+            setWalletbalance( withdrawableBalance +  depositBalance )
         }
-        if(wallet){
-            setWalletbalance(wallet.withdrawableBalance + wallet.depositBalance )
-        }
-       },[way,rupees,wallet])
+       },[rupees,withdrawableBalance, depositBalance])
     
     return (
 
-        <div className={`flex relative   items-center justify-center      max-h-full    bg-gray-400`}>
+        <div className={`flex relative   items-center justify-center       h-full    bg-gray-400`}>
 
-            <div className={`  bg-[#22275b]   pt-[3rem]   ${transactions && transactions.length==0?"h-screen":"h-full"}     w-[full] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
+            <div className={`  bg-[#22275b]   pt-[3rem]   ${transactions && transactions.length==0?"h-screen":"h-full"}     w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
                 <div className='text-white  flex items-center fixed top-0    w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  justify-between px-3 h-[3rem] bg-[#2b3270]'>
                     <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
                      
@@ -55,7 +51,7 @@ const Wallet = () => {
                             <p> Balance </p>
                         </div>
                         <div className='flex  gap-2 items-center'>
-                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ {wallet &&walletbalance >0 ?walletbalance : "0.00"}</h2>
+                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ {withdrawableBalance &&walletbalance >0 ?walletbalance : "0.00"}</h2>
                             <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
                         </div>
                         <div className='flex  items-center justify-between'>
@@ -69,21 +65,7 @@ const Wallet = () => {
 
                 <div className='flex bg-[#2b3270] flex-col font-sans  text-white rounded-[20px]  p-5 gap-3 m-3  '>
                     
-                    {/* <div className='flex  text-nowrap gap-2 text-[0.8rem] font-medium  text-[#979595] items-center justify-around'>
-                        <div className='   flex items-center flex-col'>
-                             <span className='text-white font-medium text-[1rem]'>₹200.00</span>
-                            <p>Deposit amount </p>
-                        </div>
-                        <div className='   flex items-center flex-col'>
-                            <span className='text-white font-medium text-[1rem]'>₹400.00</span>
-                            <p>Withdraw amount </p>
-                        </div>
-                        <div className='   flex items-center flex-col'>
-                             <span className='text-white font-medium text-[1rem]'>₹200.00</span>
-                            <p>benefit amount</p>
-                        </div>
-                         
-                    </div> */}
+                     
                     <div className='grid grid-cols-4  gap-6    p-5  text-nowrap   text-[0.8rem] font-medium  text-[#cbc4c4] items-center justify-around'>
                         <Link to={"deposit"} className='   cursor-pointer flex items-center flex-col   h-[5rem]'>
                             <img className='w-[3rem]'  src={diposit} alt="deposit" />
@@ -114,7 +96,7 @@ const Wallet = () => {
                         <img className='w-[2rem]' src="https://img.icons8.com/?size=100&id=AbrQV4ddrXNz&format=png&color=000000" alt="" />
                         <h1>transaction  history</h1>
                     </div>
-                    {transactions && transactions.length === 0 ? (
+                    {!transactions || transactions.length === 0 ? (
                    
                    <div className='    flex items-center  flex-col justify-center  '>
                    <img src="https://img.icons8.com/?size=100&id=rW2jdHbrzMDM&format=png&color=000000" alt="" />
@@ -128,7 +110,7 @@ const Wallet = () => {
                      ))
                  )}
                 </div>
-                <div className='h-[90px]'></div>
+                <div className='h-[8rem]'></div>
 
 
             </div>

@@ -19,7 +19,7 @@ import GameHistorytable from './Wingocomponents/GameHistorytable';
 import SelectTopUp from './Wingocomponents/SelectTopUp';
 import socket from '../component/socket/socket.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { walletbalance } from '../../redux/actions/PaymentAciton';
+import { clearErrors, walletbalance } from '../../redux/actions/PaymentAciton';
 import { resultHistory } from '../../redux/actions/Gameaction';
 
 
@@ -40,7 +40,7 @@ const WinGo = () => {
     "5Min": '',
     "10Min": '',
   });
-  const { wallet } = useSelector((state) => state.payment);
+  const { depositBalance,withdrawableBalance } = useSelector((state) => state.payment);
   const { gameresulthistory,totalPages,currentPage,resultsPerPage,totalResults, error } = useSelector((state) => state.batle);
   const dispatch = useDispatch()
  
@@ -62,9 +62,7 @@ const WinGo = () => {
   const navigate = useNavigate();
 
 
-  function generateGameId() {
-    return Math.floor(Math.random() * 10 ** 14).toString().padStart(14, '0');
-  }
+
 
   useEffect(() => {
     
@@ -149,12 +147,16 @@ const WinGo = () => {
 
 
 
-    if (wallet) {
-      setWalletBalance(wallet.withdrawableBalance + wallet.depositBalance)
+    if (depositBalance && withdrawableBalance) {
+      setWalletBalance( withdrawableBalance +  depositBalance)
+    }
+    if(error){
+      toast.error(error)
+      dispatch(clearErrors())
     }
     
 
-  }, [selected,page, countdown,dispatch, wallet]);
+  }, [selected,page,dispatch,error, countdown,dispatch, depositBalance,withdrawableBalance]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -203,7 +205,7 @@ const WinGo = () => {
 
         <div className={` bg-custom-image bg-center bg-cover bg-no-repeat  mt-5  flex flex-col  items-center gap-2 bg-[#374992]    rounded-2xl m-4 p-4 `} >
           <div className='flex  items-center gap-4'>
-            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {wallet && walletBalance > 0 ? walletBalance : "0.00"}</p>
+            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {depositBalance && withdrawableBalance && walletBalance > 0 ? walletBalance : "0.00"}</p>
             <button onClick={reloadhanlde}  ><img className='w-[1.1rem]  p1-0.5' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
           </div>
           <div className='flex  items-center gap-4 mb-4'>

@@ -1,16 +1,26 @@
 import React from 'react';
 
-const Gamehistoryatable = ({ row = null, index = null }) => {
-  let color = [];
+const Gamehistoryatable = ({ row = null }) => {
+  let colors = [];
+
+  const generateUniqueId = () => {
+    return Math.random().toString(36).substr(2, 9); // Generates a random string as a unique ID
+  };
+
+  const pushColorWithId = (colorName) => {
+    colors.push({ id: generateUniqueId(), color: colorName });
+  };
 
   if (row.selectedNumber === 0) {
-    color.push('red', 'purple');
+    pushColorWithId('red');
+    pushColorWithId('purple');
   } else if ([1, 3, 7, 9].includes(row.selectedNumber)) {
-    color.push('green');
+    pushColorWithId('green');
   } else if (row.selectedNumber === 5) {
-    color.push('purple', 'green');
+    pushColorWithId('purple');
+    pushColorWithId('green');
   } else if ([2, 4, 6, 8].includes(row.selectedNumber)) {
-    color.push('green');
+    pushColorWithId('green');
   }
 
   return (
@@ -22,15 +32,15 @@ const Gamehistoryatable = ({ row = null, index = null }) => {
       </td>
       <td className="py-2 px-4 border-gray-300">
         <div className="flex space-x-1 justify-center">
-          {color.map((color, i) => (
+          {colors.map((colorObj) => (
             <span
-              key={i} // Unique key for each color dot
+              key={colorObj.color} 
               className={`inline-block w-2 h-2 rounded-full ${
-                color === 'red'
+                colorObj.color === 'red'
                   ? 'bg-red-500'
-                  : color === 'green'
+                  : colorObj.color === 'green'
                   ? 'bg-green-500'
-                  : color === 'purple'
+                  : colorObj.color === 'purple'
                   ? 'bg-purple-500'
                   : ''
               } mx-1`}

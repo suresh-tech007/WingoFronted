@@ -32,7 +32,7 @@ import { loaduser } from './redux/actions/userAction.js';
 import ChangeAvatar from './components/auth/ChangeAvatar.jsx';
 import ChangePassword from './components/auth/ChangePassword.jsx';
 import BindMailbox from './components/auth/BlindMailbox.jsx';
-import { deposithistory, getbankdetails, UserTransactionHistory, walletbalance, withdrawhistory } from './redux/actions/PaymentAciton.js';
+import { deposithistory, getbankdetails, getUpiDetails, UserTransactionHistory, walletbalance, withdrawhistory } from './redux/actions/PaymentAciton.js';
 import { gameHistory, resultHistory } from './redux/actions/Gameaction.js';
 import Commingsoon from './components/Home/Commingsoon.jsx';
 import Sidebar from './components/Admin/Sidebar.jsx';
@@ -47,14 +47,15 @@ function App() {
 
   useEffect(()=>{
     dispatch(loaduser())
-    dispatch(getbankdetails());
-    dispatch(walletbalance())
-    dispatch(deposithistory())
-    dispatch(withdrawhistory())
-    dispatch(UserTransactionHistory())
-    dispatch(gameHistory())
+    // dispatch(getbankdetails());
+    // dispatch(walletbalance())
+    // dispatch(deposithistory())
+    // dispatch(withdrawhistory())
+    // dispatch(UserTransactionHistory())
+    // dispatch(gameHistory())
     dispatch(resultHistory(1,10))
-  },[])
+    // dispatch(getUpiDetails())
+  },[dispatch])
    
    
 

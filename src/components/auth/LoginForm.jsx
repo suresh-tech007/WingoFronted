@@ -113,13 +113,13 @@ const LoginForm = () => {
 
   return (
     <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">
-      <div className="py-8 bg-[#2b3270] h-screen w-[400px]  ">
+      <div className="py-8 bg-[#2b3270] h-screen  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]   ">
         <div className='py-5 px-2'>
           <h2 className="text-white font-sans font-bold text-xl p-3 text-start">Log in</h2>
           <p className='text-white px-3 text-[10px]'>Please log in with your phone number or email</p>
           <p className='text-white px-3 text-[10px] mb-4'>If you forget your password, please contact customer service</p>
         </div>
-        <div className='bg-[#22275b] h-full w-[400px] '>
+        <div className='bg-[#22275b] h-full  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  '>
           <div className='flex flex-row items-center justify-center'>
             <div className='flex items-center justify-center cursor-pointer w-[50%] flex-col h-[10vh] gap-2' onClick={handleMobileSelect}>
               <PhoneIphoneIcon className={`${usemobile ? "text-blue-600" : "text-gray-500"} w-6 transition-all ease-in-out`} />

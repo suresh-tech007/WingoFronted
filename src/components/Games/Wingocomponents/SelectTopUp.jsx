@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { adduserbatle, clearErrors } from '../../../redux/actions/Gameaction.js';
 import { toast } from 'react-toastify';
 import { walletbalance } from '../../../redux/actions/PaymentAciton.js';
+import Loading from '../../component/Loading.jsx';
 
 function generateBatleId() {
   const randomPart = Math.floor(Math.random() * 10000000); // Generate a 6-digit random number
@@ -15,15 +16,14 @@ function generateBatleId() {
 
 const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, selected = null, selectedTimer = null, selectColor = null, selectQuanitity = 1, setSelectColor = null, setSelectednum = null, selectednum = null, setBigsmall = null }) => {
   const dispatch = useDispatch()
-  const { error, UserBetle } = useSelector((state) => state.batle);
-  const { wallet } = useSelector((state) => state.payment);
+  const { error ,loading : Load } = useSelector((state) => state.batle);
+  const { depositBalance,withdrawableBalance ,loading } = useSelector((state) => state.payment);
   const [selectedbuttons, setSelectedbuttons] = useState(null);
   const [quantity, setQuantity] = useState(null);
   const [selectcolors, setSelectcolors] = useState(null);
   const [selectednumbers, setSelectednumbers] = useState([]);
   const [balance, setBalance] = useState(5);
   const [agree, setAgree] = useState(false);
-  // const [walletbalances, setWalletbalances] = useState(null)
 
   const { user } = useSelector(
     (state) => state.user
@@ -108,7 +108,7 @@ const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, 
 
       const batleamount = balance * quantity
 
-      if (walletBalance > batleamount) {
+      if (walletBalance > batleamount && walletBalance > 10 ) {
         console.log('Sending bet data:', betData);
         dispatch(adduserbatle(betData))
         socket.emit('placeBet', betData);  
@@ -116,21 +116,20 @@ const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, 
         dispatch(walletbalance())
         },500)
       } else {
-        cancelhandle();
-        return toast.error("Insufficient funds")
+          toast.error("Insufficient funds")
       }
 
 
 
       cancelhandle();
     }
-    if (wallet) {
+    if (depositBalance && withdrawableBalance) {
       
-      const balance = wallet.withdrawableBalance + wallet.depositBalance;
+      const balance = withdrawableBalance + depositBalance;
       setWalletBalance(balance);
     }
     return ;
-  }, [selectednumbers, selectcolors, selectedbuttons, wallet]);
+  }, [selectednumbers, selectcolors, selectedbuttons, depositBalance,withdrawableBalance]);
 
   useEffect(() => {
 
@@ -151,6 +150,7 @@ const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, 
   return (
     <div className='w-full fixed bottom-[4rem]'>
       <div className={`${selectColor === "Green" ? "bg-green-500" : selectColor === "Red" ? "bg-red-500" : selectColor === "Violet" ? "bg-violet-500" : selected === "Big" ? "bg-yellow-600" : selectednum == 0 || selectednum == 2 || selectednum == 4 || selectednum == 6 || selectednum == 8 ? "bg-red-600" : selectednum == 1 || selectednum == 3 || selectednum == 5 || selectednum == 7 || selectednum == 9 ? "bg-green-600" : "bg-[#4d93de]"} rounded-t-lg w-[400px] mx-auto z-50 shadow-lg`}>
+        {Load || loading && <Loading />}
         <h1 className="text-center pt-2 text-black font-bold text-lg">Win Go</h1>
         <div className="text-center flex gap-2 items-center justify-center text-black font-bold text-lg">
           <span>Selected</span>

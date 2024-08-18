@@ -8,6 +8,7 @@ import upiimg from "../../iamges/upiqr.png"
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, getbankdetails, walletbalance, withdrawrequestforuser } from '../../redux/actions/PaymentAciton';
 import { toast } from 'react-toastify';
+import Loading from '../component/Loading';
 
 const maskAccountNumber = (number) => {
 
@@ -33,11 +34,8 @@ function generateTransactionId() {
 const Withdraw = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { bankdetails, error, wallet, message } = useSelector((state) => state.payment);
-  const { user } = useSelector((state) => state.user);
+  const { bankdetails, error, depositBalance,withdrawableBalance, message ,loading} = useSelector((state) => state.payment);
 
-  const [withdrawalAmount, setWithdrawalAmount] = useState(50);
-  const [loading, setLoading] = useState(false);
   const [walletbalances, setWalletbalances] = useState(null)
   const [withdrawdata, setWithdrawdata] = useState({
     way: "",
@@ -63,7 +61,7 @@ const Withdraw = () => {
   }
   const USDTamountHandle = (e) => {
 
-    const { value, name } = e.target
+    const { value } = e.target
     setWithdrawdata((prev) => ({
       ...prev,
       amount: value * 93.5
@@ -76,6 +74,9 @@ const Withdraw = () => {
     if (withdrawdata.bankdetails == "" && withdrawdata.way == "bankCard") {
       toast.error("Add your bank account first !");
       return;
+    }
+    if(withdrawdata.amount <110 || withdrawdata.amount >withdrawableBalance  ){
+     return toast.error("Insufficient funds")
     }
     dispatch(withdrawrequestforuser(withdrawdata))
 
@@ -143,18 +144,20 @@ const Withdraw = () => {
       }))
 
     }
-    if (wallet) {
-      setWalletbalances(wallet.withdrawableBalance + wallet.depositBalance)
+    if (depositBalance && withdrawableBalance) {
+      setWalletbalances( withdrawableBalance +  depositBalance)
     }
+    dispatch(walletbalance())
+    dispatch(getbankdetails())
 
     return;
-  }, [error, bankdetails, message])
+  }, [error, bankdetails,dispatch , message,depositBalance,withdrawableBalance])
   return (
     <div className="flex relative   items-center justify-center   h-full   max-h-full    bg-gray-400">
-      {loading && <Loader />}
+      {loading && <Loading />}
 
-      <div className="      bg-[#22275b]   pt-[3rem]      w-[400px]       ">
-        <div className='text-white  flex items-center fixed top-0   w-[400px] justify-between px-3 h-[3rem] bg-[#2b3270]'>
+      <div className="      bg-[#22275b]   pt-[3rem]       w-[full] sm:w-[400px] lg:w-[400px]  md:w-[400px]      ">
+        <div className='text-white  flex items-center fixed top-0   w-[full] sm:w-[400px] lg:w-[400px]  md:w-[400px]   justify-between px-3 h-[3rem] bg-[#2b3270]'>
           <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
           <div className='flex   gap-[4rem]'>
             <h1>Withdraw</h1>
@@ -168,7 +171,7 @@ const Withdraw = () => {
               <p>Available Balance </p>
             </div>
             <div className='flex  gap-2 items-center'>
-              <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ {wallet && walletbalances > 0 ? walletbalances : "0.00"}</h2>
+              <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ {depositBalance && withdrawableBalance && walletbalances > 0 ? walletbalances : "0.00"}</h2>
               <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
             </div>
             <div className='flex  items-center justify-between'>
@@ -194,12 +197,12 @@ const Withdraw = () => {
         </div>
         {(withdrawdata.way !== "Ewallet") && (withdrawdata.way !== "USDT") && bankdetails !== null ? (<div className={` mx-3 mb-3  bg-[#2b3270] text-[#89878786]     rounded-xl    flex flex-col  py-4 items-center `}>
           <div className='flex flex-col'>
-            <span className='text-[#ffffffd2]'>{bankdetails.bankName}</span>
-            <span>Holder Name :<span className='text-[#ffffffd2]'> {bankdetails.Holder}</span> </span>
-            <span>Account Number :<span className='text-[#ffffffd2]'> {maskAccountNumber(bankdetails.accountNumber)}</span> </span>
+            <span className='text-[#ffffffd2]'>{bankdetails && bankdetails.bankName}</span>
+            <span>Holder Name :<span className='text-[#ffffffd2]'> {bankdetails && bankdetails.Holder}</span> </span>
+            <span>Account Number :<span className='text-[#ffffffd2]'> {maskAccountNumber(bankdetails && bankdetails.accountNumber)}</span> </span>
             <span>Mobile Number  :<span className='text-[#ffffffd2]'> {
 
-              bankdetails.phoneNumber
+bankdetails &&  bankdetails.phoneNumber
 
             }</span> </span>
 
@@ -217,14 +220,14 @@ const Withdraw = () => {
             <input onChange={(e) => handleWalletId(e)} value={withdrawdata.walletID || ""} name="walletID" type="text" className="   font-medium text-[#61a9ff] focus:outline-none focus:bg-transparent   bg-transparent p-2 ml-2  "
               placeholder="Enter your Wallet-ID " />
 
-          </div>) :
+          </div>) : !bankdetails  || bankdetails==null  ? 
 
           (<div value={withdrawdata.walletID} className={` mx-3  bg-[#2b3270] text-[#89878786]    rounded-xl    flex flex-col  py-4 items-center `}>
             <img className='w-[5rem] cursor-pointer' src={add} alt="" />
             <p>Add your back account number</p>
 
           </div>
-          )
+          ) : ("")
 
         }
 
@@ -245,7 +248,7 @@ const Withdraw = () => {
                   value={withdrawdata.amount || ""}
                   className="w-full  font-medium text-[#61a9ff] focus:outline-none focus:bg-transparent cursor-not-allowed bg-transparent p-2 ml-2  "
                   placeholder="rupees amount"
-                // defaultValue={withdrawdata.amount ? withdrawdata.amount * 93.5 : ''}
+                 
 
                 />
               </div>
@@ -269,7 +272,7 @@ const Withdraw = () => {
 
 
             <div className="w-full mb-4 flex justify-between items-center">
-              <span className="text-xs text-[#2a88f3] ">Withdrawable balance <span className='text-orange-500'>₹ {wallet && wallet.withdrawableBalance > 0 ? wallet.withdrawableBalance : "0.00"}</span></span>
+              <span className="text-xs text-[#2a88f3] ">Withdrawable balance <span className='text-orange-500'>₹ {withdrawableBalance &&  withdrawableBalance > 0 ? withdrawableBalance : "0.00"}</span></span>
               <button className=" border px-5 border-[#2a88f3] text-[#2a88f3] rounded text-[0.7rem]">All</button>
             </div>
 
@@ -293,14 +296,14 @@ const Withdraw = () => {
 
             <div className=' w-[350px] h-[2.5rem] bg-[#22275b]   flex items-center justify-evenly px-2 '>
               <img className='w-[2rem]     ' src="https://img.icons8.com/?size=100&id=87785&format=png&color=056FEBBF" alt="" />
-              <input type="text" name="amount" value={withdrawdata.amount || ""} onChange={(e) => amountHandle(e)} className='input-placeholder border-l focus:bg-[#22275b]  focus:text-[#61a9ff]  bg-[#22275b] focus:outline-none outline-none ml-3 pl-3 w-full    text-[#61a9ff] text-[1.1rem]  ' placeholder='Enter amount in rupees' />
+              <input type="text" name="amount" value={withdrawdata.amount || ""} onChange={(e) => amountHandle(e)} className='input-placeholder border-l focus:!bg-[#22275b]  focus:text-[#61a9ff]  bg-[#22275b] focus:outline-none outline-none ml-3 pl-3 w-full    text-[#61a9ff] text-[1.1rem]  ' placeholder='Enter amount in rupees' />
 
             </div>
             {(withdrawdata.way === "bankCard" || withdrawdata.way === "Ewallet") && withdrawdata.amount < 110 && (<p className='text-red-500 text-[0.8rem] text-start w-full pl-5'>Minimum Withdrawal Amount:  ₹110</p>)}
             <div className='flex flex-col text-[0.9rem] w-full p-4 gap-2'>
               <div className='flex  items-center justify-between'>
                 <p>Withrawable balance : </p>
-                <span className='text-[#d2982c]  '>₹ {wallet && wallet.withdrawableBalance > 0 ? wallet.withdrawableBalance : "0.00"}</span>
+                <span className='text-[#d2982c]  '>₹ {withdrawableBalance && withdrawableBalance > 0 ?  withdrawableBalance : "0.00"}</span>
               </div>
 
 

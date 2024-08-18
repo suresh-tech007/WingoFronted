@@ -11,10 +11,11 @@ import { IoIosWallet } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/userAction";
 import { toast } from "react-toastify";
+import Loading from "../component/Loading";
 
 const Profile = () => {
-    const { isAuthenticated, user,message } = useSelector((state) => state.user);
-    const { wallet } = useSelector((state) => state.payment);
+    const { isAuthenticated, user,message,loading } = useSelector((state) => state.user);
+    const { withdrawableBalance,depositBalance,loading : Load } = useSelector((state) => state.payment);
     const [timeout,setTimeout] = useState(null)
     const [walletbalance , setWalletbalance ]= useState(null)
     const dispatch = useDispatch();
@@ -39,15 +40,16 @@ const Profile = () => {
             const date = new Date(timestamp).toISOString().split('T')[0];
             setTimeout(date)
         }
-        if(wallet){
-            setWalletbalance(wallet.withdrawableBalance + wallet.depositBalance )
+        if(withdrawableBalance , depositBalance){
+            setWalletbalance( withdrawableBalance + depositBalance )
         }
         
-    },[user,isAuthenticated,wallet])
+    },[user,isAuthenticated,withdrawableBalance , depositBalance])
     return (
-        <div className="flex relative   items-center justify-center          bg-gray-400">
+        <div className="flex relative    items-center justify-center          bg-gray-400">
 
-            <div className=" py-8  pt-0  bg-[#22275b]      w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]        ">
+            <div className=" py-8  pt-0  bg-[#22275b]       w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]        ">
+            { (loading || Load) && <Loading />}
                 <div className=" flex items-center    justify-center flex-col ">
 
                     <div className="flex  items-center justify-start   w-full pl-[2rem]  pt-9 pb-0 z-10  ">
@@ -71,7 +73,7 @@ const Profile = () => {
                     <div className="  bg-[#374992]   text-white font-serif  flex  rounded-3xl p-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly ">
                         <div className="">
                             <span className="text-gray-400 ">Total Amount</span>
-                            <div className="mb-5">₹ {wallet &&walletbalance >0 ?walletbalance : "0.00"}</div>
+                            <div className="mb-5">₹ {withdrawableBalance && depositBalance &&walletbalance >0 ?walletbalance : "0.00"}</div>
                         </div>
 
                         <div className="flex flex-row w-full gap-7 items-center  ">
@@ -135,58 +137,8 @@ const Profile = () => {
                         </Link>
 
                     </div>
-                    {/* <div className=" bg-[#2b3270] h-[30vh] text-white  font-sans   flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
-                        <div className="flex items-center flex-row justify-between">
-                            <Link to={"/notifications"} className="flex  items-center gap-2">
-                                 <img className="w-[2.5rem]" src="https://img.icons8.com/?size=100&id=z8yqcMdq4T2h&format=png&color=000000" alt="" /> 
-                                <span>Notification</span>
-                            </Link>
-                            <Link to={"/notifications"} className="flex items-center " >
-                                <span className=" rounded-full bg-red-500 text-white text-[10px] w-4 h-4 text-center ">5</span>
-                                <img className="w-[2rem] text-gray-500" src="https://img.icons8.com/?size=80&id=61&format=png&color=00000080" alt="" />
-                            </Link>
-                        </div>
-                        <hr className={`border-t-1 border-[#242a65dc] w-full`} />
-                        <div className="flex  items-center w-full  flex-row  justify-between    ">
-                            <Link to={"/gifts"} className="flex  items-center gap-2">
-                                <img className="w-[2.5rem]" src="https://img.icons8.com/?size=100&id=3hPHKsDwKY9Q&format=png&color=000000" alt="gifts" />
-                                <span>Gifts</span>
-                            </Link>
-                            <Link to={"/gifts"} className="flex items-center"> 
-                            <span className=" rounded-full bg-red-500 text-white text-[10px] w-4 h-4 text-center ">5</span>
-                                <img className="w-[2rem] text-gray-500" src="https://img.icons8.com/?size=80&id=61&format=png&color=00000080" alt="" />
-                            </Link>
-                        </div>
-                        <hr className={`border-t-1 border-[#242a65dc] w-full`} />
-                        <div className="flex items-center flex-row justify-between">
-                            <Link to={"/gamestatistics"} className="flex  items-center gap-2">
-                                
-                                    <img className="w-[2.5rem]" src="https://img.icons8.com/?size=100&id=KY71leRG66mL&format=png&color=000000" alt="statistics" /> 
-                                <span>Game statistics</span>
-                            </Link>
-                            <Link to={"/gamestatistics"}>
-                                 
-                                <img className="w-[2rem] text-gray-500" src="https://img.icons8.com/?size=80&id=61&format=png&color=00000080" alt="" />
-
-
-                            </Link>
-                        </div>
-                        <hr className={`border-t-1 border-[#242a65dc] w-full`} />
-                        <div className="flex items-center flex-row justify-between">
-                            <Link to={"/settings"} className="flex  items-center gap-2">
-                                
-                                    <img className="w-[2.5rem]" src="https://img.icons8.com/?size=100&id=qOH8AEbMnHas&format=png&color=000000" alt="settings" /> 
-                                <span>Settings</span>
-                            </Link>
-                            <Link to={"/settings"}>
-                                 
-                                <img className="w-[2rem] text-gray-500" src="https://img.icons8.com/?size=80&id=61&format=png&color=00000080" alt="" />
-
-
-                            </Link>
-                        </div>
-                    </div> */}
-                    <div className=" bg-[#2b3270]   text-white  font-sans    flex  rounded-3xl  px-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly">
+                   
+                    <div className=" bg-[#2b3270]    text-white  font-sans    flex  rounded-3xl  px-5 m-5 mx-6 w-[95%]    flex-col justify-evenly">
                         <h1 className=" font-poppins">Service center</h1>
                         <div className="grid   grid-cols-3  gap-5     ">
 

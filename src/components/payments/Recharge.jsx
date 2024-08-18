@@ -6,7 +6,11 @@ import all from "../../iamges/all.png"
 import USTD from "../../iamges/USTD.png"
 import TRX from "../../iamges/TRX.jpg"
 import Amountbutton from './Amountbutton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearErrors, getUpiDetails } from '../../redux/actions/PaymentAciton';
+import { toast } from 'react-toastify';
+import Loading from '../component/Loading';
+
 const generateTransactionId = () => {
     const timestamp = Date.now(); // Get current timestamp
     const randomNum = Math.floor(Math.random() * 100000); // Generate a random number
@@ -17,24 +21,19 @@ const generateTransactionId = () => {
 
 const Recharge = () => {
     const transactionId = generateTransactionId();
-    const { wallet } = useSelector((state) => state.payment);
+    const { withdrawableBalance,depositBalance,UpiDetails,loading ,message,error} = useSelector((state) => state.payment);
     const [amount, setAmount] = useState("");
     const [way, setWay] = useState('');
-    const [upi, setUpi] = useState('7877503828@paytm');
+    const [upi, setUpi] = useState('');
     const [disabled, setDisabled] = useState(false);
     const [orderNumber, setOrderNumber] = useState(null);
-    const [walletAddress, setWalletAddress] = useState("Pt2024072807531989624491");
-    const [network, setNetwork] = useState("USDT-TRC20");
+    const [walletAddress, setWalletAddress] = useState("");
+    
     const [walletbalance, setWalletbalance] = useState(null)
 
     const navigate = useNavigate();
-    // const copyToClipboard = (orderNumber) => {
-    //     navigator.clipboard.writeText(orderNumber).then(() => {
-    //         alert('Text copied to clipboard');
-    //     }).catch(err => {
-    //         console.error('Failed to copy: ', err);
-    //     });
-    // };
+    const dispatch = useDispatch()
+   
 
 
     const Deposithandleclick = () => {
@@ -48,9 +47,9 @@ const Recharge = () => {
                     amount,
                     way,
                     orderNumber,
-                    network,
+                     
                     upi,
-                    countdownTime  // 30 minutes in seconds
+                    countdownTime   
                 }
             });
         }
@@ -92,15 +91,30 @@ const Recharge = () => {
         } else {
             setDisabled(false)
         }
-        if (wallet) {
-            setWalletbalance(wallet.withdrawableBalance + wallet.depositBalance)
+        if (withdrawableBalance && depositBalance) {
+            setWalletbalance( withdrawableBalance +  depositBalance)
         }
+        if(UpiDetails){
+            setUpi(UpiDetails.upiId)
+            setWalletAddress(UpiDetails.walletId)
+        }
+        
 
         setOrderNumber(transactionId)
+        dispatch(getUpiDetails())
+        if (message) {
+            toast.success(message)
+            dispatch(clearErrors())
+        }
+        if (error) {
+            toast.error(error)
+            dispatch(clearErrors())
+        }
+        dispatch(getUpiDetails())
 
         return ;
 
-    }, [way, amount,wallet])
+    }, [way, amount,dispatch,withdrawableBalance,depositBalance,message,error])
 
 
     return (
@@ -108,6 +122,7 @@ const Recharge = () => {
         <div className="flex relative   items-center justify-center     h-full   max-h-full    bg-gray-400">
 
             <div className="      bg-[#22275b]   pt-[3rem]     w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]      ">
+            { loading && <Loading />}
                 <div className='text-white  flex items-center fixed top-0   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] justify-between px-3 h-[3rem] bg-[#2b3270]'>
                     <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
                     <div className='flex   gap-[4rem]'>
@@ -123,7 +138,7 @@ const Recharge = () => {
                             <p> Balance </p>
                         </div>
                         <div className='flex  gap-2 items-center'>
-                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '> ₹ {wallet &&walletbalance >0 ?walletbalance : "0.00"}</h2>
+                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '> ₹ {depositBalance  &&walletbalance >0 ?walletbalance : "0.00"}</h2>
                             <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
                         </div>
                         <div className='flex  items-center justify-between'>
@@ -252,7 +267,7 @@ const Recharge = () => {
 
                             </div>
 
-                            <div className=' w-[20.2rem] h-[2.5rem] border rounded-3xl flex items-center justify-evenly px-2 '>
+                            <div className=' h-[2.5rem] border rounded-3xl flex items-center justify-evenly px-2 '>
                                 <img className='w-[1.8rem]     ' src="https://img.icons8.com/?size=100&id=87785&format=png&color=056FEBBF" alt="" />
                                 <input type="text"    value={!amount ? "" : amount} onChange={(e)=>setAmount(e.target.value)} className=' border-l   bg-transparent focus:outline-none outline-none ml-3 pl-3 w-full  border-gray-500 text-white text-[1.1rem]  ' placeholder='Please enter the amount' />
 

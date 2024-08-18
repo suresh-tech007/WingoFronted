@@ -91,7 +91,8 @@ export const paymentReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        wallet: action.payload.wallet,
+        depositBalance: action.payload.depositBalance,
+        withdrawableBalance: action.payload.withdrawableBalance,
       };
     case DEPOSIT_ADD_REQ_FAIL:
     case ADD_MONEYWALLET_FAIL:

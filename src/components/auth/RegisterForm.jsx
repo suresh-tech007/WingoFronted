@@ -78,12 +78,12 @@ const RegisterForm = () => {
 
   return (
     <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">
-      <div className="py-8 bg-[#2b3270] h-screen w-[400px]">
+      <div className="py-8 bg-[#2b3270] h-screen  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] ">
         <div className='py-5 px-2'>
           <h2 className="text-white font-sans font-bold text-xl p-3 text-start">Register</h2>
           <p className='text-white px-3 text-[12px] mb-4'>Please register by phone Number</p>
         </div>
-        <div className='bg-[#22275b] h-full p-4 w-[400px]'>
+        <div className='bg-[#22275b] h-full p-4  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] '>
           <div className='flex items-center justify-center flex-col h-[10vh]'>
             <PhoneIphoneIcon className='text-[3px] text-blue-600 w-6' />
             <h2 className='text-white'>Register your phone</h2>

@@ -85,10 +85,11 @@ export const depositrequest = (formdata) => async (dispatch) => {
             formdata,
             config
           );
-          
+     
       
           dispatch({ type: DEPOSIT_ADD_REQ_SUCCESS, payload: data });
         } catch (error) {
+       
            
             dispatch({
               type: DEPOSIT_ADD_REQ_FAIL,
