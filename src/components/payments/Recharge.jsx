@@ -38,7 +38,7 @@ const Recharge = () => {
 
     const Deposithandleclick = () => {
         const currentTime = new Date();
-        const countdownTime = new Date(currentTime.getTime() + 10 * 60 * 1000); // 10 minutes from now
+        const countdownTime = new Date(currentTime.getTime() + 15 * 60 * 1000); // 10 minutes from now
 
 
         if (way === "paytmQR" || way === "UPI-QR" || way === "EWallet") {
@@ -54,14 +54,15 @@ const Recharge = () => {
             });
         }
         else if (way === "USDT" || way === "TRX-Bonus") {
+            
             navigate('/Payment', {
                 state: {
                     img: way === "USDT" ? USTD : TRX,
                     amount,
                     orderNumber,
-                    network,
+                    network:"kldsajfi",
                     walletAddress,
-                    countdownTime: countdownTime.getTime() / 1000, // 5 minutes in 
+                    countdownTime: countdownTime , // 5 minutes in 
                 }
             });
         }

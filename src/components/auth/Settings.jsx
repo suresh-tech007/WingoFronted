@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import { clearErrors, loaduser, updateProfile } from "../../redux/actions/userAction";
 import { Link, Navigate } from "react-router-dom";
 import { UPDATE_PASSWORD_RESET } from "../../redux/constants/userContant";
+import Loading from "../component/Loading";
 
 const Settings = () => {
     const dispatch = useDispatch();
-    const { user,loading:loadinguser } = useSelector((state) => state.user);
+    const { user,loading:loadinguser  } = useSelector((state) => state.user);
     const { isUpdated, loading, error } = useSelector((state) => state.profile);
     
     const [changenamediv, setChangenamediv] = useState(false);
@@ -66,17 +67,16 @@ const Settings = () => {
 
 
     
-    
-    const changepassword = ()=>{
-
-    }
+  
 
     
 
     return (
         <div className="flex relative h-screen items-center justify-center max-h-full bg-gray-400">
-            <div className="py-8 pt-0 bg-[#22275b] h-full w-[400px]   max-h-full">
-                <div className={` ${changenamediv?"  opacity-100 scale-100 ":"  opacity-0 scale-0"} transition-all duration-500 absolute z-50 w-[400px]`}>
+            <div className="py-8 pt-0 bg-[#22275b] h-full w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  max-h-full">
+            {loading || loadinguser && <Loading />}
+
+                <div className={` ${changenamediv?"  opacity-100 scale-100 ":"  opacity-0 scale-0"} transition-all duration-500 absolute z-50 w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]`}>
                     <div className="flex items-center flex-col justify-center min-h-screen bg-[#0000001f] bg-opacity-50">
                         <div className="bg-[#374992] rounded-lg p-6 w-80 h-[15rem] shadow-lg relative">
                             <h2 className="text-white text-center font-semibold text-lg mb-4 border-b border-blue-800 pb-2">

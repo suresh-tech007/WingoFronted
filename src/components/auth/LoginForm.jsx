@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaCheck } from 'react-icons/fa';
-
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import { faLock, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, login } from '../../redux/actions/userAction';
-import { GiConsoleController } from 'react-icons/gi';
+import Loading from '../component/Loading.jsx';
 
 const LoginForm = () => {
   const [usemobile, setUsemobile] = useState(true);
@@ -114,7 +113,7 @@ const LoginForm = () => {
   return (
     <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">
       <div className="py-8 bg-[#2b3270] h-screen  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]   ">
-        <div className='py-5 px-2'>
+        <div className='py-5 px-2'>  { loading && <Loading />}
           <h2 className="text-white font-sans font-bold text-xl p-3 text-start">Log in</h2>
           <p className='text-white px-3 text-[10px]'>Please log in with your phone number or email</p>
           <p className='text-white px-3 text-[10px] mb-4'>If you forget your password, please contact customer service</p>

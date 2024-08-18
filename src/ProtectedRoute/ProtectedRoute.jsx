@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import Loader from "../components/component/Loader";
+import Loading from "../components/component/Loading";
 
 const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
@@ -17,7 +17,7 @@ const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400 ">
-         <Loader />
+         <Loading />
       </div>
     );  
   }

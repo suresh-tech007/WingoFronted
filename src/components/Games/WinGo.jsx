@@ -12,8 +12,8 @@ import coin6 from "../../iamges/wingoimg/n6-a56e0b9a.png"
 import coin7 from "../../iamges/wingoimg/n7-5961a17f.png"
 import coin8 from "../../iamges/wingoimg/n8-d4d951a4.png"
 import coin9 from "../../iamges/wingoimg/n9-a20f6f42.png"
-import Digit from './Digit';
-import Imagges from './Imagges';
+import Digit from './Wingocomponents/Digit.jsx';
+import Imagges from './Wingocomponents/Imagges.jsx';
 import Xbuttons from './Wingocomponents/Xbuttons';
 import GameHistorytable from './Wingocomponents/GameHistorytable';
 import SelectTopUp from './Wingocomponents/SelectTopUp';

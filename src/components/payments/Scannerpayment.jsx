@@ -5,14 +5,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, depositrequest } from '../../redux/actions/PaymentAciton';
 import { toast } from 'react-toastify';
+import Loading from '../component/Loading';
 
 const Scannerpayment = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user } = useSelector((state) => state.user);
-    const { message, error } = useSelector((state) => state.payment);
-    const { amount, way, orderNumber, upi, countdownTime } = location.state || {};
+    const { user,loading } = useSelector((state) => state.user);
+    const { message, error,loading : loading2 } = useSelector((state) => state.payment);
+    const { amount, way, orderNumber, upi,  countdownTime } = location.state || {};
 
     // DateTime Formatting Function
     const getCurrentFormattedDateTime = () => {
@@ -127,6 +128,7 @@ const Scannerpayment = () => {
     return (
         <div className='flex items-center w-full bg-white z-50 relative justify-center'>
             <div className="w-[100vw] sm:w-[400px] lg:w-[400px] md:w-[400px] mt-[2rem] mx-auto bg-[#ffffff] shadow-lg rounded-lg overflow-hidden p-6">
+            {loading ||  loading2 && <Loading />}
                 <h1 className="text-center text-lg font-bold text-green-600 mb-4">{way}</h1>
                 <div className='flex w-full items-start flex-col gap-3 text-nowrap text-[0.9rem] text-start'>
                     <div className='flex items-center justify-between w-full '>

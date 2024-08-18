@@ -110,7 +110,7 @@ const Wallet = () => {
                      ))
                  )}
                 </div>
-                <div className='h-[8rem]'></div>
+                <div className='h-[13rem] lg:h-[19rem] sm:h-[12rem]    md:h-[13.5rem] '></div>
 
 
             </div>

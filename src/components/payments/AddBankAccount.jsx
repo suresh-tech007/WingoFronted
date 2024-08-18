@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addbankdetails, clearErrors } from '../../redux/actions/PaymentAciton';
 import { toast } from 'react-toastify';
+import Loading from '../component/Loading';
 
 const AddBankAccount = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { message,error } = useSelector((state) => state.payment);
+    const { message,error,loading } = useSelector((state) => state.payment);
     const [bankdetals, setBankdetals] = useState({
         bankName:"",
         Holder:"",
@@ -55,9 +56,10 @@ const AddBankAccount = () => {
     return (
         <div className="flex relative h-screen   items-center justify-center      max-h-full    bg-gray-400">
 
-            <div className="      bg-[#22275b]   pt-[3rem]     w-[400px]   h-screen    ">
-                <div className="flex flex-col items-center     rounded-lg   mx-4 mt-4 text-white">
-                    <div className='text-white    items-center justify-center  flex  fixed top-0   w-[400px]   h-[3rem] bg-[#2b3270]'>
+            <div className="      bg-[#22275b]   pt-[3rem]    w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]   h-screen    ">
+                <div className="flex flex-col items-center     rounded-lg   mx-4 mt-4 text-white">  {loading && <Loading />}
+                    
+                    <div className='text-white    items-center justify-center  flex  fixed top-0   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] h-[3rem] bg-[#2b3270]'>
 
 
                         <h2 className="text-lg font-sarif font-medium  ">Add a bank account number</h2>

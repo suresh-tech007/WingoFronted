@@ -168,7 +168,7 @@ const Profile = () => {
                                 <img src="https://img.icons8.com/?size=100&id=45880&format=png&color=000000" className="w-[2rem]" alt="" />
                                 <span >Beginner's <span>Guide</span></span>
                             </Link>
-                            <Link to={"/aboutus"} className="flex items-center  text-[0.9rem] text-gray-500 flex-col  text-center  ">
+                            <Link to={"/aboutus"} className="flex items-center  text-[0.9rem] text-gray-500 flex-col   text-center  ">
                                 <img src="https://img.icons8.com/?size=100&id=YGCpatc8SFgI&format=png&color=000000" className="w-[2rem]" alt="" />
                                 <span>About us</span>
                             </Link>
@@ -176,10 +176,10 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <button onClick={hanldelogout} className="w-[95%] mb-[100px]   border flex items-center justify-center gap-5 rounded-full  border-[#4a79c1]  text-[#4a79c1] h-[40px]"> <img className="w-[1.5rem]" src="https://img.icons8.com/?size=100&id=GtRfui8FwOx4&format=png&color=4a79c1" alt="" /> log out</button>
+                    <button onClick={hanldelogout} className="w-[95%]    border flex items-center justify-center gap-5 rounded-full mb-[2rem]  border-[#4a79c1]  text-[#4a79c1] h-[40px]"> <img className="w-[1.5rem]" src="https://img.icons8.com/?size=100&id=GtRfui8FwOx4&format=png&color=4a79c1" alt="" /> log out</button>
                 </div>
 
-
+                <div className='h-[13rem] lg:h-[8rem] sm:h-[12rem]    md:h-[13.5rem] '></div>
             </div>
 
 

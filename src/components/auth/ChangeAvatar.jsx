@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loaduser, updateProfile } from '../../redux/actions/userAction';
 import { toast } from 'react-toastify';
 import { UPDATE_PROFILE_RESET } from '../../redux/constants/userContant';
+import Loading from '../component/Loading';
 
 const avatarUrls = [
     "/avatar/1-a6662edb.png",
@@ -26,7 +27,7 @@ const avatarUrls = [
 const ChangeAvatar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isUpdated, error } = useSelector((state) => state.profile);
+    const { isUpdated, error,loading } = useSelector((state) => state.profile);
 
     const [image, setImage] = useState(null);
     const [formData, setFormData] = useState({
@@ -69,8 +70,9 @@ const ChangeAvatar = () => {
 
     return (
         <div className="flex relative h-screen items-center justify-center max-h-full bg-gray-400">
-            <div className="py-8 pt-0 bg-[#22275b] h-full w-[400px]   max-h-full">
-                <div className='text-white flex items-center fixed top-0 w-[400px] justify-between px-3 h-[3rem] z-50 bg-[#2b3270]'>
+            <div className="py-8 pt-0 bg-[#22275b] h-full w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  max-h-full">
+            {loading && <Loading />}
+                <div className='text-white flex items-center fixed top-0 w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] justify-between px-3 h-[3rem] z-50 bg-[#2b3270]'>
                     <Link to={"/settings"}>
                         <img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" />
                     </Link>

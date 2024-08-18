@@ -6,6 +6,7 @@ import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, regsiter } from '../../redux/actions/userAction.js';
 import { toast } from 'react-toastify';
+import Loading from '../component/Loading.jsx';
 
 
 
@@ -15,7 +16,7 @@ const RegisterForm = () => {
 
 
   const navigater = useNavigate();
-  const { error ,user } = useSelector(
+  const { error ,user,loading } = useSelector(
     (state) => state.user
   );
 
@@ -79,6 +80,7 @@ const RegisterForm = () => {
   return (
     <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">
       <div className="py-8 bg-[#2b3270] h-screen  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] ">
+        {loading && <Loading />}
         <div className='py-5 px-2'>
           <h2 className="text-white font-sans font-bold text-xl p-3 text-start">Register</h2>
           <p className='text-white px-3 text-[12px] mb-4'>Please register by phone Number</p>
