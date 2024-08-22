@@ -99,8 +99,8 @@ const LoginForm = () => {
       ...prevData,
       rememberMe: checked
     }));
+    
     if (error) {
-
       toast.error(error);
       dispatch(clearErrors());
     }

@@ -177,13 +177,15 @@ export const logout = () => async (dispatch) => {
 // get All users (Admin)  ==>
 
 export const getAllUsers = () => async (dispatch) => {
+   
   try {
     dispatch({ type: ALL_USERS_REQUEST });
     const config = { withCredentials: true };
     const { data } = await axios.get(`${backedurl}/api/v1/admin/users`, config);
-
-    dispatch({ type: ALL_USERS_SUCCESS, payload: data.users });
+    
+    dispatch({ type: ALL_USERS_SUCCESS, payload: data });
   } catch (error) {
+   
     if (error.response && error.response.status === 401) {
       dispatch({
         type: ALL_USERS_FAIL,
@@ -196,27 +198,35 @@ export const getAllUsers = () => async (dispatch) => {
 };
 // get   users (Admin)  ==>
 
-export const getUserDetails = (id) => async (dispatch) => {
-  try {
-    dispatch({ type: USER_DETAILS_REQUEST });
-    const config = { withCredentials: true };
-    const { data } = await axios.get(
-      `${backedurl}/api/v1/admin/user/${id}`,
-      config
-    );
-
-    dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      dispatch({
-        type: USER_DETAILS_FAIL,
-        payload: error.response
-          ? error.response.data.error
-          : "Unauthorized: Invalid email or password",
-      });
+  export const getUserDetails = (id) => async (dispatch) => {
+     
+    try {
+      dispatch({ type: USER_DETAILS_REQUEST });
+  
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+        credentials: "include",
+      };
+  
+       
+      const { data } = await axios.get(`${backedurl}/api/v1/admin/user/${id}`, config);
+ 
+  
+      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        
+        dispatch({
+          type: USER_DETAILS_FAIL,
+          payload: error.response
+            ? error.response.data.error
+            : "Unauthorized: Invalid email or password",
+        });
+      }
     }
-  }
-};
+  };
+  
 // SEND EMAIL OTP ==>
 export const sendEmailOtp = (sendotpdata) => async (dispatch) => {
   try {
@@ -270,27 +280,33 @@ export const verifyEmailOtp = (sendotpdata) => async (dispatch) => {
 // UPADATE  USER (Admin)  ==>
 
 export const updateuser = (id, userdata) => async (dispatch) => {
+  
+   
   try {
     dispatch({ type: UPDATE_USER_REQUEST });
     const config = {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     };
+    
+
     const { data } = await axios.put(
       `${backedurl}/api/v1/admin/user/${id}`,
       userdata,
       config
     );
+  
 
     dispatch({ type: UPDATE_USER_SUCCESS, payload: data.message });
   } catch (error) {
+    console.log(error)
    
     
       dispatch({
         type: UPDATE_USER_FAIL,
         payload: error.response
           ? error.response.data.error
-          : "Unauthorized: Invalid email or password",
+          : "Something went wrong",
       });
     }
   

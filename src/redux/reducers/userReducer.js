@@ -1,4 +1,3 @@
-
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -48,9 +47,7 @@ import {
   VERIFY_OTP_FAIL,
   VERIFY_OTP_RESET,
   SEND_OTP_RESET,
-  
 } from "../constants/userContant.js";
-
 
 // profileReducer
 export const profileReducer = (state = {}, action) => {
@@ -61,17 +58,23 @@ export const profileReducer = (state = {}, action) => {
     case DELETE_USER_REQUEST:
     case SEND_OTP_REQUEST:
     case VERIFY_OTP_REQUEST:
+    
       return {
         ...state,
         loading: true,
       };
     case UPDATE_PROFILE_SUCCESS:
     case UPDATE_PASSWORD_SUCCESS:
-    case UPDATE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         isUpdated: action.payload,
+      };
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
       };
     case VERIFY_OTP_SUCCESS:
       return {
@@ -79,6 +82,7 @@ export const profileReducer = (state = {}, action) => {
         loading: false,
         isVerify: action.payload,
       };
+     
     case SEND_OTP_SUCCESS:
       return {
         ...state,
@@ -123,6 +127,7 @@ export const profileReducer = (state = {}, action) => {
       return {
         ...state,
         error: null,
+        message:null
       };
     default:
       return state;
@@ -162,6 +167,7 @@ export const forgotPasswordreducer = (state = {}, action) => {
       return {
         ...state,
         error: null,
+        message:null
       };
     default:
       return state;
@@ -218,13 +224,14 @@ export const userReducer = (state = { user: null }, action) => {
       return {
         ...state,
         error: null,
+        message:null
       };
     default:
       return state;
   }
 };
 
-export const allUsersReducer = (state = { users: [] }, action) => {
+export const allUsersReducer = (state = {  }, action) => {
   switch (action.type) {
     case ALL_USERS_REQUEST:
       return {
@@ -235,7 +242,7 @@ export const allUsersReducer = (state = { users: [] }, action) => {
       return {
         ...state,
         loading: false,
-        users: action.payload,
+        users: action.payload.users,
       };
     case ALL_USERS_FAIL:
       return {
@@ -248,6 +255,7 @@ export const allUsersReducer = (state = { users: [] }, action) => {
       return {
         ...state,
         error: null,
+        message:null
       };
     default:
       return state;
@@ -264,7 +272,7 @@ export const userdetailsReducer = (state = { user: {} }, action) => {
       return {
         ...state,
         loading: false,
-        user: action.payload,
+        user: action.payload.userdetails,
       };
     case USER_DETAILS_FAIL:
       return {
@@ -277,10 +285,9 @@ export const userdetailsReducer = (state = { user: {} }, action) => {
       return {
         ...state,
         error: null,
+        message:null,
       };
     default:
       return state;
   }
 };
-
-

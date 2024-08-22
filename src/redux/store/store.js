@@ -8,7 +8,7 @@ import {
   userReducer,
   userdetailsReducer,
 } from "../reducers/userReducer.js";
-import { paymentReducer } from "../reducers/PaymentReducer.js";
+import { adminReducer, paymentReducer, referUserreducer } from "../reducers/PaymentReducer.js";
 import { GameReducer } from "../reducers/GameReducer.js";
 
  
@@ -20,7 +20,9 @@ const reducer = combineReducers({
   allUsers: allUsersReducer,
   userDetails: userdetailsReducer,
   payment:paymentReducer,
-  batle:GameReducer
+  batle:GameReducer,
+  referUser :referUserreducer,
+  Admins :adminReducer
 });
 
 let initailState = {

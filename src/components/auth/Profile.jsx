@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
- 
+
 import depositeimg from "../../iamges/deposit.png"
 import cardpay from "../../iamges/cardpayment.png"
 import trahistory from "../../iamges/trahistory.png"
@@ -12,50 +12,58 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/userAction";
 import { toast } from "react-toastify";
 import Loading from "../component/Loading";
+import DepositModal from "../component/DepositModal ";
+import { walletbalance } from "../../redux/actions/PaymentAciton";
 
 const Profile = () => {
-    const { isAuthenticated, user,message,loading } = useSelector((state) => state.user);
-    const { withdrawableBalance,depositBalance,loading : Load } = useSelector((state) => state.payment);
-    const [timeout,setTimeout] = useState(null)
-    const [walletbalance , setWalletbalance ]= useState(null)
+    const { isAuthenticated, user, message, loading } = useSelector((state) => state.user);
+    const { withdrawableBalance, depositBalance, loading: Load } = useSelector((state) => state.payment);
+    const [timeout, setTimeout] = useState(null)
+    const [walletbalances, setWalletbalances] = useState(null)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const image = "https://res.cloudinary.com/dhvvefbcj/image/upload/v1722595281/gametirngaclone/Profile_oqiu39.png"
-     
-    const hanldelogout = ()=>{
+
+    const hanldelogout = () => {
 
         dispatch(logout())
         toast("Logout successfully")
 
     }
-    
-    useEffect(()=>{
+     
+
+    useEffect(() => {
+        dispatch(walletbalance())
          
-        if(user==null  ){
-            
+
+        if (user == null) {
+
             navigate("/login")
         }
-        if(user.createdAt){
+        if (user.createdAt) {
             const timestamp = user.createdAt
             const date = new Date(timestamp).toISOString().split('T')[0];
             setTimeout(date)
         }
-        if(withdrawableBalance , depositBalance){
-            setWalletbalance( withdrawableBalance + depositBalance )
+        if(depositBalance && withdrawableBalance >=0){
+            setWalletbalances( withdrawableBalance +  depositBalance )
         }
-        
-    },[user,isAuthenticated,withdrawableBalance , depositBalance])
+
+    }, [user, isAuthenticated, withdrawableBalance, depositBalance])
+   
+
     return (
         <div className="flex relative    items-center justify-center          bg-gray-400">
 
             <div className=" py-8  pt-0  bg-[#22275b]       w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]        ">
-            { (loading || Load) && <Loading />}
+                {(loading || Load) && <Loading />}
+              
                 <div className=" flex items-center    justify-center flex-col ">
 
                     <div className="flex  items-center justify-start   w-full pl-[2rem]  pt-9 pb-0 z-10  ">
 
                         <div className="rounded-full  h-[6rem] mr-5 flex z-10  items-center justify-center  w-[6rem]  overflow-hidden ">
-                            <img src={user.avatar ? user.avatar  : image} alt="profile_pic" />
+                            <img src={user.avatar ? user.avatar : image} alt="profile_pic" />
                         </div>
                         <div className="    text-white  text-[12px] z-10 ">
                             <div>{user.Username}</div>
@@ -73,7 +81,7 @@ const Profile = () => {
                     <div className="  bg-[#374992]   text-white font-serif  flex  rounded-3xl p-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly ">
                         <div className="">
                             <span className="text-gray-400 ">Total Amount</span>
-                            <div className="mb-5">₹ {withdrawableBalance && depositBalance &&walletbalance >0 ?walletbalance : "0.00"}</div>
+                            <div className="mb-5">₹ {  depositBalance && walletbalances > 0 ? walletbalances : "0.00"}</div>
                         </div>
 
                         <div className="flex flex-row w-full gap-7 items-center  ">
@@ -95,7 +103,7 @@ const Profile = () => {
 
                     </div>
                     <div className="grid grid-cols-2 gap-5 m-5 text-white ">
-                        <Link  to={"/gamehistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
+                        <Link to={"/gamehistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
                             <div>
                                 <img src={trahistory} alt="" className="w-[40px]" />
                             </div>
@@ -115,7 +123,7 @@ const Profile = () => {
 
                             </div>
                         </Link>
-                        <Link  to={"/deposithistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
+                        <Link to={"/deposithistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >
                             <div>
                                 <img src={depositeimg} alt="" className="w-[40px]" />
                             </div>
@@ -137,7 +145,7 @@ const Profile = () => {
                         </Link>
 
                     </div>
-                   
+
                     <div className=" bg-[#2b3270]    text-white  font-sans    flex  rounded-3xl  px-5 m-5 mx-6 w-[95%]    flex-col justify-evenly">
                         <h1 className=" font-poppins">Service center</h1>
                         <div className="grid   grid-cols-3  gap-5     ">
@@ -185,7 +193,7 @@ const Profile = () => {
 
             <div className=" absolute top-0  z-[5]  bg-[#2b3270] h-[25vh]   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  rounded-br-[100px] rounded-bl-[100px] "></div>
         </div>
-        
+
 
     );
 };

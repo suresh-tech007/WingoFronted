@@ -3,10 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import USTD from "../../iamges/USTD.png"
 import add from "../../iamges/add.png"
-import Loader from '../component/Loader';
 import upiimg from "../../iamges/upiqr.png"
 import { useDispatch, useSelector } from 'react-redux';
-import { clearErrors, getbankdetails, walletbalance, withdrawrequestforuser } from '../../redux/actions/PaymentAciton';
+import { checkNewUser, clearErrors, getbankdetails, walletbalance, withdrawrequestforuser } from '../../redux/actions/PaymentAciton';
 import { toast } from 'react-toastify';
 import Loading from '../component/Loading';
 
@@ -34,7 +33,8 @@ function generateTransactionId() {
 const Withdraw = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { bankdetails, error, depositBalance,withdrawableBalance, message ,loading} = useSelector((state) => state.payment);
+   
+  const { isNewuser,bankdetails, error, depositBalance,withdrawableBalance, message ,loading} = useSelector((state) => state.payment);
 
   const [walletbalances, setWalletbalances] = useState(null)
   const [withdrawdata, setWithdrawdata] = useState({
@@ -70,6 +70,10 @@ const Withdraw = () => {
 
 
   const handlewithdrawbutton = () => {
+    if(isNewuser){
+      toast.error("First Add deposit amount !");
+      return;
+    }
    
     if (withdrawdata.bankdetails == "" && withdrawdata.way == "bankCard") {
       toast.error("Add your bank account first !");
@@ -123,7 +127,8 @@ const Withdraw = () => {
   }
 
   useEffect(() => {
-
+    
+    dispatch(checkNewUser())
     if (error) {
       toast.error(error)
       dispatch(clearErrors())
@@ -144,10 +149,14 @@ const Withdraw = () => {
       }))
 
     }
-    if (depositBalance && withdrawableBalance) {
-      setWalletbalances( withdrawableBalance +  depositBalance)
-    }
+     
     dispatch(walletbalance())
+       
+    if(depositBalance && withdrawableBalance>=0){
+        setWalletbalances( withdrawableBalance +  depositBalance )
+    }
+     
+   
     dispatch(getbankdetails())
 
     return;

@@ -32,30 +32,76 @@ import { loaduser } from './redux/actions/userAction.js';
 import ChangeAvatar from './components/auth/ChangeAvatar.jsx';
 import ChangePassword from './components/auth/ChangePassword.jsx';
 import BindMailbox from './components/auth/BlindMailbox.jsx';
-import { deposithistory, getbankdetails, getUpiDetails, UserTransactionHistory, walletbalance, withdrawhistory } from './redux/actions/PaymentAciton.js';
-import { gameHistory, resultHistory } from './redux/actions/Gameaction.js';
+import {   resultHistory } from './redux/actions/Gameaction.js';
 import Commingsoon from './components/Home/Commingsoon.jsx';
-import Sidebar from './components/Admin/Sidebar.jsx';
 import DashBoard from './components/Admin/DashBoard.jsx';
+import Users from './components/Admin/Users.jsx';
+import DepositReq from './components/Admin/DepositReq.jsx';
+import WithdrawReq from './components/Admin/WithdrawReq.jsx';
+import AdminHome from './components/Admin/AdminHome.jsx';
+import Admins from './components/Admin/Admins.jsx';
+import DepositUpiChange from './components/Admin/DepositUpiChange.jsx';
+import DepositModal from './components/component/DepositModal .jsx';
+import { checkNewUser } from './redux/actions/PaymentAciton.js';
+import InvitationBonus from './components/component/activity/InvitationBonus.jsx';
+import InvitationRewardRules from './components/component/activity/InvitationRewardRules.jsx';
+import InvitationRecord from './components/component/activity/InvitationRecord.jsx';
 
 
 function App() {
+ 
+
+  const {  isNewuser } = useSelector(
+    (state) => state.payment
+  );
   const {  user } = useSelector(
     (state) => state.user
   );
+   
+  const [depositModel , setDepositModel] = useState(false)
   const dispatch = useDispatch();
 
+  
+  function getDataWithExpiry(key) {
+    const itemStr = localStorage.getItem(key);
+
+    
+    if (!itemStr) {
+        return null;
+    }
+
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+
+ 
+    if (now.getTime() > item.expiry) {
+        
+        localStorage.removeItem(key);
+        return null;
+    }
+
+    return item.value;
+}
+
   useEffect(()=>{
+    const values = getDataWithExpiry("timeredepositmodel")
+
     dispatch(loaduser())
-    // dispatch(getbankdetails());
-    // dispatch(walletbalance())
-    // dispatch(deposithistory())
-    // dispatch(withdrawhistory())
-    // dispatch(UserTransactionHistory())
-    // dispatch(gameHistory())
+
+    setTimeout(() => {
+      if(!isNewuser){
+        setDepositModel(true)
+      }
+      
+    }, values || 3000);
+    
     dispatch(resultHistory(1,10))
-    // dispatch(getUpiDetails())
+    dispatch(checkNewUser())
+    
+     
   },[dispatch])
+
+ 
    
    
 
@@ -66,6 +112,9 @@ function App() {
         <Route path="/" exact element={<Home />} />
         {/* <Route path="/Home" element={<ProtectedRoute component={Homepage} />} /> */}
         <Route path="/Home" element={<ProtectedRoute component={WinGo} />} />
+        <Route path="/activity" element={<ProtectedRoute component={InvitationBonus} />} />
+        <Route path="/activity/InvitationRewardRules" element={<ProtectedRoute component={InvitationRewardRules} />} />
+        <Route path="/activity/InvitationRecord" element={<ProtectedRoute component={InvitationRecord} />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/profile" element={<ProtectedRoute component={Profile} />} />
@@ -94,13 +143,21 @@ function App() {
         {/* <Route    exact path="/admin/reviews" element={<ProtectedRoute isAdmin={true}  component={ProductReviews} />} />
 <Route    path="*"  element={ <NotFound/>}  /> */}
 
-<Route    exact path="/admin/sidear" element={<ProtectedRoute   component={Sidebar} />} />
-<Route    exact path="/admin/dashboard" element={<ProtectedRoute   component={DashBoard} />} />
+<Route    exact path="/admin/" element={<ProtectedRoute  isAdmin={"admin"}  component={AdminHome} />} />
+<Route    exact path="/admin/Users" element={<ProtectedRoute isAdmin={"admin"}    component={Users} />} />
+<Route    exact path="/admin/adminlist" element={<ProtectedRoute isAdmin={"admin"}    component={Admins} />} />
+<Route    exact path="/admin/changedepositmethod" element={<ProtectedRoute isAdmin={"admin"}    component={DepositUpiChange} />} />
+ 
+<Route    exact path="/admin/dashboard" element={<ProtectedRoute  isAdmin={"admin"}   component={DashBoard} />} />
+<Route    exact path="/admin/users" element={<ProtectedRoute  isAdmin={"admin"}   component={Users} />} />
+<Route    exact path="/admin/depositrequest" element={<ProtectedRoute isAdmin={"admin"}    component={DepositReq} />} />
+<Route    exact path="/admin/withdrawrequest" element={<ProtectedRoute  isAdmin={"admin"}   component={WithdrawReq} />} />
          
 
 
       </Routes>
       {user  && <Header />}
+      {/* {user && depositModel &&  <DepositModal setDepositModel={setDepositModel} deposits={null} updateDeposit={400} />} */}
       
 
       

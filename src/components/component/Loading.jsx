@@ -1,11 +1,15 @@
 import React from 'react'
+import loding from "/download.png"
 
 const Loading = () => {
   return (
-    <div className='   absolute z-[100] bg-[#00000021]  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    top-0 bottom-0    h-[100vh] max-w-[100%]   grid place-items-center '>
+    <div className='   absolute z-[100]         top-0 bottom-0    h-[100vh] max-w-[100%]   grid place-items-center '>
         
         
-    <div className='w-[8vmax]    h-[8vmax]    pb-5  border-b-8 animate-spin  border-[#1e1919bb]  rounded-full  '>
+    <div className='flex items-center justify-center bg-[#00000021] h-full    w-[100vw]     '>
+      <div className='w-[8vmax]  animate-spin      rounded-full   h-[8vmax]  '>
+      <img  src={loding} alt="" />
+      </div>
        
     </div>
     

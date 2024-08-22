@@ -17,10 +17,15 @@ import Imagges from './Wingocomponents/Imagges.jsx';
 import Xbuttons from './Wingocomponents/Xbuttons';
 import GameHistorytable from './Wingocomponents/GameHistorytable';
 import SelectTopUp from './Wingocomponents/SelectTopUp';
-import socket from '../component/socket/socket.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, walletbalance } from '../../redux/actions/PaymentAciton';
 import { resultHistory } from '../../redux/actions/Gameaction';
+import { io } from 'socket.io-client';
+import { backedurl } from '../../redux/backedUrl.js';
+import { toast } from 'react-toastify';
+import DepositModal from '../component/DepositModal .jsx';
+
+ 
 
 
  
@@ -41,10 +46,11 @@ const WinGo = () => {
     "10Min": '',
   });
   const { depositBalance,withdrawableBalance } = useSelector((state) => state.payment);
-  const { gameresulthistory,totalPages,currentPage,resultsPerPage,totalResults, error } = useSelector((state) => state.batle);
+  const { error:error2} = useSelector((state) => state.user);
+  const { totalPages,currentPage,resultsPerPage,totalResults, error } = useSelector((state) => state.batle);
   const dispatch = useDispatch()
  
-  const pageSize = 10
+   
   const [selected, setSelected] = useState("1Min");
   const [countdownDigits, setCountdownDigits] = useState([]);
   const [digits, setDigits] = useState([]);
@@ -54,7 +60,7 @@ const WinGo = () => {
   const [selectColor, setSelectColor] = useState(null);
   
   const [page, setPage] = useState(currentPage)
-  const [walletBalance, setWalletBalance] = useState(null)
+  const [walletBalances, setWalletBalances] = useState(null)
 
 
  
@@ -66,14 +72,21 @@ const WinGo = () => {
 
   useEffect(() => {
     
+    const socket = io(backedurl);
+    socket.on('connect', () => {
+     
+    });
+    
 
     socket.on("countdown", (data) => {
+     
       setCountdown(prevCountdowns => ({
         ...prevCountdowns,
         [data.type]: data.value,
       }));
     });
   
+    
     socket.emit("requestGameIDs");
   
     // Listen karte hain gameID updates ke liye
@@ -92,13 +105,19 @@ const WinGo = () => {
   }, []);
 
   useEffect(() => {
+    dispatch(walletbalance())
+ 
+       
+   
+    const socket = io(backedurl);
+
     socket.emit('sendMessage', selected);
 
     if (countdown["1Min"] === 0) {
       socket.emit('timerEnded', "1Min");
       setTimeout(() => {
         dispatch( walletbalance())
-        dispatch(resultHistory(currentPage,pageSize))
+        dispatch(resultHistory(currentPage,resultsPerPage))
       }, 200)
 
     }
@@ -106,14 +125,14 @@ const WinGo = () => {
       socket.emit('timerEnded', "3Min");
       setTimeout(() => {
         dispatch( walletbalance())
-        dispatch(resultHistory(currentPage,pageSize))
+        dispatch(resultHistory(currentPage,resultsPerPage))
       }, 200)
     }
     else if (countdown["5Min"] === 0) {
       socket.emit('timerEnded', "5Min");
       setTimeout(() => {
         dispatch( walletbalance())
-        dispatch(resultHistory(currentPage,pageSize))
+        dispatch(resultHistory(currentPage,resultsPerPage))
       }, 200)
 
     }
@@ -121,7 +140,7 @@ const WinGo = () => {
       socket.emit('timerEnded', "10Min");
       setTimeout(() => {
         dispatch( walletbalance())
-            dispatch(resultHistory(currentPage,pageSize))
+            dispatch(resultHistory(currentPage,resultsPerPage))
       }, 200)
 
     }
@@ -147,8 +166,8 @@ const WinGo = () => {
 
 
 
-    if (depositBalance && withdrawableBalance) {
-      setWalletBalance( withdrawableBalance +  depositBalance)
+    if (depositBalance && withdrawableBalance>=0) {
+      setWalletBalances( withdrawableBalance +  depositBalance)
     }
     if(error){
       toast.error(error)
@@ -157,6 +176,47 @@ const WinGo = () => {
     
 
   }, [selected,page,dispatch,error, countdown,dispatch, depositBalance,withdrawableBalance]);
+  function getDataWithExpiry(key) {
+    const itemStr = localStorage.getItem(key);
+
+    
+    if (!itemStr) {
+        return null;
+    }
+
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+
+ 
+    if (now.getTime() > item.expiry) {
+        
+        localStorage.removeItem(key);
+        return null;
+    }
+
+    return item.value;
+}
+const value = true;
+const [depositModel , setDepositModel] = useState(false);
+
+  useEffect(()=>{
+    const values = getDataWithExpiry("timeredepositmodel")
+
+    
+
+    setTimeout(() => {
+      if(value){
+        setDepositModel(true)
+      }
+      
+    }, values || 3000);
+    
+    if(error ||  error2){
+      toast.error(error)
+      dispatch(clearErrors())
+    }
+     
+  },[error ])
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -173,7 +233,7 @@ const WinGo = () => {
       setPage((prev)=> --prev );
       let page = currentPage-1
       
-      dispatch(resultHistory(page,pageSize))
+      dispatch(resultHistory(page,resultsPerPage))
     }
   };
 
@@ -183,7 +243,7 @@ const WinGo = () => {
       
       let page = currentPage+1
        
-      dispatch(resultHistory(page,pageSize))
+      dispatch(resultHistory(page,resultsPerPage))
     }
   };
 
@@ -193,19 +253,20 @@ const WinGo = () => {
 
 
   return (
-    <div className="flex    items-center justify-center min-h-screen   overflow-hidden bg-gray-400">
-      <div className="py-8 bg-[#22275b]   relative  w-[400px] text-white">
-        <div className='text-white  flex items-center fixed top-0  z-50  w-[400px] justify-between px-3 h-[3rem] bg-[#2b3270]'>
-          <Link to={"/home"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
+    <div className="flex  relative   items-center justify-center min-h-screen   overflow-hidden bg-gray-400">
+      <div className="py-8 bg-[#22275b]   relative   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  text-white">
+        <div className='text-white  flex items-center fixed top-0  z-50   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  justify-center px-3 h-[3rem] bg-[#2b3270]'>
+    
+          {/* <Link to={"/home"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link> */}
 
-          <h1 className=' pr-[10rem] font-semibold text-[1.1rem]'>Win-Go</h1>
+          <h1 className='  font-semibold text-[1.1rem]'>Win-Go</h1>
 
 
         </div>
-
+        { depositModel &&  <DepositModal setDepositModel={setDepositModel} deposits={null} updateDeposit={400} />}
         <div className={` bg-custom-image bg-center bg-cover bg-no-repeat  mt-5  flex flex-col  items-center gap-2 bg-[#374992]    rounded-2xl m-4 p-4 `} >
           <div className='flex  items-center gap-4'>
-            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {depositBalance && withdrawableBalance && walletBalance > 0 ? walletBalance : "0.00"}</p>
+            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {depositBalance && walletBalances > 0 ? walletBalances : "0.00"}</p>
             <button onClick={reloadhanlde}  ><img className='w-[1.1rem]  p1-0.5' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
           </div>
           <div className='flex  items-center gap-4 mb-4'>
@@ -336,7 +397,7 @@ const WinGo = () => {
 
         <div className={`${countdown[selected] > 6 && (bigsmall === "Big" || bigsmall === "Small" || selectnum !== null || selectColor !== null) ? "flex" : "hidden"} absolute top-0 h-full bg-[#00000079]   w-full items-center justify-center`}>
 
-          <SelectTopUp setWalletBalance={setWalletBalance} walletBalance={walletBalance} gameIDs={gameIDs} selectedTimer={selected} selectColor={selectColor} setSelectednum={setSelectnum} selectednum={selectnum} setBigsmall={setBigsmall} setSelectColor={setSelectColor} selectQuanitity={selcetX || 1} selected={bigsmall} />
+          <SelectTopUp setWalletBalance={setWalletBalances} walletBalance={walletBalances} gameIDs={gameIDs} selectedTimer={selected} selectColor={selectColor} setSelectednum={setSelectnum} selectednum={selectnum} setBigsmall={setBigsmall} setSelectColor={setSelectColor} selectQuanitity={selcetX || 1} selected={bigsmall} />
 
         </div>
 

@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, regsiter } from '../../redux/actions/userAction.js';
 import { toast } from 'react-toastify';
 import Loading from '../component/Loading.jsx';
 
-
-
 const RegisterForm = () => {
-   
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const invitationCode = searchParams.get('invitationCode');
+
   const dispatch = useDispatch();
-
-
-  const navigater = useNavigate();
-  const { error ,user,loading } = useSelector(
-    (state) => state.user
-  );
-
+  const navigate = useNavigate();
+  const { error, user, loading } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     country: '+91',
@@ -27,10 +23,8 @@ const RegisterForm = () => {
     password: '',
     confirmPassword: '',
     agreed: false,
-    inviteCode: "suresh86899"
+    invitationCode: invitationCode || ''
   });
-
-
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -42,22 +36,13 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (error) {
-
       toast(error);
       dispatch(clearErrors());
     }
     if (user) {
-      navigater("/Home")
-
+      navigate("/Home");
     }
-
   }, [user, error]);
-
-
-
-
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,27 +50,29 @@ const RegisterForm = () => {
       toast('Please enter valid Phone Number and Password');
       return;
     }
-    dispatch(regsiter(formData))
 
+    if (formData.password !== formData.confirmPassword) {
+      toast('Passwords do not match');
+      return;
+    }
+
+    dispatch(regsiter(formData));
   };
 
-  const navigate = useNavigate();
-
-  const handleLogin = () => {
+  const navigateToLogin = () => {
     navigate('/login');
   };
 
-
-
   return (
-    <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">
-      <div className="py-8 bg-[#2b3270] h-screen  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] ">
+     <>
         {loading && <Loading />}
+    <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">
+      <div className="py-8 bg-[#2b3270] h-screen w-[100vw] sm:w-[400px] lg:w-[400px] md:w-[400px]">
         <div className='py-5 px-2'>
           <h2 className="text-white font-sans font-bold text-xl p-3 text-start">Register</h2>
           <p className='text-white px-3 text-[12px] mb-4'>Please register by phone Number</p>
         </div>
-        <div className='bg-[#22275b] h-full p-4  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] '>
+        <div className='bg-[#22275b] h-full p-4 w-[100vw] sm:w-[400px] lg:w-[400px] md:w-[400px]'>
           <div className='flex items-center justify-center flex-col h-[10vh]'>
             <PhoneIphoneIcon className='text-[3px] text-blue-600 w-6' />
             <h2 className='text-white'>Register your phone</h2>
@@ -96,10 +83,8 @@ const RegisterForm = () => {
             <div className="mb-4">
               <label className="block text-gray-300 text-sm font-bold mb-2">Phone number</label>
               <div className="flex">
-                <select name="country"
-                  value={formData.country} onChange={handleChange} className="bg-[#313672] text-white p-2 rounded-l-md focus:outline-none">
+                <select name="country" value={formData.country} onChange={handleChange} className="bg-[#313672] text-white p-2 rounded-l-md focus:outline-none">
                   <option value={'+91'} className="bg-[#313672] text-black">+91</option>
-
                 </select>
                 <input
                   type="text"
@@ -109,31 +94,8 @@ const RegisterForm = () => {
                   onChange={handleChange}
                   className="bg-[#313672] text-white p-2 rounded-r-lg focus:outline-none focus:bg-[#313672] focus:text-white w-full"
                 />
-                {/* <button type="submit" className='text-[15px] bg-[#313672] border border-gray-600 text-white px-3 p-1 rounded-r-md hover:bg-blue-300 transition duration-30'>OTP</button> */}
               </div>
             </div>
-
-
-            {/* <form onSubmit={handleVerifyOtp}>
-            <div className="mb-4">
-              <label className="block text-gray-300 text-sm font-bold mb-2">Verify OTP</label>
-              <div className="flex">
-                <span className="bg-[#313672] text-white p-2 rounded-l-md">
-                  <MdSendToMobile className='text-blue-600' />
-                </span>
-                <input
-                  type="text"
-                  name="otp"
-                  placeholder="Enter OTP"
-                  value={formData.otp}
-                  onChange={handleChange}
-                  className="bg-[#313672] text-white p-2 focus:outline-none w-full"
-                />
-                <button type="submit" className='text-[15px] bg-[#313672] border border-gray-600 text-white px-3 p-1 rounded-r-md hover:bg-blue-300 transition duration-30'>Verify</button>
-              </div>
-            </div>
-          </form> */}
-
 
             <div className="mb-4">
               <label className="block text-gray-300 text-sm font-bold mb-2">Set password</label>
@@ -171,12 +133,10 @@ const RegisterForm = () => {
               <label className="block text-gray-300 text-sm font-bold mb-2">Invite code</label>
               <input
                 type="text"
-                name="inviteCode"
+                name="invitationCode"
                 placeholder="Invite code"
-                value={formData.inviteCode}
-                readOnly
+                value={formData.invitationCode}
                 onChange={handleChange}
-
                 className="bg-[#313672] text-white p-2 rounded-md focus:outline-none w-full"
               />
             </div>
@@ -205,16 +165,15 @@ const RegisterForm = () => {
           </form>
 
           <button
-            type="submit"
-            className="w-full bg-transparent border-white border-2 mt-3 text-white py-2 rounded-full hover:bg-blue-300 transition duration-300"
-            onClick={handleLogin}
+            type="button"
+            className="w-full bg-transparent border-white border-2 mt-2 py-2 text-white rounded-full hover:bg-white hover:text-[#2b3270] transition duration-300"
+            onClick={navigateToLogin}
           >
-            I have a account <Link className='text-blue-700 font-semibold' to={"/login"}>Login</Link>
+            Login
           </button>
         </div>
       </div>
-      <div id="recaptcha-container"></div> {/* Include recaptcha container here */}
-    </div>
+    </div></>
   );
 };
 

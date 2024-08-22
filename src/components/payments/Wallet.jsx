@@ -5,15 +5,17 @@ import diposit from "../../iamges/depositicon.png";
 import withdrawicon from "../../iamges/widthdrawBlue.png";
 import withdrawhistory from "../../iamges/withdrawHistory.png"
 import Depocart from '../cart/Depocart';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { walletbalance } from '../../redux/actions/PaymentAciton';
  
 const Wallet = () => {
+    const dispatch = useDispatch()
     const { depositBalance, withdrawableBalance} = useSelector((state) => state.payment);
     const { transactions } = useSelector((state) => state.payment);
     const [rupees, setRupees] = useState(null);
     
-    const [walletbalance,setWalletbalance] = useState(null)
+    const [walletbalances,setWalletbalances] = useState(null)
      const navigate = useNavigate();
         
      
@@ -22,20 +24,24 @@ const Wallet = () => {
             navigate("/wallet")
              
         }
+        
          
         
        useEffect(()=>{
+        dispatch(walletbalance())
+ 
        
-        if(depositBalance && withdrawableBalance){
-            setWalletbalance( withdrawableBalance +  depositBalance )
+        if(depositBalance && withdrawableBalance>=0){
+            setWalletbalances( withdrawableBalance +  depositBalance )
         }
+       
        },[rupees,withdrawableBalance, depositBalance])
     
     return (
 
-        <div className={`flex relative   items-center justify-center       h-full    bg-gray-400`}>
+        <div className={`flex relative   items-center justify-center   min-h-screen      h-full    bg-gray-400`}>
 
-            <div className={`  bg-[#22275b]   pt-[3rem]   ${transactions && transactions.length==0?"h-screen":"h-full"}     w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
+            <div className={`  bg-[#22275b]   pt-[3rem]   min-h-screen    w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]    `}>
                 <div className='text-white  flex items-center fixed top-0    w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  justify-between px-3 h-[3rem] bg-[#2b3270]'>
                     <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
                      
@@ -51,7 +57,7 @@ const Wallet = () => {
                             <p> Balance </p>
                         </div>
                         <div className='flex  gap-2 items-center'>
-                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ {withdrawableBalance &&walletbalance >0 ?walletbalance : "0.00"}</h2>
+                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ { depositBalance  && walletbalances > 0 ? walletbalances : "0.00"}</h2>
                             <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
                         </div>
                         <div className='flex  items-center justify-between'>

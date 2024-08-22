@@ -126,8 +126,8 @@ const Scannerpayment = () => {
     };
 
     return (
-        <div className='flex items-center w-full bg-white z-50 relative justify-center'>
-            <div className="w-[100vw] sm:w-[400px] lg:w-[400px] md:w-[400px] mt-[2rem] mx-auto bg-[#ffffff] shadow-lg rounded-lg overflow-hidden p-6">
+        <div className='flex items-center w-full h-[100vh]  overflow-hidden bg-[#f4f4f4] z-50 relative justify-center'>
+            <div className="w-[100vw] sm:w-[400px]   lg:w-[400px] md:w-[400px] mt-[2rem] mx-auto bg-[#ffffff] shadow-lg rounded-lg overflow-hidden p-6">
             {loading ||  loading2 && <Loading />}
                 <h1 className="text-center text-lg font-bold text-green-600 mb-4">{way}</h1>
                 <div className='flex w-full items-start flex-col gap-3 text-nowrap text-[0.9rem] text-start'>
@@ -168,7 +168,7 @@ const Scannerpayment = () => {
                     <ul className="list-decimal list-inside text-gray-800">
                         <li>
                             Please contact us if you have any payment issues:
-                            <a href="mailto:sk4896323@gmail.com" className="text-blue-600"> sk4896323@gmail.com</a>
+                            <a href="mailto:sureshku2q4@gmail.com" className="text-blue-600"> support@reddotgame.com</a>
                         </li>
                         <li>
                             Please select the payment method you need and make sure your phone has the corresponding wallet software installed.

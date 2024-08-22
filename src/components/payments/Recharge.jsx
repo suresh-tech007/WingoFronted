@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import paytm from "../../iamges/paytm.png";
 import upiimg from "../../iamges/upiqr.png"
 import all from "../../iamges/all.png"
@@ -7,7 +7,7 @@ import USTD from "../../iamges/USTD.png"
 import TRX from "../../iamges/TRX.jpg"
 import Amountbutton from './Amountbutton';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearErrors, getUpiDetails } from '../../redux/actions/PaymentAciton';
+import { clearErrors, getUpiDetails, walletbalance } from '../../redux/actions/PaymentAciton';
 import { toast } from 'react-toastify';
 import Loading from '../component/Loading';
 
@@ -20,16 +20,18 @@ const generateTransactionId = () => {
 
 
 const Recharge = () => {
+    const location = useLocation();
     const transactionId = generateTransactionId();
     const { withdrawableBalance,depositBalance,UpiDetails,loading ,message,error} = useSelector((state) => state.payment);
-    const [amount, setAmount] = useState("");
+
     const [way, setWay] = useState('');
     const [upi, setUpi] = useState('');
     const [disabled, setDisabled] = useState(false);
     const [orderNumber, setOrderNumber] = useState(null);
     const [walletAddress, setWalletAddress] = useState("");
-    
-    const [walletbalance, setWalletbalance] = useState(null)
+    const { amount:Depositamount } = location.state || {};
+    const [walletbalances, setWalletbalances] = useState(null)
+    const [amount, setAmount] = useState(Depositamount || "");
 
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -86,19 +88,21 @@ const Recharge = () => {
     }
 
     useEffect(() => {
+        dispatch(walletbalance())
 
         if (way === null || amount === null) {
             setDisabled(true)
         } else {
             setDisabled(false)
         }
-        if (withdrawableBalance && depositBalance) {
-            setWalletbalance( withdrawableBalance +  depositBalance)
+        if(depositBalance && withdrawableBalance>=0){
+            setWalletbalances( withdrawableBalance +  depositBalance )
         }
         if(UpiDetails){
             setUpi(UpiDetails.upiId)
             setWalletAddress(UpiDetails.walletId)
         }
+         
         
 
         setOrderNumber(transactionId)
@@ -112,6 +116,7 @@ const Recharge = () => {
             dispatch(clearErrors())
         }
         dispatch(getUpiDetails())
+        
 
         return ;
 
@@ -139,7 +144,7 @@ const Recharge = () => {
                             <p> Balance </p>
                         </div>
                         <div className='flex  gap-2 items-center'>
-                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '> ₹ {depositBalance  &&walletbalance >0 ?walletbalance : "0.00"}</h2>
+                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '> ₹ {depositBalance  && walletbalances >0 ?walletbalances : "0.00"}</h2>
                             <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
                         </div>
                         <div className='flex  items-center justify-between'>

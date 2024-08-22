@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import socket from '../../component/socket/socket.js';
+import socket from '../../../socket/socket.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { adduserbatle, clearErrors } from '../../../redux/actions/Gameaction.js';
 import { toast } from 'react-toastify';
