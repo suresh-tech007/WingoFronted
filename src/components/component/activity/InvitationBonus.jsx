@@ -17,7 +17,7 @@ const InvitationBonus = () => {
   );
    
 
-  const link = `http://localhost:5173/register?invitationCode=${user.referCode}`
+  const link = `https://reddotreal.netlify.app/register?invitationCode=${user.referCode}`
   const copyToClipboard = (ordernum) => {
     navigator.clipboard.writeText(ordernum).then(() => {
       toast.success('Text copied to clipboard');
