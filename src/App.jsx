@@ -41,7 +41,6 @@ import WithdrawReq from './components/Admin/WithdrawReq.jsx';
 import AdminHome from './components/Admin/AdminHome.jsx';
 import Admins from './components/Admin/Admins.jsx';
 import DepositUpiChange from './components/Admin/DepositUpiChange.jsx';
-import DepositModal from './components/component/DepositModal .jsx';
 import { checkNewUser, walletbalance } from './redux/actions/PaymentAciton.js';
 import InvitationBonus from './components/component/activity/InvitationBonus.jsx';
 import InvitationRewardRules from './components/component/activity/InvitationRewardRules.jsx';
