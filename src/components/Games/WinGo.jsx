@@ -49,7 +49,7 @@ const WinGo = () => {
   const { error:error2} = useSelector((state) => state.user);
   const { totalPages,currentPage,resultsPerPage,totalResults, error } = useSelector((state) => state.batle);
   const dispatch = useDispatch()
- 
+  
    
   const [selected, setSelected] = useState("1Min");
   const [countdownDigits, setCountdownDigits] = useState([]);
@@ -62,7 +62,7 @@ const WinGo = () => {
   const [page, setPage] = useState(currentPage)
   const [walletBalances, setWalletBalances] = useState(null)
 
-
+ 
  
 
   const navigate = useNavigate();
@@ -166,7 +166,7 @@ const WinGo = () => {
 
 
 
-    if (depositBalance && withdrawableBalance>=0) {
+    if (depositBalance !==null && withdrawableBalance !== null) {
       setWalletBalances( withdrawableBalance +  depositBalance)
     }
     if(error){
@@ -266,7 +266,7 @@ const [depositModel , setDepositModel] = useState(false);
         { depositModel &&  <DepositModal setDepositModel={setDepositModel} deposits={null} updateDeposit={400} />}
         <div className={` bg-custom-image bg-center bg-cover bg-no-repeat  mt-5  flex flex-col  items-center gap-2 bg-[#374992]    rounded-2xl m-4 p-4 `} >
           <div className='flex  items-center gap-4'>
-            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {depositBalance && walletBalances > 0 ? walletBalances : "0.00"}</p>
+            <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {depositBalance !==null && walletBalances !==null && walletBalances > 0 ? walletBalances : "0.00"}</p>
             <button onClick={reloadhanlde}  ><img className='w-[1.1rem]  p1-0.5' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
           </div>
           <div className='flex  items-center gap-4 mb-4'>

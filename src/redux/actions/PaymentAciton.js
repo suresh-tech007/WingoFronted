@@ -13,10 +13,12 @@ export const getreferUser = () => async (dispatch) => {
     dispatch({ type:GET_REFER_USER_REQUEST });
 
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
       withCredentials: true,
     };
-
     const { data } = await axios.get(
       `${backedurl}/api/v1/depositbonusforrefers`,
       config
@@ -42,10 +44,12 @@ export const getreferUserDepositDetails = () => async (dispatch) => {
     dispatch({ type:GET_REFER_USER_DEPOSIT_DETAILS_REQUEST });
 
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
       withCredentials: true,
     };
-
     const { data } = await axios.get(
       `${backedurl}/api/v1/referUserDepositDetails`,
       config
@@ -72,14 +76,17 @@ export const walletbalance = () => async (dispatch) => {
     dispatch({ type:WALLET_BALANCE_REQUEST });
 
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
       withCredentials: true,
     };
-
     const { data } = await axios.get(
       `${backedurl}/api/v1/walletbalance`,
       config
     );
+     
     dispatch({ type: WALLET_BALANCE_SUCCESS, payload: data });
   } catch (error) {
      
@@ -102,10 +109,12 @@ export const checkNewUser = () => async (dispatch) => {
     dispatch({ type:CHECK_NEW_USER_REQ });
 
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
       withCredentials: true,
     };
-
     const { data } = await axios.get(
       `${backedurl}/api/v1/checknewuserdepositreq`,
       config
@@ -133,10 +142,12 @@ export const getUpiDetails = () => async (dispatch) => {
     dispatch({ type:GET_UPIDETAILS_REQUEST });
 
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
       withCredentials: true,
     };
-
     const { data } = await axios.get(
       `${backedurl}/api/v1/getUpiDetails`,
       config
@@ -163,11 +174,13 @@ export const depositrequest = (formdata) => async (dispatch) => {
      
         try {
           dispatch({ type:DEPOSIT_ADD_REQ_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.post(
             `${backedurl}/api/v1/deposit`,
@@ -196,11 +209,13 @@ export const deposithistory = () => async (dispatch) => {
          
         try {
           dispatch({ type:DEPOSIT_HISTORY_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.get(
             `${backedurl}/api/v1/depositHistory`,
@@ -227,11 +242,13 @@ export const addMoneyinwallet = (formdata) => async (dispatch) => {
        
         try {
           dispatch({ type:ADD_MONEYWALLET_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.post(
             `${backedurl}/api/v1/addMoneyUserwallet`,
@@ -256,11 +273,13 @@ export const addbankdetails = (formdata) => async (dispatch) => {
         
         try {
           dispatch({ type:ADD_BANKDETAILS_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.post(
             `${backedurl}/api/v1/addbankaccount`,
@@ -286,11 +305,13 @@ export const getbankdetails = () => async (dispatch) => {
         
         try {
           dispatch({ type:GET_BANKDETAILS_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.get(
             `${backedurl}/api/v1/getBankdetails`,
@@ -316,11 +337,13 @@ export const withdrawrequestforuser = (formmdata) => async (dispatch) => {
   
         try {
           dispatch({ type:ADD_WITHDRAW_REQ_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.post(
             `${backedurl}/api/v1/withdrawRequest`,
@@ -348,11 +371,13 @@ export const withdrawhistory = () => async (dispatch) => {
         
         try {
           dispatch({ type:WITHDRAW_HISTORY_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.get(
             `${backedurl}/api/v1/withdrawHistory`,
@@ -382,11 +407,13 @@ export const AlluserswithdrawRequest = () => async (dispatch) => {
         
         try {
           dispatch({ type:ALL_USERS_WITHDRAW_REQ_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.get(
             `${backedurl}/api/v1/admin/AlluserswithdrawRequest `,
@@ -414,11 +441,13 @@ export const UpdateWithdrawrequest = (formdata) => async (dispatch) => {
         
         try {
           dispatch({ type:UPDATE_WITHDRAW_REQ_FOR_ADMIN_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.put(
             `${backedurl}/api/v1/admin/acceptWithdrawrequest `,
@@ -449,11 +478,13 @@ export const UserTransactionHistory = () => async (dispatch) => {
         
         try {
           dispatch({ type:TRANSACTION_HISTORY_REQUEST });
-      
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+       const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.get(
             `${backedurl}/api/v1/userTransactionHistory`,

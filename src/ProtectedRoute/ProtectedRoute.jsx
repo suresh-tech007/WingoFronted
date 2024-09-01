@@ -8,6 +8,8 @@ const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => {
    
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
  
+ 
+ 
   const location = useLocation();
   const dispatch = useDispatch()
 
@@ -17,7 +19,7 @@ const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => {
      
   }, [location]);
 
-  if (loading) {
+  if (loading==true) {
     return (
       <div className="flex h-screen items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400 ">
          <Loading />

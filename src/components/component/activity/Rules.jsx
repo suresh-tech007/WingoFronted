@@ -11,7 +11,7 @@ const Rules = () => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg mx-auto mt-4">
       {/* Header */}
-      <div className="bg-blue-600 text-white text-center py-2 rounded-t-lg">
+      <div className="bg-blue-600 text-white text-center py-2 rounded-lg">
         <h3 className="font-bold text-lg">Rules</h3>
       </div>
       

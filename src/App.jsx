@@ -42,7 +42,7 @@ import AdminHome from './components/Admin/AdminHome.jsx';
 import Admins from './components/Admin/Admins.jsx';
 import DepositUpiChange from './components/Admin/DepositUpiChange.jsx';
 import DepositModal from './components/component/DepositModal .jsx';
-import { checkNewUser } from './redux/actions/PaymentAciton.js';
+import { checkNewUser, walletbalance } from './redux/actions/PaymentAciton.js';
 import InvitationBonus from './components/component/activity/InvitationBonus.jsx';
 import InvitationRewardRules from './components/component/activity/InvitationRewardRules.jsx';
 import InvitationRecord from './components/component/activity/InvitationRecord.jsx';
@@ -57,6 +57,7 @@ function App() {
   const {  user } = useSelector(
     (state) => state.user
   );
+  // console.log(user)
    
   const [depositModel , setDepositModel] = useState(false)
   const dispatch = useDispatch();
@@ -82,12 +83,17 @@ function App() {
 
     return item.value;
 }
+const token = localStorage.getItem("token")
 
   useEffect(()=>{
     const values = getDataWithExpiry("timeredepositmodel")
 
-    dispatch(loaduser())
+  
+    // console.log(token)
 
+    if(!user && token){
+      dispatch(loaduser())
+    }
     setTimeout(() => {
       if(!isNewuser){
         setDepositModel(true)
@@ -95,11 +101,15 @@ function App() {
       
     }, values || 3000);
     
-    dispatch(resultHistory(1,10))
+    if(user){
+     
+      dispatch(resultHistory(1,10))
     dispatch(checkNewUser())
+    dispatch(walletbalance()) 
+    }
     
      
-  },[dispatch])
+  },[dispatch,user])
 
  
    

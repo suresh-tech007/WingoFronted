@@ -18,7 +18,7 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const { error, loading, user } = useSelector(
+  const { error, user } = useSelector(
     (state) => state.user
   );
 
@@ -88,9 +88,9 @@ const LoginForm = () => {
   const redirect=sessionStorage.getItem('lastVisitedPage') || '/home'
    
   useEffect(()=>{
-    if (user!==null) { 
+    if (user!=null && user !== undefined) { 
+      console.log(user)
       navigate(redirect)
-
     }
   },[user,navigate,redirect])
    
@@ -100,20 +100,20 @@ const LoginForm = () => {
       rememberMe: checked
     }));
     
-    if (error) {
-      toast.error(error);
-      dispatch(clearErrors());
-    }
+    // if (error) {
+    //   console.log(error)
+      
+    // }
      
      
     
 
-  }, [ checked, error,toast,dispatch]);
+  }, [ checked, error,dispatch]);
 
   return (
     <div className="flex h-screen relative z-50 items-center justify-center min-h-screen max-h-screen overflow-hidden bg-gray-400">
       <div className="py-8 bg-[#2b3270] h-screen  w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]   ">
-        <div className='py-5 px-2'>  { loading && <Loading />}
+        <div className='py-5 px-2'>   
           <h2 className="text-white font-sans font-bold text-xl p-3 text-start">Log in</h2>
           <p className='text-white px-3 text-[10px]'>Please log in with your phone number or email</p>
           <p className='text-white px-3 text-[10px] mb-4'>If you forget your password, please contact customer service</p>
@@ -166,6 +166,9 @@ const LoginForm = () => {
                       className="bg-[#313672] text-white p-2 rounded-r-md focus:outline-none w-full"
                     />
                   </div>
+                </div>
+                <div  className="flex items-center pb-1 px-2 relative ">
+                 {error!==null && error!==undefined &&  <p className=' text-red-600 text-[0.7rem]  font-bold'>Please Enter valid values</p>}
                 </div>
                 <div onClick={changecheckde} className="flex items-center pb-3 px-1 relative ">
                   <input

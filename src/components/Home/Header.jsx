@@ -8,7 +8,7 @@ const Header = () => {
 
             <div
                 className='fixed bottom-0      flex items-center   transition-all duration-300  h-[4rem]   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] justify-between px-5   bg-[#0a1846] text-[0.9rem]  '>
-                <Link to={"/Home"} className={` transition-all duration-300  flex items-center  flex-col ${selected=="home" ?" text-blue-500 " :" text-[#aca8a8c0]" }`} onClick={()=>setSelected("home")}>
+                <Link to={"/Home"} className={` transition-all duration-300  flex items-center  flex-col ${selected=="Home" ?" text-blue-500 " :" text-[#aca8a8c0]" }`} onClick={()=>setSelected("home")}>
                     <img className='w-[1.4rem]' src={`https://img.icons8.com/?size=100&id=kzcQaYg7aTjb&format=png&color=${selected=="home" ?"61a9ff" :"aca8a8c0" }`} alt="Home" />
                     <p>Home</p>
                 </Link>

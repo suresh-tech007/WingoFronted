@@ -31,9 +31,10 @@ const Wallet = () => {
         dispatch(walletbalance())
  
        
-        if(depositBalance && withdrawableBalance>=0){
-            setWalletbalances( withdrawableBalance +  depositBalance )
-        }
+       
+    if (depositBalance !==null && withdrawableBalance !== null) {
+        setWalletbalances( withdrawableBalance +  depositBalance)
+      }
        
        },[rupees,withdrawableBalance, depositBalance])
     
@@ -57,7 +58,7 @@ const Wallet = () => {
                             <p> Balance </p>
                         </div>
                         <div className='flex  gap-2 items-center'>
-                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ { depositBalance  && walletbalances > 0 ? walletbalances : "0.00"}</h2>
+                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ { depositBalance !==null  && walletbalances !==null && walletbalances > 0 ? walletbalances : "0.00"}</h2>
                             <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
                         </div>
                         <div className='flex  items-center justify-between'>

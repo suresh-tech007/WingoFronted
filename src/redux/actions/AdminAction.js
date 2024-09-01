@@ -14,10 +14,13 @@ export const updateadminupi = (formdata) => async (dispatch) => {
         try {
           dispatch({ type:UDPATE_UPIDETAILS_REQUEST });
       
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
+        const config = {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('token'),   
+        "Content-Type": "application/json",  
+      },
+      withCredentials: true,
+    };
       
           const { data } = await axios.post(
             `${backedurl}/api/v1/admin/Upifordeposit`,

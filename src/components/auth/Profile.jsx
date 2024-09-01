@@ -9,14 +9,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { GiWallet } from "react-icons/gi";
 import { IoIosWallet } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/actions/userAction";
+import { loaduser, logout } from "../../redux/actions/userAction";
 import { toast } from "react-toastify";
 import Loading from "../component/Loading";
 import DepositModal from "../component/DepositModal ";
 import { walletbalance } from "../../redux/actions/PaymentAciton";
 
 const Profile = () => {
-    const { isAuthenticated, user, message, loading } = useSelector((state) => state.user);
+    const { isAuthenticated, user, message,loading } = useSelector((state) => state.user);
     const { withdrawableBalance, depositBalance, loading: Load } = useSelector((state) => state.payment);
     const [timeout, setTimeout] = useState(null)
     const [walletbalances, setWalletbalances] = useState(null)
@@ -27,6 +27,11 @@ const Profile = () => {
     const hanldelogout = () => {
 
         dispatch(logout())
+        dispatch(loaduser())
+       setTimeout(() => {
+        navigate("/login")
+       }, 300);
+      
         toast("Logout successfully")
 
     }
@@ -45,9 +50,10 @@ const Profile = () => {
             const date = new Date(timestamp).toISOString().split('T')[0];
             setTimeout(date)
         }
-        if(depositBalance && withdrawableBalance >=0){
-            setWalletbalances( withdrawableBalance +  depositBalance )
-        }
+       
+    if (depositBalance !==null && withdrawableBalance !== null) {
+        setWalletbalances( withdrawableBalance +  depositBalance)
+      }
 
     }, [user, isAuthenticated, withdrawableBalance, depositBalance])
    
@@ -81,7 +87,7 @@ const Profile = () => {
                     <div className="  bg-[#374992]   text-white font-serif  flex  rounded-3xl p-5 m-5 mx-6 w-[95%] z-10  flex-col justify-evenly ">
                         <div className="">
                             <span className="text-gray-400 ">Total Amount</span>
-                            <div className="mb-5">₹ {  depositBalance && walletbalances > 0 ? walletbalances : "0.00"}</div>
+                            <div className="mb-5">₹ {  depositBalance!==null && walletbalances !==null && walletbalances > 0 ? walletbalances :  "0.00" }</div>
                         </div>
 
                         <div className="flex flex-row w-full gap-7 items-center  ">
