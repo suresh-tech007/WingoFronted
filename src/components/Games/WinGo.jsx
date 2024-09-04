@@ -76,14 +76,14 @@ const WinGo = () => {
     if (!socketRef.current) {
       socketRef.current =  socket
 
-      // Socket event listeners
-      // socketRef.current.on("connect", () => {
-      //   console.log("Connected to the server");
-      // });
+      
+      socketRef.current.on("connect", () => {
+        console.log("Connected to the server");
+      });
 
-      // socketRef.current.on("disconnect", () => {
-      //   console.log("Disconnected from the server");
-      // });
+      socketRef.current.on("disconnect", () => {
+        console.log("Disconnected from the server");
+      });
 
       socketRef.current.on("countdown", (data) => {
         setCountdown(prevCountdowns => ({
@@ -103,9 +103,9 @@ const WinGo = () => {
 
     // Cleanup on component unmount
     return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
+      // if (socketRef.current) {
+      //   socketRef.current.disconnect();
+      // }
     };
   }, []);
 
