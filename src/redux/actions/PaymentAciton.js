@@ -23,10 +23,10 @@ export const getreferUser = () => async (dispatch) => {
       `${backedurl}/api/v1/depositbonusforrefers`,
       config
     );
-    console.log(data)
+    
     dispatch({ type: GET_REFER_USER_SUCCESS, payload: data });
   } catch (error) {
-     console.log(error)
+      
       dispatch({
         type: GET_REFER_USER_SUCCESS,
         payload: error.response
@@ -54,10 +54,10 @@ export const getreferUserDepositDetails = () => async (dispatch) => {
       `${backedurl}/api/v1/referUserDepositDetails`,
       config
     );
-    console.log(data)
+  
     dispatch({ type: GET_REFER_USER_DEPOSIT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-     console.log(error)
+     
       dispatch({
         type: GET_REFER_USER_DEPOSIT_DETAILS_FAIL,
         payload: error.response
@@ -437,7 +437,7 @@ export const AlluserswithdrawRequest = () => async (dispatch) => {
         }
       };
 export const UpdateWithdrawrequest = (formdata) => async (dispatch) => {
-  console.log(formdata)
+ 
         
         try {
           dispatch({ type:UPDATE_WITHDRAW_REQ_FOR_ADMIN_REQUEST });
@@ -459,7 +459,7 @@ export const UpdateWithdrawrequest = (formdata) => async (dispatch) => {
           dispatch({ type: UPDATE_WITHDRAW_REQ_FOR_ADMIN_SUCCESS, payload: data });
 
         } catch (error) {
-          console.log(error)
+          
      
            
             dispatch({

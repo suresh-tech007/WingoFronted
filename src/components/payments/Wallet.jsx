@@ -52,7 +52,7 @@ const Wallet = () => {
                 </div>
 
                 <div className='  ' >
-                    <div className='bg-gradient-to-r from-teal-400  to-blue-500   h-[20vh] rounded-[20px] m-3 p-5 text-white flex  flex-col justify-between   '>
+                    <div className='bg-gradient-to-r from-teal-400  to-blue-500     rounded-[20px] m-3 p-5 text-white flex  flex-col justify-between   '>
                         <div className='flex   items-center gap-3  '>
                             <img className='  h-[2rem]' src="https://img.icons8.com/?size=100&id=LxhmnBiCAvFS&format=png&color=000000" alt="" />
                             <p> Balance </p>

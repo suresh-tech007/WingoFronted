@@ -122,7 +122,7 @@ export const loaduser = () => async (dispatch) => {
  
   try {
     dispatch({ type: LOAD_REGISTER_REQUEST });
-    // console.log(localStorage.getItem('token'))
+   
     const token =  localStorage.getItem('token')
     const config = {
       headers: {
@@ -324,7 +324,7 @@ export const updateuser = (id, userdata) => async (dispatch) => {
 
     dispatch({ type: UPDATE_USER_SUCCESS, payload: data.message });
   } catch (error) {
-    console.log(error)
+ 
    
     
       dispatch({

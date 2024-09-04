@@ -109,7 +109,7 @@ const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, 
       const batleamount = balance * quantity
 
       if (walletBalance > batleamount && walletBalance > 10 ) {
-        console.log('Sending bet data:', betData);
+        
         dispatch(adduserbatle(betData))
         socket.emit('placeBet', betData);  
         setTimeout(() => {

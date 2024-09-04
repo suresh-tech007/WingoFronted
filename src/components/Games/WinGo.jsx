@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import clockbig from "../../iamges/wingoimg/time_a-d4670671.png"
 import clocksmall from "../../iamges/wingoimg/time-d2b95809.png"
@@ -21,9 +21,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, walletbalance } from '../../redux/actions/PaymentAciton';
 import { resultHistory } from '../../redux/actions/Gameaction';
 import { io } from 'socket.io-client';
-import { backedurl } from '../../redux/backedUrl.js';
+ 
 import { toast } from 'react-toastify';
 import DepositModal from '../component/DepositModal .jsx';
+import socket from '../../socket/socket.js';
 
  
 
@@ -33,6 +34,7 @@ const imges = [coin0, coin1, coin2, coin3, coin4, coin5, coin6, coin7, coin8, co
 const xbutton = [1, 5, 10, 20, 50, 100]
 
 const WinGo = () => {
+  const socketRef = useRef(null);
   const [countdown, setCountdown] = useState({
     "1Min": 0,
     "3Min": 0,
@@ -68,114 +70,80 @@ const WinGo = () => {
   const navigate = useNavigate();
 
 
-
-
+ 
   useEffect(() => {
-    
-    const socket = io(backedurl);
-    socket.on('connect', () => {
-     
-    });
-    
+    // Initialize socket connection
+    if (!socketRef.current) {
+      socketRef.current =  socket
 
-    socket.on("countdown", (data) => {
-     
-      setCountdown(prevCountdowns => ({
-        ...prevCountdowns,
-        [data.type]: data.value,
-      }));
-    });
-  
-    
-    socket.emit("requestGameIDs");
-  
-    // Listen karte hain gameID updates ke liye
-    socket.on("gameID", (newGameIDs) => {
-      setGameIDs(newGameIDs);
-    });
+      // Socket event listeners
+      // socketRef.current.on("connect", () => {
+      //   console.log("Connected to the server");
+      // });
 
-    socket.on("gameData", (data) => {
-      setGameData(data);
-    });
+      // socketRef.current.on("disconnect", () => {
+      //   console.log("Disconnected from the server");
+      // });
 
-    
+      socketRef.current.on("countdown", (data) => {
+        setCountdown(prevCountdowns => ({
+          ...prevCountdowns,
+          [data.type]: data.value,
+        }));
+      });
 
-    return () => socket.disconnect();
+      socketRef.current.on("gameID", (newGameIDs) => {
+        setGameIDs(newGameIDs);
+      });
 
+      socketRef.current.on("gameData", (data) => {
+        setGameData(data);
+      });
+    }
+
+    // Cleanup on component unmount
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
   }, []);
 
   useEffect(() => {
-    dispatch(walletbalance())
- 
-       
-   
-    const socket = io(backedurl);
+     
 
-    socket.emit('sendMessage', selected);
-
-    if (countdown["1Min"] === 0) {
-      socket.emit('timerEnded', "1Min");
+    if (countdown[selected] === 0) {
+      socketRef.current.emit('timerEnded', selected);
       setTimeout(() => {
-        dispatch( walletbalance())
-        dispatch(resultHistory(currentPage,resultsPerPage))
-      }, 200)
-
-    }
-    else if (countdown["3Min"] === 0) {
-      socket.emit('timerEnded', "3Min");
-      setTimeout(() => {
-        dispatch( walletbalance())
-        dispatch(resultHistory(currentPage,resultsPerPage))
-      }, 200)
-    }
-    else if (countdown["5Min"] === 0) {
-      socket.emit('timerEnded', "5Min");
-      setTimeout(() => {
-        dispatch( walletbalance())
-        dispatch(resultHistory(currentPage,resultsPerPage))
-      }, 200)
-
-    }
-    else if (countdown["10Min"] === 0) {
-      socket.emit('timerEnded', "10Min");
-      setTimeout(() => {
-        dispatch( walletbalance())
-            dispatch(resultHistory(currentPage,resultsPerPage))
-      }, 200)
-
+        dispatch(walletbalance());
+        dispatch(resultHistory(currentPage, resultsPerPage));
+      }, 200);
     }
 
-
-
-    const coundownmange = (select) => {
+    const countdownManage = (select) => {
       setCountdownDigits(countdown[select].toString().padStart(2, '0').split(''));
       const timeString = formatTime(countdown[select]);
       setDigits(timeString.split(''));
     };
-    coundownmange(selected);
+    countdownManage(selected);
 
     if (countdown[selected] <= 5) {
       setSelecteX(null);
       setSelectColor(null);
       setBigsmall(null);
+      socketRef.current.emit('finalizeBets', countdown);
     }
 
-    if (countdown[selected] <= 5) {
-      socket.emit('finalizeBets', countdown);
+    if (depositBalance !== null && withdrawableBalance !== null) {
+      setWalletBalances(withdrawableBalance + depositBalance);
     }
 
-
-
-    if (depositBalance !==null && withdrawableBalance !== null) {
-      setWalletBalances( withdrawableBalance +  depositBalance)
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
     }
-    if(error){
-      toast.error(error)
-      dispatch(clearErrors())
-    }
-    
 
-  }, [selected,page,dispatch,error, countdown,dispatch, depositBalance,withdrawableBalance]);
+  }, [selected, dispatch, error, countdown, depositBalance, withdrawableBalance]);
   function getDataWithExpiry(key) {
     const itemStr = localStorage.getItem(key);
 

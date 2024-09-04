@@ -89,7 +89,6 @@ const LoginForm = () => {
    
   useEffect(()=>{
     if (user!=null && user !== undefined) { 
-      console.log(user)
       navigate(redirect)
     }
   },[user,navigate,redirect])

@@ -152,8 +152,8 @@ const Withdraw = () => {
      
     dispatch(walletbalance())
        
-    if(depositBalance && withdrawableBalance>=0){
-        setWalletbalances( withdrawableBalance +  depositBalance )
+    if (depositBalance !==null && withdrawableBalance !== null) {
+      setWalletbalances( withdrawableBalance +  depositBalance)
     }
      
    
@@ -174,13 +174,13 @@ const Withdraw = () => {
           </div>
         </div>
         <div className='  ' >
-          <div className='bg-gradient-to-r from-teal-400  to-blue-500   h-[20vh] rounded-[20px] m-3 p-5 text-white flex  flex-col justify-between   '>
+          <div className='bg-gradient-to-r from-teal-400  to-blue-500     rounded-[20px] m-3 p-5 text-white flex  flex-col justify-between   '>
             <div className='flex   items-center gap-3  '>
               <img className='  h-[2rem]' src="https://img.icons8.com/?size=100&id=LxhmnBiCAvFS&format=png&color=000000" alt="" />
               <p>Available Balance </p>
             </div>
             <div className='flex  gap-2 items-center'>
-              <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹ {depositBalance && withdrawableBalance && walletbalances > 0 ? walletbalances : "0.00"}</h2>
+              <h2 className='text-start font-bold font-sans text-[1.6rem]  '>₹  { depositBalance !==null  && walletbalances !==null && walletbalances > 0 ? walletbalances : "0.00"}</h2>
               <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
             </div>
             <div className='flex  items-center justify-between'>
