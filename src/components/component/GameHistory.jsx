@@ -36,8 +36,8 @@ const GameHistory = () => {
         <div className={`flex relative h-full items-center $  justify-center bg-gray-400`}>
 
 
-            <div className={`bg-[#22275b] pt-[3rem]   ${!gamehistory || gamehistory.length <= 12 ? "h-screen " : "h-full"}   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  `}>
             {loading && <Loading />}
+            <div className={`bg-[#22275b] pt-[3rem]   ${!gamehistory || gamehistory.length <= 12 ? "h-screen " : "h-full"}   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  `}>
                 <div className=' fixed top-0 bg-[#22275b] w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  p-4 flex text-white items-center  font-semibold text-[1.1rem] gap-1'>
                     <img onClick={backhandle} className='w-[2rem] cursor-pointer' src="https://img.icons8.com/?size=100&id=85099&format=png&color=D9E2F299" alt="back" />
                     <h1 className='ml-6'> Transaction history</h1>
