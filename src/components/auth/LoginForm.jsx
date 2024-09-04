@@ -171,7 +171,7 @@ const LoginForm = () => {
                 </div>
                 <div onClick={changecheckde} className="flex items-center pb-3 px-1 relative ">
                   <input
-                    id="remember-me1"
+                   
                     type="checkbox"
                     className="appearance-none h-4 w-4 border border-gray-300 rounded-full focus:outline-none"
                     checked={formData.rememberMe}
@@ -237,7 +237,7 @@ const LoginForm = () => {
 
                 <div onClick={changecheckde} className="flex items-center pb-3 px-1 relative">
                   <input
-                    id="remember-me2"
+                     
                     type="checkbox"
 
                     className="appearance-none h-4 w-4 border border-gray-300 rounded-full focus:outline-none"
