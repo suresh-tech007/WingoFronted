@@ -78,11 +78,11 @@ const WinGo = () => {
 
       
       socketRef.current.on("connect", () => {
-        console.log("Connected to the server");
+        // console.log("Connected to the server");
       });
 
       socketRef.current.on("disconnect", () => {
-        console.log("Disconnected from the server");
+        // console.log("Disconnected from the server");
       });
 
       socketRef.current.on("countdown", (data) => {
@@ -93,7 +93,7 @@ const WinGo = () => {
       });
 
       socket.emit("requestGameIDs");
-      
+
       socketRef.current.on("gameID", (newGameIDs) => {
         setGameIDs(newGameIDs);
       });
