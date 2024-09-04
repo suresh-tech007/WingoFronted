@@ -170,7 +170,7 @@ const LoginForm = () => {
                  {error!==null && error!==undefined &&  <p className=' text-red-600 text-[0.7rem]  font-bold'>Please Enter valid values</p>}
                 </div>
                 <div onClick={changecheckde} className="flex items-center pb-3 px-1 relative ">
-                  <input
+                  <input  
                    
                     type="checkbox"
                     className="appearance-none h-4 w-4 border border-gray-300 rounded-full focus:outline-none"
