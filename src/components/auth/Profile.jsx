@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import depositeimg from "../../iamges/deposit.png"
 import cardpay from "../../iamges/cardpayment.png"
+import { RiAdminLine } from "react-icons/ri";
+
 import trahistory from "../../iamges/trahistory.png"
 import withdraw from "../../iamges/withdraw.png"
 import { IoMdWallet } from "react-icons/io";
@@ -61,8 +63,8 @@ const Profile = () => {
     return (
         <div className="flex relative    items-center justify-center          bg-gray-400">
 
-            <div className=" py-8  pt-0  bg-[#22275b]       w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]        ">
                 {(loading || Load) && <Loading />}
+            <div className=" py-8  pt-0  bg-[#22275b]       w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]        ">
               
                 <div className=" flex items-center    justify-center flex-col ">
 
@@ -104,9 +106,18 @@ const Profile = () => {
 
                                 <span>Withdraw</span>
                             </Link>
+                            
                         </div>
 
 
+                    </div>
+                    <div className={`w-full h-full px-5     ${user.role==="admin"?"block":"hidden"}`}>
+                    <Link to="/admin" className="flex bg-slate-900  px-3 text-white rounded-lg  cursor-pointer flex-row  justify-between  items-center  py-2    ">
+                    <RiAdminLine className="text-[2rem]" />
+
+
+                                <span>Admin panel &gt;</span>
+                            </Link>
                     </div>
                     <div className="grid grid-cols-2 gap-5 m-5 text-white ">
                         <Link to={"/gamehistory"} className=" bg-slate-900 w-[170px] h-[80px] rounded-lg flex items-center  text-[10px]  p-2 gap-3" >

@@ -498,7 +498,7 @@ export const UserTransactionHistory = () => async (dispatch) => {
         } catch (error) {
         
           
-           
+           console.log(error)
             dispatch({
               type: TRANSACTION_HISTORY_FAIL,
               payload: error.response

@@ -71,8 +71,7 @@ export const gameHistory = () => async (dispatch) => {
   }
 };
 
-export const resultHistory =
-  (page, pageSize = 10) =>
+export const resultHistory = (page, pageSize = 10) =>
   async (dispatch) => {
     try {
       dispatch({ type: GAME_RESULT_HISTORY_REQUEST });
