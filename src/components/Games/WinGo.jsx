@@ -92,6 +92,8 @@ const WinGo = () => {
         }));
       });
 
+      socket.emit("requestGameIDs");
+      
       socketRef.current.on("gameID", (newGameIDs) => {
         setGameIDs(newGameIDs);
       });
@@ -100,6 +102,7 @@ const WinGo = () => {
         setGameData(data);
       });
     }
+  
 
     // Cleanup on component unmount
     return () => {
