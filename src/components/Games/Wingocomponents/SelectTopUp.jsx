@@ -14,7 +14,7 @@ function generateBatleId() {
   return batleId;
 }
 
-const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, selected = null, selectedTimer = null, selectColor = null, selectQuanitity = 1, setSelectColor = null, setSelectednum = null, selectednum = null, setBigsmall = null }) => {
+const SelectTopUp = ({walletBalance=null,setWalletBalance=null,setUserbetData=null, gameIDs = null, selected = null, selectedTimer = null, selectColor = null, selectQuanitity = 1, setSelectColor = null, setSelectednum = null, selectednum = null, setBigsmall = null }) => {
   const dispatch = useDispatch()
   const { error ,loading : Load } = useSelector((state) => state.batle);
   const { depositBalance,withdrawableBalance ,loading } = useSelector((state) => state.payment);
@@ -109,8 +109,10 @@ const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, 
       const batleamount = balance * quantity
 
       if (walletBalance > batleamount && walletBalance > 10 ) {
+
         
         dispatch(adduserbatle(betData))
+        setUserbetData((prev)=>([...prev, betData]));
         socket.emit('placeBet', betData);  
         setTimeout(() => {
         dispatch(walletbalance())
@@ -173,7 +175,7 @@ const SelectTopUp = ({walletBalance=null,setWalletBalance=null, gameIDs = null, 
             <div className="flex items-center gap-2">
               <button onClick={decregequinitity} className="bg-indigo-700 text-white px-4 py-2 rounded">-</button>
               <input
-                type="number"
+                type="text"
                 defaultValue={quantity}
                 className="text-center pl-3 text-[1rem] bg-indigo-700 text-white w-[3.3rem] h-[2.5rem] rounded"
                 readOnly

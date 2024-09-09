@@ -51,7 +51,7 @@ const Settings = () => {
             dispatch(clearErrors())
         }
         if (isUpdated) {
-            toast.success("Password update successfully");
+            toast.success("Username update successfully");
      
       
             dispatch({

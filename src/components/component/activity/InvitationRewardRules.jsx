@@ -18,7 +18,7 @@ const InvitationRewardRules = () => {
   ];
 
   return (
-    <div className="bg-[#22275b]  relative z-50  p-4   shadow-lg max-w-lg mx-auto">
+    <div className="bg-[#22275b]  relative z-50  p-4   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]     shadow-lg max-w-lg mx-auto">
       {/* Header Section */}
       <div className="text-center mb-4">
         <h2 className="text-lg font-bold">Invitation reward rules</h2>

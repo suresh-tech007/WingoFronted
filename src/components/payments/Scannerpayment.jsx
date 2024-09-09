@@ -71,7 +71,7 @@ const Scannerpayment = () => {
         if (upi && way && amount && user) {
             setRequestdata(prev => ({
                 ...prev,
-                upi, way, amount, user: user._id
+                upi:upi, way:way, amount:amount, user: user._id
             }));
         }
         if (message) {
@@ -79,20 +79,22 @@ const Scannerpayment = () => {
             dispatch(clearErrors());
             setTimeout(() => {
                 navigate("/deposit");
-            }, 500);
+            }, 200);
         }
         if (error) {
             toast.error(error);
             dispatch(clearErrors());
             setTimeout(() => {
                 navigate("/deposit");
-            }, 500);
+            }, 300);
         }
     }, [orderNumber, upi, way, amount, user, message, error, dispatch]);
 
     // Submit Handler
     const sumbithandler = () => {
+         
         if (timeLeft > 0) {
+             
             dispatch(depositrequest(requestdata));
             
            

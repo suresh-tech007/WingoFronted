@@ -7,13 +7,14 @@ import withdrawhistory from "../../iamges/withdrawHistory.png"
 import Depocart from '../cart/Depocart';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { walletbalance } from '../../redux/actions/PaymentAciton';
+import { UserTransactionHistory, walletbalance } from '../../redux/actions/PaymentAciton';
  
 const Wallet = () => {
     const dispatch = useDispatch()
     const { depositBalance, withdrawableBalance} = useSelector((state) => state.payment);
     const { transactions } = useSelector((state) => state.payment);
     const [rupees, setRupees] = useState(null);
+   
     
     const [walletbalances,setWalletbalances] = useState(null)
      const navigate = useNavigate();
@@ -21,22 +22,25 @@ const Wallet = () => {
      
         
         const reloadhanlde =()=>{
-            navigate("/wallet")
+            
+            dispatch(walletbalance())
              
         }
         
          
         
        useEffect(()=>{
-        dispatch(walletbalance())
  
-       
-       
     if (depositBalance !==null && withdrawableBalance !== null) {
         setWalletbalances( withdrawableBalance +  depositBalance)
       }
        
        },[rupees,withdrawableBalance, depositBalance])
+       useEffect(()=>{
+        dispatch(walletbalance())
+        dispatch(UserTransactionHistory())
+    },[dispatch])
+
     
     return (
 
@@ -112,8 +116,7 @@ const Wallet = () => {
                     </div>
                  ) : (transactions && 
                     transactions.map((data, index) => (
-                        
-                        <Depocart key={data._id} data={data} />
+                       index<5 && ( <Depocart key={data._id} data={data} />)
                      ))
                  )}
                 </div>

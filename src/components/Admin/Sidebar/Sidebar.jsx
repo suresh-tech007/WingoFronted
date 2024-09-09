@@ -11,7 +11,7 @@ import { LuPiggyBank } from "react-icons/lu";
 
 const Sidebar = () => {
   return (
-    <div className="h-screen  relative z-50    text-nowrap bg-[#0e1726] text-white hover:w-[16rem] w-[4.03rem] transition-all duration-500   shadow-2xl shadow-black overflow-hidden ">
+    <div className="h-screen    z-50   fixed   text-nowrap bg-[#0e1726] text-white hover:w-[16rem] w-[4.03rem] transition-all duration-500   shadow-2xl shadow-black overflow-hidden ">
      <div className='flex  p-2'>
      <img className='text-[0.5rem]  cursor-pointer' src="https://react.vristo.sbthemes.com/assets/images/logo.svg" alt="" />
      <div className="p-4 font-bold   cursor-pointer text-lg">RED-DOT</div>

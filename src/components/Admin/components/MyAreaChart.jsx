@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+
+
+
 
 const data = [
   { name: 'Jan', Deposit: 4000, Withdraw: 2400 },

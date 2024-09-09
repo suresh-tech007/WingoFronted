@@ -4,7 +4,7 @@ import { clearErrors, getAllUsers, updateuser } from '../../../redux/actions/use
 import { toast } from 'react-toastify';
 
 const UserTopUp = ({ user, setTopup, onUpdateRole }) => {
-  const {   error,message} = useSelector((state) => state.profile);
+  const {   error,message } = useSelector((state) => state.profile);
   const [selectedRole, setSelectedRole] = useState({
     role : user.role
   });
@@ -16,9 +16,10 @@ const UserTopUp = ({ user, setTopup, onUpdateRole }) => {
     }));
   };
 
-  const handleSubmit = () => {
-    dispatch(updateuser(user._id, selectedRole));
-    dispatch(getAllUsers())
+  const handleSubmit = async() => {
+    await dispatch(updateuser(user._id, selectedRole));
+    await dispatch(getAllUsers())
+    
     setTopup(false);
   };
 
@@ -33,7 +34,7 @@ const UserTopUp = ({ user, setTopup, onUpdateRole }) => {
       dispatch(clearErrors())
     }
     if(message){
-       
+       toast.success(message)
       dispatch(clearErrors())
     }
     
@@ -42,8 +43,8 @@ const UserTopUp = ({ user, setTopup, onUpdateRole }) => {
 
 
   return (
-    <div onClick={() => setTopup(false)} className="flex items-center absolute justify-center h-[90vh] w-[95%]">
-      <div onClick={handleContentClick} className="w-[30vw] h-[60vh] text-white bg-[#121424] shadow-lg rounded-lg overflow-hidden">
+    <div onClick={() => setTopup(false)} className="flex items-center fixed  justify-center h-[90vh] w-[90%]">
+      <div onClick={handleContentClick} className="w-[30vw]   text-white bg-[#121424] shadow-lg rounded-lg overflow-hidden">
         <div className="flex items-center justify-between p-4 bg-[#121424]">
           <div className="flex items-center">
             <img
@@ -81,14 +82,14 @@ const UserTopUp = ({ user, setTopup, onUpdateRole }) => {
           <div className="py-2">
             <label className="block mb-2 font-semibold">Change Role:</label>
             <select
-              value={selectedRole.role}
+              value={selectedRole.role ? selectedRole.role : user.role}
               onChange={handleRoleChange}
               className="w-full p-2 bg-gray-700 text-white rounded"
             >
               <option value="admin">Admin</option>
               <option value="user">User</option>
             </select>
-          </div>
+          
           {/* Submit button */}
           <button
             onClick={handleSubmit}
@@ -96,6 +97,7 @@ const UserTopUp = ({ user, setTopup, onUpdateRole }) => {
           >
             Submit
           </button>
+          </div>
         </div>
       </div>
     </div>

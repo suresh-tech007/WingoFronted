@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers, getUserDetails, clearErrors } from '../../../redux/actions/userAction';
 import { toast } from 'react-toastify';
 import Loading from '../../component/Loading';
+import UserTopUp from './UserTopUp';
 
 const statusColors = {
   Admin: 'text-green-500',
@@ -14,16 +15,28 @@ const statusColors = {
 const AdminTable = () => {
   const { users, loading, error } = useSelector((state) => state.allUsers);
   const { user, loading: loading2, error: error2 } = useSelector((state) => state.userDetails);
+  const { error:error3, message , loading:loading3} = useSelector((state) => state.profile);
   // console.log(users)
   const dispatch = useDispatch();
   const [topup, setTopup] = useState(false);
   const [adminUsers, setAdminUsers] = useState([]);
 
+   
+  const userdetailhandler =(id)=>{
+    // console.log(id)
+    dispatch(getUserDetails(id))
+    setTopup(true)
+
+  }
   useEffect(() => {
     dispatch(getAllUsers());
 
-    if (error || error2) {
-      toast.error(error || error2);
+    if (error || error2 || error3) {
+      toast.error(error || error2 || error3);
+      dispatch(clearErrors());
+    }
+    if( message){
+      toast.success(message)
       dispatch(clearErrors());
     }
 
@@ -31,11 +44,11 @@ const AdminTable = () => {
       const admins = users.filter(user => user.role === "admin");
       setAdminUsers(admins);
     }
-  }, [dispatch, error, error2, users]);
+  }, [dispatch, error,message, error2, users,error3]);
 
   return (
     <div className="bg-[#060818] absolute right-0 w-[95%] p-6 rounded-lg">
-      
+       {topup && user !==null && <UserTopUp user={user!==null && user} setTopup={setTopup} />}
       <h2 className="text-xl font-bold text-white mb-4">Admin Table</h2>
        
       {loading || loading2 && <Loading />}
@@ -64,7 +77,7 @@ const AdminTable = () => {
                   <button className="text-gray-400 px-2 hover:text-red-500">
                     <FaTrashAlt />
                   </button>
-                  <button onClick={()=>userdetailhandler(row._id)} className="text-gray-400 px-2 hover:text-red-500">
+                  <button  onClick={()=>userdetailhandler(row._id)} className="text-gray-400 px-2 hover:text-red-500">
                   <GrDocumentUpdate />
                   </button>
                 </td>

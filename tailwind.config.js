@@ -5,6 +5,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'scrollbar-thumb': '#4a5568',  // Darker color for the thumb
+        'scrollbar-thumb-hover': '#2c6ee2',  // Darker on hover
+        'scrollbar-track': '#22275b',  // Lighter color for the track
+      },
+      
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
@@ -14,5 +20,9 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),  // Add the scrollbar plugin
+  ],
 }
+
+ 

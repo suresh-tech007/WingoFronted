@@ -42,12 +42,18 @@ import {
   GET_REFER_USER_REQUEST,
   GET_REFER_USER_FAIL,
   GET_REFER_USER_SUCCESS,
-  GET_REFER_USER_DEPOSIT_DETAILS_REQUEST,
-  GET_REFER_USER_DEPOSIT_DETAILS_SUCCESS,
-  GET_REFER_USER_DEPOSIT_DETAILS_FAIL,
+   
+   
+  
   UDPATE_UPIDETAILS_REQUEST,
   UDPATE_UPIDETAILS_SUCCESS,
   UDPATE_UPIDETAILS_FAIL,
+  ALL_DEPOSIT_REQ_BY_ALL_USERS_REQUEST,
+  ALL_DEPOSIT_REQ_BY_ALL_USERS_SUCCESS,
+  ALL_DEPOSIT_REQ_BY_ALL_USERS_FAIL,
+  CLAIMED_REFER_REWARD_REQUEST,
+  CLAIMED_REFER_REWARD_SUCCESS,
+  CLAIMED_REFER_REWARD_FAIL,
 } from "../constants/paymentcontant.js";
 
 export const paymentReducer = (state = {}, action) => {
@@ -65,6 +71,8 @@ export const paymentReducer = (state = {}, action) => {
     case ALL_USERS_WITHDRAW_REQ_REQUEST:
     case CHECK_NEW_USER_REQ:
     case UPDATE_WITHDRAW_REQ_FOR_ADMIN_REQUEST:
+      case ALL_DEPOSIT_REQ_BY_ALL_USERS_REQUEST:
+      case CLAIMED_REFER_REWARD_REQUEST:
       return {
         loading: true,
         ...state,
@@ -93,6 +101,12 @@ export const paymentReducer = (state = {}, action) => {
         loading: false,
         allwithdrawtransaction: action.payload.allwithdrawtransaction,
       };
+    case ALL_DEPOSIT_REQ_BY_ALL_USERS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        alldepositrequests: action.payload.alldepositrequests,
+      };
     case GET_UPIDETAILS_SUCCESS:
       return {
         ...state,
@@ -111,6 +125,7 @@ export const paymentReducer = (state = {}, action) => {
     case ADD_BANKDETAILS_SUCCESS:
     case ADD_WITHDRAW_REQ_SUCCESS:
     case UPDATE_WITHDRAW_REQ_FOR_ADMIN_SUCCESS:
+    case CLAIMED_REFER_REWARD_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -142,6 +157,8 @@ export const paymentReducer = (state = {}, action) => {
     case GET_UPIDETAILS_FAIL:
     case ALL_USERS_WITHDRAW_REQ_FAIL:
     case UPDATE_WITHDRAW_REQ_FOR_ADMIN_FAIL:
+    case CLAIMED_REFER_REWARD_FAIL:
+    case ALL_DEPOSIT_REQ_BY_ALL_USERS_FAIL:
       return {
         ...state,
         loading: false,
@@ -162,7 +179,6 @@ export const paymentReducer = (state = {}, action) => {
 export const referUserreducer = (state = {}, action) => {
   switch (action.type) {
     case GET_REFER_USER_REQUEST:
-    case GET_REFER_USER_DEPOSIT_DETAILS_REQUEST:
       return {
         ...state,
         loading: true,
@@ -174,14 +190,8 @@ export const referUserreducer = (state = {}, action) => {
         loading: false,
         referUserDetails: action.payload,
       };
-    case GET_REFER_USER_DEPOSIT_DETAILS_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        Userdepositdetails: action.payload,
-      };
+      
     case GET_REFER_USER_FAIL:
-    case GET_REFER_USER_DEPOSIT_DETAILS_FAIL:
       return {
         ...state,
         loading: false,

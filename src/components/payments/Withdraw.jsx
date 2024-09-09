@@ -48,7 +48,7 @@ const Withdraw = () => {
 
 
   const reloadhanlde = () => {
-    navigate("/wallet/withdraw")
+    dispatch(walletbalance())
 
   }
   const amountHandle = (e) => {
@@ -74,6 +74,7 @@ const Withdraw = () => {
       toast.error("First Add deposit amount !");
       return;
     }
+     
    
     if (withdrawdata.bankdetails == "" && withdrawdata.way == "bankCard") {
       toast.error("Add your bank account first !");
@@ -165,8 +166,8 @@ const Withdraw = () => {
     <div className="flex relative   items-center justify-center   h-full   max-h-full    bg-gray-400">
       {loading && <Loading />}
 
-      <div className="      bg-[#22275b]   pt-[3rem]       w-[full] sm:w-[400px] lg:w-[400px]  md:w-[400px]      ">
-        <div className='text-white  flex items-center fixed top-0   w-[full] sm:w-[400px] lg:w-[400px]  md:w-[400px]   justify-between px-3 h-[3rem] bg-[#2b3270]'>
+      <div className="      bg-[#22275b]   pt-[3rem]       w-full sm:w-[400px] lg:w-[400px]  md:w-[400px]      ">
+        <div className='text-white  flex items-center fixed top-0   w-full sm:w-[400px] lg:w-[400px]  md:w-[400px]   justify-between px-3 h-[3rem] bg-[#2b3270]'>
           <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
           <div className='flex   gap-[4rem]'>
             <h1>Withdraw</h1>
@@ -275,7 +276,7 @@ bankdetails &&  bankdetails.phoneNumber
                 />
               </div>
             </div>
-            {withdrawdata.way === "USDT" && withdrawalAmount < 10 && (<p className='text-red-500 text-[0.8rem] text-start w-full '>Minimum Withdrawal Amount:  10 USDT</p>)}
+            {withdrawdata.way === "USDT" && withdrawdata.amount < 10 && (<p className='text-red-500 text-[0.8rem] text-start w-full '>Minimum Withdrawal Amount:  10 USDT</p>)}
 
 
 

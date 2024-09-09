@@ -19,12 +19,13 @@ import GameHistorytable from './Wingocomponents/GameHistorytable';
 import SelectTopUp from './Wingocomponents/SelectTopUp';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, walletbalance } from '../../redux/actions/PaymentAciton';
-import { resultHistory } from '../../redux/actions/Gameaction';
-import { io } from 'socket.io-client';
+import { gameHistory, resultHistory } from '../../redux/actions/Gameaction';
  
 import { toast } from 'react-toastify';
 import DepositModal from '../component/DepositModal .jsx';
 import socket from '../../socket/socket.js';
+import WinTopup from './Wingocomponents/WinTopup.jsx';
+import { loaduser } from '../../redux/actions/userAction.js';
 
  
 
@@ -34,6 +35,11 @@ const imges = [coin0, coin1, coin2, coin3, coin4, coin5, coin6, coin7, coin8, co
 const xbutton = [1, 5, 10, 20, 50, 100]
 
 const WinGo = () => {
+  const {  gamehistory,loading } = useSelector((state) => state.batle);
+  const {  isNewuser } = useSelector(
+    (state) => state.payment 
+  );
+  const { user } = useSelector((state) => state.user);
   const socketRef = useRef(null);
   const [countdown, setCountdown] = useState({
     "1Min": 0,
@@ -48,8 +54,8 @@ const WinGo = () => {
     "10Min": '',
   });
   const { depositBalance,withdrawableBalance } = useSelector((state) => state.payment);
-  const { error:error2} = useSelector((state) => state.user);
-  const { totalPages,currentPage,resultsPerPage,totalResults, error } = useSelector((state) => state.batle);
+  
+  const { totalPages,currentPage,resultsPerPage, error } = useSelector((state) => state.batle);
   const dispatch = useDispatch()
   
    
@@ -60,9 +66,11 @@ const WinGo = () => {
   const [selcetX, setSelecteX] = useState(null);
   const [selectnum, setSelectnum] = useState(null);
   const [selectColor, setSelectColor] = useState(null);
-  
+  const [userbetData,setUserbetData] = useState([])
+ 
   const [page, setPage] = useState(currentPage)
   const [walletBalances, setWalletBalances] = useState(null)
+  const [showwintopup, setShowwintopup] = useState(false)
 
  
  
@@ -92,7 +100,7 @@ const WinGo = () => {
         }));
       });
 
-      socket.emit("requestGameIDs");
+      socketRef.current.emit ("requestGameIDs");
 
       socketRef.current.on("gameID", (newGameIDs) => {
         setGameIDs(newGameIDs);
@@ -111,17 +119,81 @@ const WinGo = () => {
       // }
     };
   }, []);
+  useEffect(()=>{
+    if(countdown[selected] == 2){
+      dispatch(gameHistory());
+    }
+    if(!user){
+      dispatch(loaduser())
+    }
+  },[dispatch])
 
   useEffect(() => {
+  if(countdown[selected] == 2){
+    dispatch(gameHistory());
+  }
+    
+  
+  if (countdown[selected] === 1 && gamehistory && userbetData) {
+   
+    const result = gamehistory[0];
+  
+    
+    userbetData.forEach((betData) => {
+      if (result.GameId === betData.GameId && betData.uniqueBatleId === result.uniqueBatleId) {
+        setShowwintopup(true);
+        
+        
+      }
+    });
+  }
+    
      
 
     if (countdown[selected] === 0) {
+      setUserbetData([])
       socketRef.current.emit('timerEnded', selected);
       setTimeout(() => {
-        dispatch(walletbalance());
+        if(user){
+          dispatch(walletbalance());
         dispatch(resultHistory(currentPage, resultsPerPage));
+        }
       }, 200);
     }
+    if (countdown["1Min"] === 0) {
+      
+      socketRef.current.emit ('timerEnded', "1Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+        dispatch(resultHistory(currentPage,resultsPerPage))
+      }, 200)
+
+    }
+    else if (countdown["3Min"] === 0) {
+      socketRef.current.emit ('timerEnded', "3Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+        dispatch(resultHistory(currentPage,resultsPerPage))
+      }, 200)
+    }
+    else if (countdown["5Min"] === 0) {
+      socketRef.current.emit ('timerEnded', "5Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+        dispatch(resultHistory(currentPage,resultsPerPage))
+      }, 200)
+
+    }
+    else if (countdown["10Min"] === 0) {
+      socketRef.current.emit ('timerEnded', "10Min");
+      setTimeout(() => {
+        dispatch( walletbalance())
+            dispatch(resultHistory(currentPage,resultsPerPage))
+      }, 200)
+
+    }
+
+
 
     const countdownManage = (select) => {
       setCountdownDigits(countdown[select].toString().padStart(2, '0').split(''));
@@ -130,7 +202,7 @@ const WinGo = () => {
     };
     countdownManage(selected);
 
-    if (countdown[selected] <= 5) {
+    if (countdown[selected] === 5) {
       setSelecteX(null);
       setSelectColor(null);
       setBigsmall(null);
@@ -167,22 +239,25 @@ const WinGo = () => {
 
     return item.value;
 }
-const value = true;
+ 
 const [depositModel , setDepositModel] = useState(false);
 
   useEffect(()=>{
-    const values = getDataWithExpiry("timeredepositmodel")
-
+    let values = null
+   if(!values && isNewuser){
+      values = getDataWithExpiry("timeredepositmodel")
+   }
+    
     
 
     setTimeout(() => {
-      if(value){
+      if(isNewuser){
         setDepositModel(true)
       }
       
     }, values || 3000);
     
-    if(error ||  error2){
+    if(error ){
       toast.error(error)
       dispatch(clearErrors())
     }
@@ -196,7 +271,7 @@ const [depositModel , setDepositModel] = useState(false);
   };
 
   const reloadhanlde = () => {
-    navigate("/WinGo");
+    dispatch(walletbalance())
   };
 
   const handlePrevPage = () => {
@@ -225,8 +300,19 @@ const [depositModel , setDepositModel] = useState(false);
 
   return (
     <div className="flex  relative   items-center justify-center min-h-screen   overflow-hidden bg-gray-400">
+      { depositModel &&  <DepositModal setDepositModel={setDepositModel} deposits={null} updateDeposit={400} />}
       <div className="py-8 bg-[#22275b]   relative   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  text-white">
+      
         <div className='text-white  flex items-center fixed top-0  z-50   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]  justify-center px-3 h-[3rem] bg-[#2b3270]'>
+       <div className={`${showwintopup ? " opacity-1 scale-1":"   opacity-0 scale-0 "} transition-all duration-500 absolute top-0`}>
+       {showwintopup && (
+      <WinTopup 
+        result={gamehistory[0]} 
+        showwintopup={showwintopup} 
+        setShowwintopup={setShowwintopup} 
+      />
+    )}
+       </div>
     
           {/* <Link to={"/home"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link> */}
 
@@ -234,7 +320,7 @@ const [depositModel , setDepositModel] = useState(false);
 
 
         </div>
-        { depositModel &&  <DepositModal setDepositModel={setDepositModel} deposits={null} updateDeposit={400} />}
+        
         <div className={` bg-custom-image bg-center bg-cover bg-no-repeat  mt-5  flex flex-col  items-center gap-2 bg-[#374992]    rounded-2xl m-4 p-4 `} >
           <div className='flex  items-center gap-4'>
             <p className='text-start font-bold font-sans text-[1.4rem]  '>₹ {depositBalance !==null && walletBalances !==null && walletBalances > 0 ? walletBalances : "0.00"}</p>
@@ -272,7 +358,7 @@ const [depositModel , setDepositModel] = useState(false);
             <p>10 Min</p>
           </div>
         </div>
-        <div className='bg-custom-back  flex items-center justify-between bg-contain  h-[6.7rem] bg-no-repeat m-4    p-3'>
+        <div className='bg-custom-back   flex items-center justify-between  w-[90vw] sm:w-[370px] lg:w-[370px]  md:w-[370px]   bg-cover rounded-lg   h-[6.7rem] m-4 bg-no-repeat p-4    '>
           <div className='flex flex-col '>
             <button className='flex border border-[#0000005b] items-center justify-center rounded-xl px-3'>
               <img className='w-[1.3rem]' src="https://img.icons8.com/?size=100&id=igQGPLZQ4FuR&format=png&color=000000" alt="" />
@@ -330,7 +416,7 @@ const [depositModel , setDepositModel] = useState(false);
             ))}
 
           </div>
-          <div className='m-2'>
+          <div className='m-1 my-2'>
             <button onClick={() => setBigsmall("Big")} className=' rounded-l-3xl bg-yellow-600   px-[4rem]  py-2'>Big</button>
             <button onClick={() => setBigsmall("Small")} className=' rounded-r-3xl bg-blue-500   px-[4rem] py-2' >Small</button>
           </div>
@@ -368,7 +454,7 @@ const [depositModel , setDepositModel] = useState(false);
 
         <div className={`${countdown[selected] > 6 && (bigsmall === "Big" || bigsmall === "Small" || selectnum !== null || selectColor !== null) ? "flex" : "hidden"} absolute top-0 h-full bg-[#00000079]   w-full items-center justify-center`}>
 
-          <SelectTopUp setWalletBalance={setWalletBalances} walletBalance={walletBalances} gameIDs={gameIDs} selectedTimer={selected} selectColor={selectColor} setSelectednum={setSelectnum} selectednum={selectnum} setBigsmall={setBigsmall} setSelectColor={setSelectColor} selectQuanitity={selcetX || 1} selected={bigsmall} />
+          <SelectTopUp setUserbetData={setUserbetData} setWalletBalance={setWalletBalances} walletBalance={walletBalances} gameIDs={gameIDs} selectedTimer={selected} selectColor={selectColor} setSelectednum={setSelectnum} selectednum={selectnum} setBigsmall={setBigsmall} setSelectColor={setSelectColor} selectQuanitity={selcetX || 1} selected={bigsmall} />
 
         </div>
 

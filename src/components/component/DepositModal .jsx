@@ -66,16 +66,16 @@ const DepositModal = ({setDepositModel}) => {
   }
 
   return (
-  <div className='flex items-center justify-center  bg-[#0000007d] py-[3rem] flex-col h-[100vh] w-[100vw] fixed top-0  right-[0]  z-[100]'>
-      <div className="bg-[#374992]  h-[90%]         w-[350px] text-white rounded-lg shadow-lg p-4">
+  <div className=' fixed flex items-center justify-center     bg-[#0000004c] py-[3rem] flex-col h-[100vh] w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]   top-0     z-[100]'>
+      <div className="bg-[#374992]  h-[85%]  w-[90%] text-white rounded-lg shadow-lg p-4">
       <h2 className="text-lg text-center font-bold mb-4">Extra first deposit bonus</h2>
       <p className="text-sm mb-4">Each account can only receive rewards once</p>
-      <div className="overflow-y-auto h-[70%]">
+      <div className="overflow-y-scroll scroll-smooth hide-scrollbar h-[65%]">
         {deposits.map((deposit, index) => (
           <DepositCard setDepositModel={setDepositModel} key={index} {...deposit} />
         ))}
       </div>
-      <div className="mt-4 flex justify-between items-center h-[5vh]   ">
+      <div className="mt-4 flex justify-between items-center    ">
         <label className="flex items-center space-x-2">
           <input type="checkbox" onChange={(e)=>setchecked(e)} className="form-checkbox text-blue-600" />
           <span>No more reminders today</span>

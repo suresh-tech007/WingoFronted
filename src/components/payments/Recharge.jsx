@@ -22,26 +22,30 @@ const generateTransactionId = () => {
 const Recharge = () => {
     const location = useLocation();
     const transactionId = generateTransactionId();
-    const { withdrawableBalance,depositBalance,UpiDetails,loading ,message,error} = useSelector((state) => state.payment);
+    const { withdrawableBalance, depositBalance, upiId, walletId, loading, message, error } = useSelector((state) => state.payment);
 
     const [way, setWay] = useState('');
     const [upi, setUpi] = useState('');
-    const [disabled, setDisabled] = useState(false);
+    const [disabled, setDisabled] = useState(true);
     const [orderNumber, setOrderNumber] = useState(null);
     const [walletAddress, setWalletAddress] = useState("");
-    const { amount:Depositamount } = location.state || {};
+    const { amount: Depositamount } = location.state || {};
     const [walletbalances, setWalletbalances] = useState(null)
     const [amount, setAmount] = useState(Depositamount || "");
 
     const navigate = useNavigate();
     const dispatch = useDispatch()
-   
+
 
 
     const Deposithandleclick = () => {
+     
         const currentTime = new Date();
         const countdownTime = new Date(currentTime.getTime() + 15 * 60 * 1000); // 10 minutes from now
-
+        
+        if (amount < 200 ) {
+            return toast.error("Enter a specific amount ")
+        }
 
         if (way === "paytmQR" || way === "UPI-QR" || way === "EWallet") {
             navigate('/QRpayment', {
@@ -49,22 +53,21 @@ const Recharge = () => {
                     amount,
                     way,
                     orderNumber,
-                     
                     upi,
-                    countdownTime   
+                    countdownTime
                 }
             });
         }
         else if (way === "USDT" || way === "TRX-Bonus") {
-            
+
             navigate('/Payment', {
                 state: {
                     img: way === "USDT" ? USTD : TRX,
                     amount,
                     orderNumber,
-                    network:"kldsajfi",
+                    network: "kldsajfi",
                     walletAddress,
-                    countdownTime: countdownTime , // 5 minutes in 
+                    countdownTime: countdownTime, // 5 minutes in 
                 }
             });
         }
@@ -74,7 +77,7 @@ const Recharge = () => {
 
 
     const reloadhanlde = () => {
-        navigate("/deposit")
+        dispatch(walletbalance())
 
     }
     const handlewayOnclick = (way) => {
@@ -88,22 +91,32 @@ const Recharge = () => {
     }
 
     useEffect(() => {
-        dispatch(walletbalance())
+        dispatch(getUpiDetails())
+
+    }, [dispatch])
+
+    useEffect(() => {
+
+        dispatch(walletbalance());
 
         if (way === null || amount === null) {
+
             setDisabled(true)
-        } else {
+        }
+        if (way && amount) {
+
             setDisabled(false)
+
         }
-        if (depositBalance !==null && withdrawableBalance !== null) {
-            setWalletbalances( withdrawableBalance +  depositBalance)
-          }
-        if(UpiDetails){
-            setUpi(UpiDetails.upiId)
-            setWalletAddress(UpiDetails.walletId)
+        if (depositBalance !== null && withdrawableBalance !== null) {
+            setWalletbalances(withdrawableBalance + depositBalance)
         }
-         
-        
+        if (upiId && walletId) {
+            setUpi(upiId)
+            setWalletAddress(walletId)
+        }
+
+
 
         setOrderNumber(transactionId)
         dispatch(getUpiDetails())
@@ -115,12 +128,12 @@ const Recharge = () => {
             toast.error(error)
             dispatch(clearErrors())
         }
-        dispatch(getUpiDetails())
-        
 
-        return ;
 
-    }, [way, amount,dispatch,withdrawableBalance,depositBalance,message,error])
+
+        return;
+
+    }, [way, amount, dispatch, withdrawableBalance, depositBalance, message, error])
 
 
     return (
@@ -128,7 +141,7 @@ const Recharge = () => {
         <div className="flex relative   items-center justify-center     h-full   max-h-full    bg-gray-400">
 
             <div className="      bg-[#22275b]   pt-[3rem]     w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px]      ">
-            { loading && <Loading />}
+                {loading && <Loading />}
                 <div className='text-white  flex items-center fixed top-0   w-[100vw] sm:w-[400px] lg:w-[400px]  md:w-[400px] justify-between px-3 h-[3rem] bg-[#2b3270]'>
                     <Link to={"/wallet"}><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=40217&format=png&color=FBFBFB" alt="" /></Link>
                     <div className='flex   gap-[4rem]'>
@@ -144,7 +157,7 @@ const Recharge = () => {
                             <p> Balance </p>
                         </div>
                         <div className='flex  gap-2 items-center'>
-                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '> ₹ {  depositBalance!==null && walletbalances !==null && walletbalances > 0 ? walletbalances :  "0.00" }</h2>
+                            <h2 className='text-start font-bold font-sans text-[1.6rem]  '> ₹ {depositBalance !== null && walletbalances !== null && walletbalances > 0 ? walletbalances : "0.00"}</h2>
                             <button onClick={reloadhanlde} ><img className='w-[1.5rem]' src="https://img.icons8.com/?size=100&id=1742&format=png&color=FFFFFFCC" alt="reload" /></button>
                         </div>
                         <div className='flex  items-center justify-between'>
@@ -243,7 +256,7 @@ const Recharge = () => {
                                     placeholder='amounts in rupees'
                                 />
                             </div>
-                            <p className={`${amount  < 10 ? "block" : "hidden"} text-red-500 ml-3 text-[0.7rem] font-semibold`}> Minimum deposit amount is 10 TRX </p>
+                            <p className={`${amount < 10 ? "block" : "hidden"} text-red-500 ml-3 text-[0.7rem] font-semibold`}> Minimum deposit amount is 10 TRX </p>
                         </div>
 
                     )) : (
@@ -275,7 +288,7 @@ const Recharge = () => {
 
                             <div className=' h-[2.5rem] border rounded-3xl flex items-center justify-evenly px-2 '>
                                 <img className='w-[1.8rem]     ' src="https://img.icons8.com/?size=100&id=87785&format=png&color=056FEBBF" alt="" />
-                                <input type="text"    value={!amount ? "" : amount} onChange={(e)=>setAmount(e.target.value)} className=' border-l   bg-transparent focus:outline-none outline-none ml-3 pl-3 w-full  border-gray-500 text-white text-[1.1rem]  ' placeholder='Please enter the amount' />
+                                <input type="text" value={!amount ? "" : amount} onChange={(e) => setAmount(e.target.value)} className=' border-l   bg-transparent focus:outline-none outline-none ml-3 pl-3 w-full  border-gray-500 text-white text-[1.1rem]  ' placeholder='Please enter the amount' />
 
                             </div>
                             <p className={`${amount < 200 ? "block" : "hidden"} text-red-500 text-[0.7rem] font-semibold`}> Minimum deposit amount is ₹200 </p>
@@ -283,7 +296,7 @@ const Recharge = () => {
                     )}
 
 
-                    <button onClick={Deposithandleclick} disabled={disabled} className={` bg-blue-600 hover:bg-transparent  font-semibold    h-[2.5rem]  ${disabled ? "cursor-pointer" : "cursor-default"}  rounded-3xl border border-transparent  px-2 hover:border hover:border-[#8080809e] transition-all duration-300 `}> Deposit</button>
+                    <button onClick={Deposithandleclick} disabled={disabled} className={` bg-blue-600 hover:bg-transparent  font-semibold    h-[2.5rem]  ${disabled ? " cursor-default" : "cursor-pointer"}  rounded-3xl border border-transparent  px-2 hover:border hover:border-[#8080809e] transition-all duration-300 `}> Deposit</button>
 
                 </div>
                 <div className='flex bg-[#2b3270] flex-col font-sans  text-white rounded-[20px]  p-5 gap-3 m-3  '>
@@ -304,7 +317,7 @@ const Recharge = () => {
 
                 </div>
 
-               
+
 
                 <div className='h-[5rem]'></div>
 

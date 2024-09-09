@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Depocart from '../cart/Depocart';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Gamehistoryatable from './Gamehistoryatable';
 import { toast } from 'react-toastify';
 import { clearErrors, gameHistory } from '../../redux/actions/Gameaction';
 import Loading from './Loading';

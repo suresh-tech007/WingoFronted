@@ -9,8 +9,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearErrors, login } from '../../redux/actions/userAction';
-import Loading from '../component/Loading.jsx';
+import { clearErrors, loaduser, login } from '../../redux/actions/userAction';
 
 const LoginForm = () => {
   const [usemobile, setUsemobile] = useState(true);
@@ -71,7 +70,7 @@ const LoginForm = () => {
       toast("Please enter valid values");
       return;
     }
-
+    sessionStorage.clear();
     dispatch(login(formData))
 
   };
@@ -88,7 +87,9 @@ const LoginForm = () => {
   const redirect=sessionStorage.getItem('lastVisitedPage') || '/home'
    
   useEffect(()=>{
-    if (user!=null && user !== undefined) { 
+ 
+    if (user!==null && user !== undefined) { 
+      
       navigate(redirect)
     }
   },[user,navigate,redirect])

@@ -25,12 +25,12 @@ const DepositUpiChange = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Handle form submission, e.g., send the data to the backend
     
-    disptach(updateadminupi(formData))
-    
+   await disptach(updateadminupi(formData))
+   await disptach(getUpiDetails())
     toast.success('Withdrawal request updated successfully!');
   };
   useEffect(()=>{

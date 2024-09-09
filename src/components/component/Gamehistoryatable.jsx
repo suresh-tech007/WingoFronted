@@ -20,7 +20,7 @@ const Gamehistoryatable = ({ row = null }) => {
     pushColorWithId('purple');
     pushColorWithId('green');
   } else if ([2, 4, 6, 8].includes(row.selectedNumber)) {
-    pushColorWithId('green');
+    pushColorWithId('red');
   }
 
   return (

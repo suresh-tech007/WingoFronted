@@ -26,21 +26,25 @@ const Profile = () => {
     const navigate = useNavigate();
     const image = "https://res.cloudinary.com/dhvvefbcj/image/upload/v1722595281/gametirngaclone/Profile_oqiu39.png"
 
-    const hanldelogout = () => {
+    // console.log(message);
+    const hanldelogout = async() => {
 
-        dispatch(logout())
-        dispatch(loaduser())
-       setTimeout(() => {
+        await dispatch(logout())
+        sessionStorage.setItem('lastVisitedPage', '/login');
+        await dispatch(loaduser())
         navigate("/login")
-       }, 300);
-      
         toast("Logout successfully")
 
     }
      
 
     useEffect(() => {
-        dispatch(walletbalance())
+        if(message){
+            toast.success(message);
+        }
+        if(user !== null && user !== undefined){
+          dispatch(walletbalance())     
+        }
          
 
         if (user == null) {
@@ -57,7 +61,7 @@ const Profile = () => {
         setWalletbalances( withdrawableBalance +  depositBalance)
       }
 
-    }, [user, isAuthenticated, withdrawableBalance, depositBalance])
+    }, [user, isAuthenticated, withdrawableBalance,message, depositBalance])
    
 
     return (
@@ -112,7 +116,7 @@ const Profile = () => {
 
                     </div>
                     <div className={`w-full h-full px-5     ${user.role==="admin"?"block":"hidden"}`}>
-                    <Link to="/admin" className="flex bg-slate-900  px-3 text-white rounded-lg  cursor-pointer flex-row  justify-between  items-center  py-2    ">
+                    <Link to="/admin/dashboard" className="flex bg-slate-900  px-3 text-white rounded-lg  cursor-pointer flex-row  justify-between  items-center  py-2    ">
                     <RiAdminLine className="text-[2rem]" />
 
 

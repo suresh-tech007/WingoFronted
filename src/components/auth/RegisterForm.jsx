@@ -7,11 +7,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, regsiter } from '../../redux/actions/userAction.js';
 import { toast } from 'react-toastify';
 import Loading from '../component/Loading.jsx';
+const avatarUrls = [
+  "/avatar/1-a6662edb.png",
+  "/avatar/2-58c8a9bc.png",
+  "/avatar/3-abfcc056.png",
+  "/avatar/4-12a0d0c5.png",
+  "/avatar/5-ab77b716.png",
+  "/avatar/6-7c7f5203.png",
+  "/avatar/7-00479cfa.png",
+  "/avatar/8-ea087ede.png",
+  "/avatar/9-6d772f2c.png",
+  "/avatar/10-29a6603e.png",
+  "/avatar/12-ae12c679.png",
+  "/avatar/14-a397ff6b.png",
+  "/avatar/15-80f41fc6.png",
+  "/avatar/17-bedde42f.png",
+  "/avatar/20-a58f23bf.png",
+];
 
 const RegisterForm = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const invitationCode = searchParams.get('invitationCode');
+  const randomAvatar = avatarUrls[Math.floor(Math.random() * avatarUrls.length)];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +41,8 @@ const RegisterForm = () => {
     password: '',
     confirmPassword: '',
     agreed: false,
-    invitationCode: invitationCode || ''
+    invitationCode: invitationCode || '',
+    avatar:randomAvatar || ""
   });
 
   const handleChange = (e) => {

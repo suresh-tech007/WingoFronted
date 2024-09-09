@@ -41,7 +41,8 @@ import WithdrawReq from './components/Admin/WithdrawReq.jsx';
 import AdminHome from './components/Admin/AdminHome.jsx';
 import Admins from './components/Admin/Admins.jsx';
 import DepositUpiChange from './components/Admin/DepositUpiChange.jsx';
-import { checkNewUser, walletbalance } from './redux/actions/PaymentAciton.js';
+import DepositModal from './components/component/DepositModal .jsx';
+import { checkNewUser } from './redux/actions/PaymentAciton.js';
 import InvitationBonus from './components/component/activity/InvitationBonus.jsx';
 import InvitationRewardRules from './components/component/activity/InvitationRewardRules.jsx';
 import InvitationRecord from './components/component/activity/InvitationRecord.jsx';
@@ -56,14 +57,14 @@ function App() {
   const {  user } = useSelector(
     (state) => state.user
   );
-  // console.log(user)
    
   const [depositModel , setDepositModel] = useState(false)
   const dispatch = useDispatch();
 
   
-  function getDataWithExpiry(key) {
-    const itemStr = localStorage.getItem(key);
+  function getDataWithExpiry() {
+    const itemStr = localStorage.getItem("timeredepositmodel");
+     
 
     
     if (!itemStr) {
@@ -76,39 +77,40 @@ function App() {
  
     if (now.getTime() > item.expiry) {
         
-        localStorage.removeItem(key);
+        localStorage.removeItem("timeredepositmodel");
         return null;
     }
 
     return item.value;
 }
-const token = localStorage.getItem("token")
 
   useEffect(()=>{
-    const values = getDataWithExpiry("timeredepositmodel")
-
-  
-    // console.log(token)
-
-    if(!user && token){
+    if(!user){
       dispatch(loaduser())
+     }
+  
+    if(user!==null && user !==undefined){
+      dispatch(resultHistory(1,10))
+      dispatch(checkNewUser())
+    
+   
+    let values = null
+    if(values==null && isNewuser){
+       values = getDataWithExpiry()
     }
+
+   
     setTimeout(() => {
-      if(!isNewuser){
+      if(isNewuser){
         setDepositModel(true)
       }
       
     }, values || 3000);
     
-    if(user){
+   
+  }
      
-      dispatch(resultHistory(1,10))
-    dispatch(checkNewUser())
-    dispatch(walletbalance()) 
-    }
-    
-     
-  },[dispatch,user])
+  },[dispatch])
 
  
    
@@ -143,6 +145,7 @@ const token = localStorage.getItem("token")
         <Route path="/guides" element={<ProtectedRoute component={Commingsoon} />} />
         <Route path="/services" element={<ProtectedRoute component={Commingsoon} />} />
         <Route path="/aboutus" element={<ProtectedRoute component={Commingsoon} />}  />   
+        <Route path="/feedback" element={<ProtectedRoute component={Commingsoon} />}  />   
          <Route path="/WinGo" element={<ProtectedRoute component={WinGo} />}  /> 
         <Route path="/QRpayment" element={<ProtectedRoute component={Scannerpage} />} />
         <Route path="/Payment" element={<ProtectedRoute component={UsdtPayment} />} />
@@ -152,7 +155,7 @@ const token = localStorage.getItem("token")
         {/* <Route    exact path="/admin/reviews" element={<ProtectedRoute isAdmin={true}  component={ProductReviews} />} />
 <Route    path="*"  element={ <NotFound/>}  /> */}
 
-<Route    exact path="/admin/" element={<ProtectedRoute  isAdmin={"admin"}  component={AdminHome} />} />
+<Route    exact path="/admin" element={<ProtectedRoute  isAdmin={"admin"}  component={AdminHome} />} />
 <Route    exact path="/admin/Users" element={<ProtectedRoute isAdmin={"admin"}    component={Users} />} />
 <Route    exact path="/admin/adminlist" element={<ProtectedRoute isAdmin={"admin"}    component={Admins} />} />
 <Route    exact path="/admin/changedepositmethod" element={<ProtectedRoute isAdmin={"admin"}    component={DepositUpiChange} />} />
@@ -166,7 +169,7 @@ const token = localStorage.getItem("token")
 
       </Routes>
       {user  && <Header />}
-      {/* {user && depositModel &&  <DepositModal setDepositModel={setDepositModel} deposits={null} updateDeposit={400} />} */}
+     
       
 
       
